@@ -19,114 +19,25 @@
 	<style>
 	
 	.wrap {position:static;}
+	.navigation { position:fixed; width:100%; z-index:3; }
+	.side_navigation {position:fixed; width:100%; height:100%; z-index:2; }
 	
 	</style>
 
 </head>
 <body>
 <div class="wrap">
-	<div class="col-md-10">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">공용시설 안내 서비스</a>
-			</div>
-			<form class="navbar-form navbar-left" style="width: 1200px">
-				 <div class="input-group input-group-sm" style="width: 100%">
-					<input type="text" class="form-control" placeholder="원하시는 지역명, 시설명을 입력하세요">
-					<div class="input-group-btn" style="width: 34px">
-						<button class="btn btn-default" type="submit">
-							<i class="glyphicon glyphicon-search"></i>
-						</button>
-					</div>
+	<div class="navigation">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12 col-md-2">
+					<a class="navbar-brand" style="width: 100%; text-align:center;" href="#">공용시설 안내 서비스</a>
 				</div>
-			</form>
-			<ul class="nav navbar-nav navbar-right">
-				<li>
-					<a href="#">
-						<span class="glyphicon glyphicon-log-in"></span> 
-						Login
-					</a>
-				</li>
-				<li>
-					<a href="#">
-						<span class="glyphicon glyphicon-user"></span>
-						Sign Up
-					</a>
-				</li>
-			</ul>
-	</div>
-
-	<div class="col-md-2" style="background: #E0E0E0; min-height:500px;">
-		<div class="col-md-6">
-			<div class="dropdown" style="padding-left: 0px;">
-				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-					대분류 <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">문화시설</a></li>
-					<li><a href="#">체육시설</a></li>
-					<li><a href="#">복지시설</a></li>
-				</ul>
-			</div>
-		</div>
-
-		<div class="col-md-6">
-			<div class="dropdown" style="padding-left: 0px;">
-				<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-					대분류 <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="#">문화시설</a></li>
-					<li><a href="#">체육시설</a></li>
-					<li><a href="#">복지시설</a></li>
-				</ul>
-			</div>
-		</div>
-
-		<form class="navbar-form navbar-left"
-			style="padding-left: 0px; padding-right: 0px;">
-			<div class="input-group input-group-sm">
-				<input type="text" class="form-control">
-				<div class="input-group-btn">
-					<button class="btn btn-default" type="submit">
-						<i class="glyphicon glyphicon-search"></i>
-					</button>
-				</div>
-			</div>
-		</form>
-	</div>
-			<!-- <div class="col-md-2 no_side_padding">
-				<div class="container-fluid"
-					style="padding-top: 15px; background: #E0E0E0;">
-					<div class="dropdown col-md-6" style="padding-left: 0px;">
-						<button class="btn btn-default dropdown-toggle" type="button"
-							data-toggle="dropdown">
-							대분류 <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu">
-							<li><a href="#">문화시설</a></li>
-							<li><a href="#">체육시설</a></li>
-							<li><a href="#">복지시설</a></li>
-						</ul>
-					</div>
-
-					<div class="dropdown col-md-6"
-						style="padding-left: 0px; padding-right: 0px;">
-						<button class="btn btn-default dropdown-toggle" type="button"
-							data-toggle="dropdown">
-							소분류 <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu">
-							<li><a href="#">문화시설</a></li>
-							<li><a href="#">체육시설</a></li>
-							<li><a href="#">복지시설</a></li>
-						</ul>
-					</div>
-
-					<form class="navbar-form navbar-left"
-						style="padding-left: 0px; padding-right: 0px;">
-						<div class="input-group input-group-sm">
-							<input type="text" class="form-control">
-							<div class="input-group-btn">
+				<div class="col-sm-12 col-md-6">
+					<form class="navbar-form" style="width: 100%;">
+						 <div class="input-group input-group-sm" style="width: 100%">
+							<input type="text" class="form-control" placeholder="원하시는 지역명, 시설명을 입력하세요">
+							<div class="input-group-btn" style="width: 34px">
 								<button class="btn btn-default" type="submit">
 									<i class="glyphicon glyphicon-search"></i>
 								</button>
@@ -134,7 +45,67 @@
 						</div>
 					</form>
 				</div>
-			</div> -->
+				<div class="col-sm-12 col-md-2" style="text-align:center;">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="#">
+							<span class="glyphicon glyphicon-log-in"></span> 
+							Login
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<span class="glyphicon glyphicon-user"></span>
+							Sign Up
+						</a>
+					</li>
+				</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="side_navigation">
+		<div class="col-md-2 col-md-offset-10" style="background: #E0E0E0;">
+			<div class="col-md-6">
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+						대분류 <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">문화시설</a></li>
+						<li><a href="#">체육시설</a></li>
+						<li><a href="#">복지시설</a></li>
+					</ul>
+				</div>
+			</div>
+	
+			<div class="col-md-6">
+				<div class="dropdown" style="padding-left: 0px;">
+					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+						소분류 <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">문화시설</a></li>
+						<li><a href="#">체육시설</a></li>
+						<li><a href="#">복지시설</a></li>
+					</ul>
+				</div>
+			</div>
+	
+			<form class="navbar-form navbar-left"
+				style="padding-left: 0px; padding-right: 0px;">
+				<div class="input-group input-group-sm">
+					<input type="text" class="form-control">
+					<div class="input-group-btn">
+						<button class="btn btn-default" type="submit">
+							<i class="glyphicon glyphicon-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+			
 </div>
 </body>
 </html>
