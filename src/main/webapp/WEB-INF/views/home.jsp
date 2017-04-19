@@ -20,7 +20,7 @@
 	
 	.wrap {position:static;}
 	.navigation { position:fixed; width:100%; z-index:3; }
-	.side_navigation {position:fixed; width:100%; height:100%; z-index:2; }
+	.side_navigation {position:fixed; width:100%; height:100%;  }
 	
 	</style>
 
