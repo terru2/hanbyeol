@@ -16,7 +16,7 @@
 	<bean id="sqlSessionFactory"
 	class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" /> <!-- bean id=datasource를 참조 -->
-		<property name="mapperLocations" value="/WEB-INF/spring/*-mapper.xml"/>
+		<property name="mapperLocations" value="/WEB-INF/spring/mapper/*-mapper.xml"/>
 	</bean>
 	
 	<!-- 3. mybatis SqlSession 생성 == spring의 sqlsessiontemplate -->

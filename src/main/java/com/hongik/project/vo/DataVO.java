@@ -1,0 +1,44 @@
+package com.hongik.project.vo;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class DataVO {
+	
+	private String name;
+	private String address;
+	private double wsg84x;
+	private double wsg84y;
+	private String phonenumber;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public double getWsg84x() {
+		return wsg84x;
+	}
+	public void setWsg84x(double wsg84x) {
+		this.wsg84x = wsg84x;
+	}
+	public double getWsg84y() {
+		return wsg84y;
+	}
+	public void setWsg84y(double wsg84y) {
+		this.wsg84y = wsg84y;
+	}
+	public String getPhonenumber() {
+		return phonenumber;
+	}
+	public void setPhonenumber(String phonenumber) {
+		this.phonenumber = phonenumber;
+	}
+}
