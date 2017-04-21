@@ -1,17 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>간단한 지도 표시하기</title>
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=6hl4w71wQyasH_xd4et9"></script>
-</head>
-<body>
-<div id="map" style="width:100%;height:400px;"></div>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<div class="col-sm-9 col-md-10">
+	<div id="map" style="width:100%;height:400px;"></div>
+</div>
 <script>
 var mapOptions = {
     center: new naver.maps.LatLng(37.5666805, 126.9784147),
@@ -50,5 +41,3 @@ naver.maps.Event.addListener(marker, "click", function(e) {
     }
 });
 </script>
-</body>
-</html>

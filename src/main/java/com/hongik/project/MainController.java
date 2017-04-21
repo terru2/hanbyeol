@@ -39,17 +39,7 @@ public class MainController {
 	
 	@RequestMapping("home.hongik")
 	public String home() {
-		
 		return "home";
 			
 	}
-	
-	@RequestMapping("map.hongik")
-	public String map() {
-		
-		return "map";
-			
-	}
-	
-	
 }
