@@ -5,5 +5,13 @@
 	<select id="all" resultType="com.hongik.project.vo.DataVO">
 		select name, address, wsg84x, wsg84y, phonenumber from of_table
 	</select>
+	
+	<select id="table" resultType="string" parameterType="java.lang.String">
+		select distinct category1 from ${value }
+ 	</select>
+ 	
+ 	<select id="table2" resultType="string" parameterType="hashmap">
+		select distinct category2 from ${table } where category1='${m_category }'
+ 	</select>
 </mapper>
 

@@ -1,6 +1,8 @@
 package com.hongik.project.serviceimpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,15 @@ public class DataServiceImpl implements DataService {
 	
 	public ArrayList<DataVO> getAddress() {
 		return dao.getAddress();
+	}
+
+	@Override
+	public List<String> getCategory(String b_category) {
+		return dao.getCategory(b_category);
+	}
+
+	public List<String> getCategory2(String b_category, String select_m_category) {
+		return dao.getCategory2(b_category,select_m_category);
 	}
 
 }

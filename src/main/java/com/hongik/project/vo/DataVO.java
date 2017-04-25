@@ -5,12 +5,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataVO {
 	
+	private String category1;
+	private String category2;
 	private String name;
 	private String address;
 	private double wsg84x;
 	private double wsg84y;
 	private String phonenumber;
 	
+	public String getCategory1() {
+		return category1;
+	}
+	public void setCategory1(String category1) {
+		this.category1 = category1;
+	}
+	public String getCategory2() {
+		return category2;
+	}
+	public void setCategory2(String category2) {
+		this.category2 = category2;
+	}
 	public String getName() {
 		return name;
 	}
