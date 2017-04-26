@@ -1,4 +1,4 @@
-package com.hongik.project;
+package com.hongik.project.controller;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
