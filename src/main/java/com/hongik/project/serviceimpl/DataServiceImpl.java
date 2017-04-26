@@ -30,4 +30,9 @@ public class DataServiceImpl implements DataService {
 		return dao.getCategory2(b_category,select_m_category);
 	}
 
+	@Override
+	public List<DataVO> getList(String b_category, String select_m_category, String select_s_category) {
+		return dao.getList(b_category,select_m_category,select_s_category);
+	}
+
 }
