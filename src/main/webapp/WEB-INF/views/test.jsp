@@ -57,8 +57,8 @@
 
 		<div class="row row-offcanvas row-offcanvas-right">
 
-			<div class="col-sm-12 col-md-9 map">
-				<p class="pull-right visible-xs visible-sm">
+			<div class="col-xs-12 col-sm-9 map">
+				<p class="pull-right visible-xs">
 					<button type="button" class="btn btn-default btn-sm"
 						data-toggle="offcanvas">상세검색</button>
 				</p>
@@ -66,7 +66,7 @@
 				</div>
 			</div>
 
-			<div class="col-sm-6 col-md-3 sidebar-offcanvas" id="sidebar">
+			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
 				<div
 					style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px;">
 					<div class="btn-group">

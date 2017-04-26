@@ -13,6 +13,4 @@ public interface DataService {
 	List<String> getCategory(String b_category);
 	List<String> getCategory2(String b_category, String m_category);
 	
-	List<DataVO> getList(String b_category,String select_m_category, String select_s_category);
-	
 }
