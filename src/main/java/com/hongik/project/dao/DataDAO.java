@@ -73,4 +73,34 @@ public class DataDAO {
 		return list;
 	}
 
+	public List<DataVO> getList(String b_category, String select_m_category, String select_s_category) {
+		
+		String table = "";
+		
+		if(b_category.equals("문화시설")){
+			table = "CF_TABLE";
+		}
+		else if(b_category.equals("의료시설")){
+			table = "EF_TABLE";
+		}
+		else if(b_category.equals("체육시설")){
+			table = "GF_TABLE";
+		}
+		else if(b_category.equals("복지시설")){
+			table = "WF_TABLE";
+		}
+		else if(b_category.equals("기타시설")){
+			table = "OF_TABLE";
+		}
+		
+		HashMap<String, String> hash = new HashMap<String, String>();
+		hash.put("table", table);
+		hash.put("m_category", select_m_category);
+		hash.put("s_category", select_s_category);
+		
+		List<DataVO> list = session.selectList("test.table3", hash);
+		
+		return list;
+	}
+
 }

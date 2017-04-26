@@ -9,6 +9,7 @@ public class DataVO {
 	private String category2;
 	private String name;
 	private String address;
+	private String roadaddress;
 	private double wsg84x;
 	private double wsg84y;
 	private String phonenumber;
@@ -36,6 +37,12 @@ public class DataVO {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public String getRoadaddress() {
+		return roadaddress;
+	}
+	public void setRoadaddress(String roadaddress) {
+		this.roadaddress = roadaddress;
 	}
 	public double getWsg84x() {
 		return wsg84x;
