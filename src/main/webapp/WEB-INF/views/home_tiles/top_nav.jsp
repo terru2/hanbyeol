@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -7,9 +8,9 @@
 			</button>
 			<a class="navbar-brand" href="#">공용시설 안내 서비스</a>
 		</div>
-			<form class="navbar-form navbar-left">
+			<form class="navbar-form navbar-left" action="search.hongik">
 		    	<div class="input-group">
-					<input type="text" class="form-control" placeholder="원하시는 지역명, 시설명을 입력하세요">
+					<input type="text" class="form-control" placeholder="원하시는 지역명, 시설명을 입력하세요" name="address" value="${addrss}">
 					<div class="input-group-btn">
 						<button class="btn btn-default" type="submit">
 							<span class="glyphicon glyphicon-search"></span>
