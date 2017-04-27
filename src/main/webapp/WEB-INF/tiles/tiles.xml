@@ -3,24 +3,19 @@
  
 <tiles-definitions> 
 	<!-- base-definition --> 
-	<definition name="base-definition" template="/WEB-INF/tiles/layouts/defaultlayout.jsp"> 
-		<put-attribute name="title" value="" /> 
-		<put-attribute name="header" value="" /> 
-		<put-attribute name="body" value="" /> 
-		<put-attribute name="footer" value="" />		
+	<definition name="home" template="/WEB-INF/views/home.jsp"> 
+<put-attribute name="setting" value="/WEB-INF/views/home_tiles/setting.jsp"/>
+		<put-attribute name="top_nav" value="/WEB-INF/views/home_tiles/top_nav.jsp"/>
+		<put-attribute name="map" value="/WEB-INF/views/home_tiles/map.jsp"/>
+		<put-attribute name="side_bar" value="/WEB-INF/views/home_tiles/side_bar.jsp"/>	
 	</definition> 
 	
 	<!-- Home Page --> 
-	<definition name="main" extends="base-definition"> 
-		<put-attribute name="title" value="Welcome" /> 
-		<put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
-	</definition> 
-	
-	<!-- test Page -->
-	<definition name="home" template="/WEB-INF/views/home.jsp"> 
+	<definition name="map/*" extends="home"> 
 		<put-attribute name="setting" value="/WEB-INF/views/home_tiles/setting.jsp"/>
 		<put-attribute name="top_nav" value="/WEB-INF/views/home_tiles/top_nav.jsp"/>
-		<put-attribute name="map" value="/WEB-INF/views/home_tiles/map.jsp"/>
+		<put-attribute name="map" value="/WEB-INF/views/map/{1}.jsp"/>
 		<put-attribute name="side_bar" value="/WEB-INF/views/home_tiles/side_bar.jsp"/>
 	</definition> 
+	
 </tiles-definitions>
