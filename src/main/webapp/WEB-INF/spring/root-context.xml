@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="dataSource" 
+	class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> <!-- 드라이버 -->
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/> <!-- url -->
+		<property name="username" value="hb"/> <!-- 계정 아이디와 암호 -->
+		<property name="password" value="hb"/>
+		
+		<!-- <property name="url" value="jdbc:oracle:thin:@192.168.1.47:1521:xe"/> url
+		<property name="username" value="asw"/> 계정 아이디와 암호
+		<property name="password" value="asw"/> -->
+	</bean>
+	
+	<!-- 2. SqlSessionFactory 생성 -->
+	<bean id="sqlSessionFactory"
+	class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" /> <!-- bean id=datasource를 참조 -->
+		<property name="mapperLocations" value="/WEB-INF/spring/mapper/*-mapper.xml"/>
+	</bean>
+	
+	<!-- 3. mybatis SqlSession 생성 == spring의 sqlsessiontemplate -->
+	<bean id="sqlSessionTemplate"
+	class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" /> <!-- 생성자의 매개변수로 넘겨주게 함 -->
+	</bean>	
+</beans>
