@@ -20,8 +20,16 @@
 		    </form>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+				<li>
+					<a data-toggle="modal" data-target="#login">
+						<span class="glyphicon glyphicon-log-in"></span> Log in
+					</a>	
+				</li>
+				<li>
+					<a data-toggle="modal" data-target="#SignUp">
+						<span class="glyphicon glyphicon-user"></span> Sign Up
+					</a>	
+				</li>
 			</ul>
 		</div>
 	</div>

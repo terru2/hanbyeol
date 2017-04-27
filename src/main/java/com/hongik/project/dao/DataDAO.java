@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hongik.project.vo.DataVO;
+import com.hongik.project.vo.MemberVO;
 
 @Repository
 public class DataDAO {
@@ -99,6 +100,17 @@ public class DataDAO {
 		hash.put("s_category", select_s_category);
 		
 		List<DataVO> list = session.selectList("test.table3", hash);
+		
+		return list;
+	}
+
+	public List<MemberVO> getLoginCheck(String id, String pw) {
+		
+		HashMap<String, String> hash = new HashMap<String, String>();
+		hash.put("id", id);
+		hash.put("pw", pw);
+		
+		List<MemberVO> list = session.selectList("test.member", hash);
 		
 		return list;
 	}

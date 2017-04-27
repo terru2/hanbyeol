@@ -15,7 +15,6 @@
  	</select>
  	
  	<select id="table3" resultType="com.hongik.project.vo.DataVO" parameterType="hashmap">
-
  		select name, address, roadaddress, phonenumber from ${table }
  		<where>
  			<if test="s_category==null">
@@ -25,6 +24,10 @@
 			 	category1='${m_category }' and category2='${s_category }'
  			</if>
  		</where>
+ 	</select>
+ 	
+ 	<select id="member" resultType="com.hongik.project.vo.MemberVO" parameterType="hashmap">
+ 		select id, password from MEMBER where ID='${id }' and PASSWORD='${pw }'
  	</select>
 </mapper>
 

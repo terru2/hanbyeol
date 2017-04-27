@@ -55,7 +55,7 @@
 			</div>
 			<div class="panel-body">
 				<strong>${placeList.address }</strong><br>
-				<span class="glyphicon glyphicon-phone-alt"></span> ${placeList.phonenumber }
+				 <span class="glyphicon glyphicon-phone-alt"></span> ${placeList.phonenumber }
 			</div>
 		</div>
 	</c:forEach>

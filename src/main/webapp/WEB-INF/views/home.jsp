@@ -7,6 +7,7 @@
 	<tiles:insertAttribute name="setting"/>
 </head>
 <body>
+	<tiles:insertAttribute name="login_signup"/>
 	<tiles:insertAttribute name="top_nav"/>
 	<div class="container-fluid">
 		<div class="row">
