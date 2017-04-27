@@ -12,7 +12,6 @@
 	<div class="container-fluid">
 		<div class="row">
 			<tiles:insertAttribute name="map"/>
-			<tiles:insertAttribute name="side_bar"/>
 		</div>
 	</div>
 </body>
