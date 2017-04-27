@@ -51,11 +51,11 @@
 	<c:forEach items="${placeList }" var="placeList">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">${placeList.name }</h3>
+				<h3 class="panel-title"><strong>${placeList.name }</strong></h3>
 			</div>
 			<div class="panel-body">
-				${placeList.address } ( ${placeList.roadaddress } )<br>
-				${placeList.phonenumber }
+				<strong>${placeList.address }</strong><br>
+				<span class="glyphicon glyphicon-phone-alt"></span> ${placeList.phonenumber }
 			</div>
 		</div>
 	</c:forEach>
