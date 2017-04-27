@@ -1,15 +1,19 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>  
-<%@ page session="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<!DOCTYPE html>
 <html>
 <head>
-	<title><tiles:insertAttribute name="title" /> </title>
+<title>공용 시설 안내</title>
+	<tiles:insertAttribute name="setting"/>
 </head>
 <body>
-<h1>
-	Main!
-</h1>
-
-<P>  The time on the server is ${serverTime}. </P>
+	<tiles:insertAttribute name="login_signup"/>
+	<tiles:insertAttribute name="top_nav"/>
+	<div class="container-fluid">
+		<div class="row">
+			<tiles:insertAttribute name="map"/>
+			<tiles:insertAttribute name="side_bar"/>
+		</div>
+	</div>
 </body>
 </html>
