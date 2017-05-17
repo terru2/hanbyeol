@@ -6,18 +6,8 @@
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 				<span class="glyphicon glyphicon-user"></span>
 			</button>
-			<a class="navbar-brand" href="#">공용시설 안내 서비스</a>
+			<a class="navbar-brand" href="main.do">공용시설 안내 서비스</a>
 		</div>
-			<form class="navbar-form navbar-left" action="search.hongik">
-		    	<div class="input-group">
-					<input type="text" class="form-control" placeholder="원하시는 지역명, 시설명을 입력하세요" name="address" value="${addrss}">
-					<div class="input-group-btn">
-						<button class="btn btn-default" type="submit">
-							<span class="glyphicon glyphicon-search"></span>
-						</button>
-					</div>
-				</div>
-		    </form>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<li>
