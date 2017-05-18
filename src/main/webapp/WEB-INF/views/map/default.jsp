@@ -9,8 +9,11 @@ $(document).ready(function(){
 });
 </script>
 <!-- Map 부분  -->
-<div class="col-md-9 map" style="height: 100%">
-	<div id="map" style="width: 100%; height: 100%;"></div>
+<div class="col-sm-12 col-md-9 map" id="map" style="height: 100%;">
+	<p class="pull-right visible-xs visible-sm" id="tog_btn">
+		<button type="button" class="btn btn-default btn-sm"
+			data-toggle="offcanvas">상세 분류</button>
+	</p>
 	<div class="custom_typecontrol ">
 		<select class="form-control" name="range">
 			<option>500m</option>
@@ -20,7 +23,8 @@ $(document).ready(function(){
 	</div>
 </div>
 <!-- List 부분  -->
-<div class="col-md-3 col-md-offset-9 sidebar">
+
+<div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar" style="height: 100%;">
 	<!-- 조건절들 보여주는 부분  -->
 	<div style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px;">
 		<div class="input-group">

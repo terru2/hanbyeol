@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.hongik.project.commons.ConvertAddressXML;
 import com.hongik.project.commons.DistanceConvert;
 import com.hongik.project.serviceImpl.MapSearchSeviceImpl;
@@ -30,7 +29,7 @@ public class MapController {
 	
 	@RequestMapping(value="main.do")
 	public String getMapData(Model model,
-			@RequestParam(value="page", defaultValue="1")int page){
+			@RequestParam(value="page", defaultValue="1")int page){	
 		PagingVO paging = new PagingVO();
 		ArrayList<CategoryVO> category1list = mapSearchSeviceImpl.getCategory1();
 
@@ -40,12 +39,13 @@ public class MapController {
 		paging.setTotalCount(totalCount);
 		ArrayList<MapDataVO> datalist = mapSearchSeviceImpl.getpaginglist(paging); 
 
-		/* 시설들의 좌표 및 이름  Marker를 등록하는데 필요한 데이터들 */
+		/* 시설들의 좌표 및 이름  Marker를 등록하는데 필요한 데이터들 */		
 		model.addAttribute("pageVO", paging);
 		model.addAttribute("category1list", category1list);
 		model.addAttribute("datalist", datalist);
-		
+
 		return "map/default";
+
 	}
 	
 	@RequestMapping(value="mapsearch.do")

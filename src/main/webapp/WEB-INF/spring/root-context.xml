@@ -6,13 +6,13 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="dataSource" 
 	class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> <!-- 드라이버 -->
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/> <!-- url -->
-		<property name="username" value="asw"/> <!-- 계정 아이디와 암호 -->
-		<property name="password" value="asw"/>
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/> 
+		<property name="username" value="hb"/> 
+		<property name="password" value="hb"/>
 		
-		<!-- <property name="url" value="jdbc:oracle:thin:@192.168.1.47:1521:xe"/> url
-		<property name="username" value="asw"/> 계정 아이디와 암호
+		<!-- <property name="url" value="jdbc:oracle:thin:@192.168.1.21:1521:xe"/>
+		<property name="username" value="asw"/> 
 		<property name="password" value="asw"/> -->
 	</bean>
 	

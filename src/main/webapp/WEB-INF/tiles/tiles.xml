@@ -7,13 +7,12 @@
 		<put-attribute name="setting" value="/WEB-INF/views/home_tiles/setting.jsp"/>
 		<put-attribute name="top_nav" value="/WEB-INF/views/home_tiles/top_nav.jsp"/>
 		<put-attribute name="map" value="/WEB-INF/views/map/default.jsp"/>
-		<put-attribute name="side_bar" value="/WEB-INF/views/home_tiles/side_bar.jsp"/>
 		<put-attribute name="login_signup" value="/WEB-INF/views/login/login_signup.jsp"/>		
 	</definition> 
 	
 	<!-- Map Page --> 
 	<definition name="map/*" extends="default">
 		<put-attribute name="map" value="/WEB-INF/views/map/{1}.jsp"/> 
-	</definition>  
+	</definition> 
 	
 </tiles-definitions>

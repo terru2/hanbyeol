@@ -5,40 +5,44 @@
 	<input type="hidden">
 </c:forEach> --%>
 
-<div class="col-md-9 map">
-	<div id="map" style="width:100%; min-height:580px;">
+<div class="row row-offcanvas row-offcanvas-right" style="height: 100%;">
+	<div class="col-sm-12 col-md-9 map" id="map" style="height: 100%;">
+		<p class="pull-right visible-xs visible-sm" id="tog_btn">
+			<button type="button" class="btn btn-default btn-sm"
+				data-toggle="offcanvas">상세 분류</button>
+		</p>
 	</div>
-</div>
-<div class="col-md-3 col-md-offset-9 sidebar">
-	<div style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px;">
-		<div class="input-group">	
-			<form class="navbar-form navbar-left" action="mapsearch.do">
-			<input type="text" class="form-control" placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address">
-				<select class="form-control" name="table"  >
-					<option value="cf_table">문화시설</option>
-					<option value="gf_table">체육시설</option>
-					<option value="ef_table">응급시설</option>
-					<option value="of_table">기타시설</option>
-				</select>
-				<div class="input-group-btn">
-					<button class="btn btn-default" type="submit">
-						<span class="glyphicon glyphicon-search"></span>
-					</button>
+	<div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar" id="sidebar" style="height: 100%; background-color: #dad8d8;">
+		<div style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px;">
+			<div class="input-group">	
+				<form class="navbar-form navbar-left" action="mapsearch.do">
+				<input type="text" class="form-control" placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address">
+					<select class="form-control" name="table"  >
+						<option value="cf_table">문화시설</option>
+						<option value="gf_table">체육시설</option>
+						<option value="ef_table">응급시설</option>
+						<option value="of_table">기타시설</option>
+					</select>
+					<div class="input-group-btn">
+						<button class="btn btn-default" type="submit">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
+					</div>
+				</form>	
+			</div>
+		</div>	
+		<c:forEach items="${datalist}" var="datalist">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><strong>${datalist.name}</strong></h3>
 				</div>
-			</form>	
-		</div>
-	</div>	
-	<c:forEach items="${datalist}" var="datalist">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title"><strong>${datalist.name}</strong></h3>
+				<div class="panel-body">
+					<strong>${datalist.address}</strong><br>
+					 <span class="glyphicon glyphicon-phone-alt"></span> ${datalist.phonenumber}
+				</div>
 			</div>
-			<div class="panel-body">
-				<strong>${datalist.address}</strong><br>
-				 <span class="glyphicon glyphicon-phone-alt"></span> ${datalist.phonenumber}
-			</div>
-		</div>
-	</c:forEach>
+		</c:forEach>
+	</div>
 </div>
 <script>
 /* select 했을시 그 값을 유지 하게끔 하는 javascript  */

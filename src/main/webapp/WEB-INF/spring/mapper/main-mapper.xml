@@ -57,5 +57,26 @@
 		select count(*) as totalCount from mapdata_table where category1 = #{category1}
 	</select>
 	
+	<!-- LoginController mapper -->
+	<select id="member" resultType="com.hongik.project.vo.MemberVO" parameterType="hashmap">
+ 		select * from MEMBER where ID='${id }' and PASSWORD='${pw }'
+ 	</select>
+ 	
+ 	<select id="checkId" resultType="int" parameterType="java.lang.String">
+ 		SELECT COUNT(*) FROM MEMBER WHERE ID = '${value}'
+ 	</select>
+ 	
+ 	<select id="checkNick" resultType="int" parameterType="java.lang.String">
+ 		SELECT COUNT(*) FROM MEMBER WHERE NICKNAME = '${value}'
+ 	</select>
+ 	
+ 	<insert id="signin" parameterType="com.hongik.project.vo.MemberVO">
+		insert into member values ('${id}', '${password}', '${phonenumber}', '${nickname}', '${email}')
+ 	</insert>
+ 	
+ 	<update id="editInfo" parameterType="com.hongik.project.vo.MemberVO">
+ 		update member set PASSWORD='${password}', PHONENUMBER='${phonenumber}', NICKNAME='${nickname}', EMAIL='${email}' where ID='${id}'
+ 	</update>
+ 	
 </mapper>
 
