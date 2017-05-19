@@ -9,7 +9,7 @@
 	<style>
 	#tog_btn {
 		position: relative;
-		z-index: 1;
+		z-index: 2;
 	}
 	
 	html, body {
@@ -46,6 +46,7 @@
 </head>
 <body>
 	<tiles:insertAttribute name="login_signup"/>
+	<tiles:insertAttribute name="information"/>
 	<tiles:insertAttribute name="top_nav"/>
 	<div class="container-fluid" style="height: 100%">
 		<div class="row row-offcanvas row-offcanvas-right" style="height: 100%;">

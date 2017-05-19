@@ -185,8 +185,8 @@
  	
  	
 	function chkId(){
-		var loginid = $('#loginid').val();
-		var loginpw = $('#loginpw').val();
+		var loginid = $('#loginid').val()
+		var loginpw = $('#loginpw').val()
 		
 		$.ajax({
 			type : 'POST',  
@@ -197,10 +197,10 @@
 				var chklog = rData;
 
 				if(chklog == "logfail"){
-					$('.loginform').html('Login <small class="text-danger logerror"><strong>ID 또는 PassWord 를 확인해주세요</strong></small>');
-					$('#login').find('input').val('');
+					$('.loginform').html('Log In <small class="text-danger logerror"><strong>ID 또는 PassWord 를 확인해주세요</strong></small>')
+					$('#login').find('input').val('')
 				}else{
-					location.reload();
+					location.reload()
 				}
 			}
 		});
@@ -211,8 +211,8 @@
 	function chkDupId(){
  		var prmId = $('#signupid').val();
 		if(!prmId.match(/^(?=.*[a-zA-Z])(?=.*[0-9]).{5,16}$|^(?=.*[a-zA-Z]).{5,16}$/)){
-			$('.iderror').attr('class','text-danger iderror');
-			$('.iderror').text('ID 양식을 확인하세요');
+			$('.iderror').attr('class','text-danger iderror')
+			$('.iderror').text('ID 양식을 확인하세요')
 			return;
 			}
 		$.ajax({
@@ -225,16 +225,16 @@
 				$('.iderror').hide()
 				if(chkRst == 0){	
 					dupIdChkBtn = 1;
-					$('.idform').attr('class', 'form-group has-success has-feedback idform');
-					$('.idchkbtn').attr("class", "btn btn-success idchkbtn");
-					$('.idchkbtn').html('<span class="glyphicon glyphicon-ok"></span> ID 사용 가능');
-					$('#signupid').removeAttr('onblur');
-					$('#signupid').attr('onchange', 'idReset()');
+					$('.idform').attr('class', 'form-group has-success has-feedback idform')
+					$('.idchkbtn').attr("class", "btn btn-success idchkbtn")
+					$('.idchkbtn').html('<span class="glyphicon glyphicon-ok"></span> ID 사용 가능')
+					$('#signupid').removeAttr('onblur')
+					$('#signupid').attr('onchange', 'idReset()')
 				}else{
 					dupIdChkBtn = 0;
-					$('.idform').attr('class', 'form-group has-error has-feedback idform');
-					$('.idchkbtn').attr("class", "btn btn-danger idchkbtn");
-					$('.idchkbtn').html('<span class="glyphicon glyphicon-remove"></span> 새로운 ID를 입력하세요');
+					$('.idform').attr('class', 'form-group has-error has-feedback idform')
+					$('.idchkbtn').attr("class", "btn btn-danger idchkbtn")
+					$('.idchkbtn').html('<span class="glyphicon glyphicon-remove"></span> 새로운 ID를 입력하세요')
 				}
 			}
 		});
@@ -242,12 +242,12 @@
 	
 	function idReset(){
 		dupIdChkBtn = 0;
-		$('.iderror').show();
-		$('.iderror').attr('class','text-danger iderror');
-		$('.iderror').text('ID 중복을 확인하세요');
-		$('.idform').attr('class', 'form-group idform');
-		$('.idchkbtn').attr("class", "btn btn-default idchkbtn");
-		$('.idchkbtn').html('ID 중복 확인 <span class="glyphicon glyphicon-edit"></span>');
+		$('.iderror').show()
+		$('.iderror').attr('class','text-danger iderror')
+		$('.iderror').text('ID 중복을 확인하세요')
+		$('.idform').attr('class', 'form-group idform')
+		$('.idchkbtn').attr("class", "btn btn-default idchkbtn")
+		$('.idchkbtn').html('ID 중복 확인 <span class="glyphicon glyphicon-edit"></span>')
 	}
 	
 	
@@ -257,16 +257,16 @@
 		var editinfo = $('#editinfonick').val();
 		
 		if(signupnick != ""){
-			chkDupNick2(signupnick);
+			chkDupNick2(signupnick)
 		}else{
-			chkDupNick2(editinfo);
+			chkDupNick2(editinfo)
 		}
 	}
 	
 	function chkDupNick2(prmNick){
 		if(!prmNick.match(/^.{3,7}$/)){
-			$('.nickerror').attr('class','text-danger nickerror');
-			$('.nickerror').text('Nickname 양식을 확인하세요');
+			$('.nickerror').attr('class','text-danger nickerror')
+			$('.nickerror').text('Nickname 양식을 확인하세요')
 			return;
 			}
 		$.ajax({
@@ -279,28 +279,28 @@
 				$('.nickerror').hide()
 				if(chkRst == 0){
 					dupNickChkBtn = 1;
-					$('.nickform').attr('class', 'form-group has-success has-feedback nickform');
-					$('.nickchkbtn').attr("class", "btn btn-success nickchkbtn");
-					$('.nickchkbtn').html('<span class="glyphicon glyphicon-ok"></span> Nickname 사용 가능');
-					$('.inputnick').removeAttr('onblur');
-					$('.inputnick').attr('onchange', 'nickReset()');
+					$('.nickform').attr('class', 'form-group has-success has-feedback nickform')
+					$('.nickchkbtn').attr("class", "btn btn-success nickchkbtn")
+					$('.nickchkbtn').html('<span class="glyphicon glyphicon-ok"></span> Nickname 사용 가능')
+					$('.inputnick').removeAttr('onblur')
+					$('.inputnick').attr('onchange', 'nickReset()')
 				}else{
 					dupNickChkBtn = 0;
-					$('.nickform').attr('class', 'form-group has-error has-feedback nickform');
-					$('.nickchkbtn').attr("class", "btn btn-danger nickchkbtn");
-					$('.nickchkbtn').html('<span class="glyphicon glyphicon-remove"></span> 새로운 Nickname을 입력하세요');
+					$('.nickform').attr('class', 'form-group has-error has-feedback nickform')
+					$('.nickchkbtn').attr("class", "btn btn-danger nickchkbtn")
+					$('.nickchkbtn').html('<span class="glyphicon glyphicon-remove"></span> 새로운 Nickname을 입력하세요')
 				}
 			}
 		});
 	}
 	function nickReset(){
 		dupNickChkBtn = 0;
-		$('.nickerror').show();
-		$('.nickerror').attr('class','text-danger nickerror');
-		$('.nickerror').text('Nickname 중복을 확인하세요');
-		$('.nickform').attr('class', 'form-group nickform');
-		$('.nickchkbtn').html('Nickname 중복 확인 <span class="glyphicon glyphicon-edit"></span>');
-		$('.nickchkbtn').attr("class", "btn btn-default nickchkbtn");
+		$('.nickerror').show()
+		$('.nickerror').attr('class','text-danger nickerror')
+		$('.nickerror').text('Nickname 중복을 확인하세요')
+		$('.nickform').attr('class', 'form-group nickform')
+		$('.nickchkbtn').html('Nickname 중복 확인 <span class="glyphicon glyphicon-edit"></span>')
+		$('.nickchkbtn').attr("class", "btn btn-default nickchkbtn")
 	}
 	
 	
@@ -311,10 +311,10 @@
 		
 		if(signuppw != ""){
 			var signuppw2 = $('#signuppw2').val();
-			chkPw2(signuppw, signuppw2);
+			chkPw2(signuppw, signuppw2)
 		}else{
 			var editinfopw2 = $('#editinfopw2').val();
-			chkPw2(editinfopw, editinfopw2);
+			chkPw2(editinfopw, editinfopw2)
 		}	
 		
 	}
@@ -322,31 +322,31 @@
 	function chkPw2(pw, pw2) {
 		
 		if(!pw.match(/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,16}$/)){
-			$('.pw1form').attr('class', 'form-group has-error has-feedback pw1form');
-			$('.pw1form').find('span').remove();
-			$('.pw1form').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+			$('.pw1form').attr('class', 'form-group has-error has-feedback pw1form')
+			$('.pw1form').find('span').remove()
+			$('.pw1form').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>')
 		}
 		
 		if(pw.match(/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,16}$/)){
-			$('.pw1form').attr('class', 'form-group has-success has-feedback pw1form');
-			$('.pw1form').find('span').remove();
-			$('.pw1form').append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-			$('.inputpw').attr('onchange', 'chkPw()');
+			$('.pw1form').attr('class', 'form-group has-success has-feedback pw1form')
+			$('.pw1form').find('span').remove()
+			$('.pw1form').append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>')
+			$('.inputpw').attr('onchange', 'chkPw()')
 			
 			if(pw2 != ''){	
 				
 				if(pw == pw2){
 					pwChkBtn = 1;
-					$('.pw2form').attr('class', 'form-group has-success has-feedback pw2form');
-					$('.pw2form').find('span').remove();
-					$('.pw2form').append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
+					$('.pw2form').attr('class', 'form-group has-success has-feedback pw2form')
+					$('.pw2form').find('span').remove()
+					$('.pw2form').append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>')
 				}
 				
 				if(pw != pw2){
 					pwChkBtn = 0;
-					$('.pw2form').attr('class', 'form-group has-error has-feedback pw2form');
-					$('.pw2form').find('span').remove();
-					$('.pw2form').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+					$('.pw2form').attr('class', 'form-group has-error has-feedback pw2form')
+					$('.pw2form').find('span').remove()
+					$('.pw2form').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>')
 				}
 				
 			}
@@ -355,13 +355,13 @@
 	
 	var phoneChkBtn = 1;
 	function chkPhone(){
-		var signupphone = $('#signupphone').val()
-		var editinfophone = $('#editinfophone').val()
+		var signupphone = $('#signupphone').val();
+		var editinfophone = $('#editinfophone').val();
 		
 		if(signupphone != ""){
-			chkPhone2(signupphone);
+			chkPhone2(signupphone)
 		}else{
-			chkPhone2(editinfophone);
+			chkPhone2(editinfophone)
 		}
 	}
 	
@@ -372,20 +372,20 @@
 		}
 		if( 9 < phone.length < 12){
 			phoneChkBtn = 1;
-			$('.phoneform').attr('class', 'form-group has-success has-feedback phoneform');
-			$('.phoneform').find('span').remove();
-			$('.phoneform').append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-			$('.inputphone').removeAttr('onblur');
-			$('.inputphone').attr('oninput', 'chkPhone()');
+			$('.phoneform').attr('class', 'form-group has-success has-feedback phoneform')
+			$('.phoneform').find('span').remove()
+			$('.phoneform').append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>')
+			$('.inputphone').removeAttr('onblur')
+			$('.inputphone').attr('oninput', 'chkPhone()')
 		}
 		
 		if(phone.length > 11 || phone.length < 10){
 			phoneChkBtn = 0;
-			$('.phoneform').attr('class', 'form-group has-error has-feedback phoneform');
-			$('.phoneform').find('span').remove();
-			$('.phoneform').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
-			$('.inputphone').removeAttr('onblur');
-			$('.inputphone').attr('oninput', 'chkPhone()');
+			$('.phoneform').attr('class', 'form-group has-error has-feedback phoneform')
+			$('.phoneform').find('span').remove()
+			$('.phoneform').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>')
+			$('.inputphone').removeAttr('onblur')
+			$('.inputphone').attr('oninput', 'chkPhone()')
 		}
 		
 	}
@@ -408,11 +408,11 @@
 		}
 		
 		alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
-		$('.inputid').removeAttr('disabled');
+		$('.inputid').removeAttr('disabled')
 		return true;
 		
 		}catch(e){
-			alert(e);
+			alert(e)
 			return false;
 		}
 	}

@@ -7,7 +7,8 @@
 		<put-attribute name="setting" value="/WEB-INF/views/home_tiles/setting.jsp"/>
 		<put-attribute name="top_nav" value="/WEB-INF/views/home_tiles/top_nav.jsp"/>
 		<put-attribute name="map" value="/WEB-INF/views/map/default.jsp"/>
-		<put-attribute name="login_signup" value="/WEB-INF/views/login/login_signup.jsp"/>		
+		<put-attribute name="login_signup" value="/WEB-INF/views/login/login_signup.jsp"/>
+		<put-attribute name="information" value="/WEB-INF/views/map/information.jsp"/>		
 	</definition> 
 	
 	<!-- Map Page --> 

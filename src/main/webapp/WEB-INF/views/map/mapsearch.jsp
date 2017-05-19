@@ -15,28 +15,29 @@ $(document).ready(function(){
 			data-toggle="offcanvas">상세 분류</button>
 	</p>
 </div>
-<div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar"  style="height: 100%;">
-	<div style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px;">
-		<div class="input-group">	
-			<form class="navbar-form navbar-left" action="mapsearch.do">
-			<c:if test="${address eq 'null'}">
-				<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address">
-			</c:if>
-			<c:if test="${address ne 'null'}">
-				<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address" value="${address}">
-			</c:if>
-				<select class="form-control" name=category1>
-					<c:forEach items="${category1list}" var="list">
-						<option>${list.category1}</option>
-					</c:forEach>
-				</select>
+<div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar" style="height: 100%;">
+	<div style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px; padding-top: 15px;">
+		<form action="mapsearch.do">
+			<select class="form-control" name=category1>
+				<c:forEach items="${category1list}" var="list">
+					<option hidden selected>시설 선택</option>
+					<option>${list.category1}</option>
+				</c:forEach>
+			</select>
+			<div class="input-group">	
+				<c:if test="${address eq 'null'}">
+					<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address">
+				</c:if>
+				<c:if test="${address ne 'null'}">
+					<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address" value="${address}">
+				</c:if>
 				<div class="input-group-btn">
 					<button class="btn btn-default" type="submit">
 						<span class="glyphicon glyphicon-search"></span>
 					</button>
 				</div>
-			</form>	
-		</div>
+			</div>
+		</form>	
 	</div>
 	<div>
 		<span>총 ${pageVO.totalCount}개의 데이터가 검색 되었습니다. </span>
@@ -45,7 +46,9 @@ $(document).ready(function(){
 	<c:if test="${searchlist.distance < 1000}">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title" onclick="javascript:panTo(${searchlist.wsg84x},${searchlist.wsg84y})"><strong>${searchlist.name}</strong></h3>
+				<h3 class="panel-title" onclick="javascript:panTo(${searchlist.wsg84x},${searchlist.wsg84y})" style="cursor:pointer">
+					<strong>${searchlist.name}</strong>
+				</h3>
 			</div>
 			<div class="panel-body">
 				<strong>${searchlist.address}</strong><br><a>상세정보 보기</a><br>
@@ -104,11 +107,12 @@ var map = new daum.maps.Map(mapContainer, mapOption);
 //일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
 var mapTypeControl = new daum.maps.MapTypeControl();
 // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
-// daum.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
-map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
+// daum.maps.ControlPosition은 컨트롤이 표시될 위치를 정의합니다
+map.addControl(mapTypeControl, daum.maps.ControlPosition.LEFT);
+
 // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 var zoomControl = new daum.maps.ZoomControl();
-map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+map.addControl(zoomControl, daum.maps.ControlPosition.BOTTOMRIGHT);
 
 var clusterer = new daum.maps.MarkerClusterer({
 	    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
