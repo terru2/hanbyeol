@@ -6,10 +6,10 @@ public class PagingVO {
     private int pageNo;  // 페이지 번호
     private int startRowNo; //조회 시작 row 번호
     private int endRowNo; //조회 마지막 now 번호
-    private int firstPageNo; // 첫 번째 페이지 번호
+    private int firsthtmlPageNo; // 첫 번째 페이지 번호
     private int finalPageNo; // 마지막 페이지 번호
-    private int prevPageNo; // 이전 페이지 번호
-    private int nextPageNo; // 다음 페이지 번호
+    private int prevhtmlhtmlPageNo; // 이전 페이지 번호
+    private int lasthtmlhtmlhtmlPageNo; // 다음 페이지 번호
     private int startPageNo; // 시작 페이지 (페이징 네비 기준)
     private int endPageNo; // 끝 페이지 (페이징 네비 기준)
     private int totalCount; // 게시 글 전체 수
@@ -51,11 +51,11 @@ public class PagingVO {
 	public void setEndRowNo(int endRowNo) {
 		this.endRowNo = endRowNo;
 	}
-	public int getFirstPageNo() {
-		return firstPageNo;
+	public int getfirsthtmlPageNo() {
+		return firsthtmlPageNo;
 	}
-	public void setFirstPageNo(int firstPageNo) {
-		this.firstPageNo = firstPageNo;
+	public void setfirsthtmlPageNo(int firsthtmlPageNo) {
+		this.firsthtmlPageNo = firsthtmlPageNo;
 	}
 	public int getFinalPageNo() {
 		return finalPageNo;
@@ -63,17 +63,17 @@ public class PagingVO {
 	public void setFinalPageNo(int finalPageNo) {
 		this.finalPageNo = finalPageNo;
 	}
-	public int getPrevPageNo() {
-		return prevPageNo;
+	public int getprevhtmlhtmlPageNo() {
+		return prevhtmlhtmlPageNo;
 	}
-	public void setPrevPageNo(int prevPageNo) {
-		this.prevPageNo = prevPageNo;
+	public void setprevhtmlhtmlPageNo(int prevhtmlhtmlPageNo) {
+		this.prevhtmlhtmlPageNo = prevhtmlhtmlPageNo;
 	}
-	public int getNextPageNo() {
-		return nextPageNo;
+	public int getlasthtmlhtmlhtmlPageNo() {
+		return lasthtmlhtmlhtmlPageNo;
 	}
-	public void setNextPageNo(int nextPageNo) {
-		this.nextPageNo = nextPageNo;
+	public void setlasthtmlhtmlhtmlPageNo(int lasthtmlhtmlhtmlPageNo) {
+		this.lasthtmlhtmlhtmlPageNo = lasthtmlhtmlhtmlPageNo;
 	}
 	public int getStartPageNo() {
 		return startPageNo;
@@ -104,21 +104,21 @@ public class PagingVO {
         
         //--[첫 페이지], [마지막 페이지] 계산
         int finalPage = (totalCount + (pageSize - 1)) / pageSize; // 마지막 페이지
-        this.setFirstPageNo(1);   // 첫 번째 페이지 번호
+        this.setfirsthtmlPageNo(1);   // 첫 번째 페이지 번호
         this.setFinalPageNo(finalPage); // 마지막 페이지 번호
         
         //-- [이전] , [다음] 페이지 계산
-        boolean isNowFirst = pageNo == 1 ? true : false;    // 시작 페이지 (전체)
+        boolean isNowfirsthtml = pageNo == 1 ? true : false;    // 시작 페이지 (전체)
         boolean isNowFinal = pageNo == finalPage ? true : false;  // 마지막 페이지 (전체)
-        if (isNowFirst) {
-            this.setPrevPageNo(1); // 이전 페이지 번호
+        if (isNowfirsthtml) {
+            this.setprevhtmlhtmlPageNo(1); // 이전 페이지 번호
         } else {
-            this.setPrevPageNo(((pageNo - 1) < 1 ? 1 : (pageNo - 1))); // 이전 페이지 번호
+            this.setprevhtmlhtmlPageNo(((pageNo - 1) < 1 ? 1 : (pageNo - 1))); // 이전 페이지 번호
         }
         if (isNowFinal) {
-            this.setNextPageNo(finalPage); // 다음 페이지 번호
+            this.setlasthtmlhtmlhtmlPageNo(finalPage); // 다음 페이지 번호
         } else {
-            this.setNextPageNo(((pageNo + 1) > finalPage ? finalPage : (pageNo + 1))); // 다음 페이지 번호
+            this.setlasthtmlhtmlhtmlPageNo(((pageNo + 1) > finalPage ? finalPage : (pageNo + 1))); // 다음 페이지 번호
         }
                 
         //-- 페이징 네비[블록]을 계산
@@ -141,8 +141,8 @@ public class PagingVO {
 	@Override
 	public String toString() {
 		return "PagingVO [pageSize=" + pageSize + ", pageBlock=" + pageBlock + ", pageNo=" + pageNo + ", startRowNo="
-				+ startRowNo + ", endRowNo=" + endRowNo + ", firstPageNo=" + firstPageNo + ", finalPageNo="
-				+ finalPageNo + ", prevPageNo=" + prevPageNo + ", nextPageNo=" + nextPageNo + ", startPageNo="
+				+ startRowNo + ", endRowNo=" + endRowNo + ", firsthtmlPageNo=" + firsthtmlPageNo + ", finalPageNo="
+				+ finalPageNo + ", prevhtmlhtmlPageNo=" + prevhtmlhtmlPageNo + ", lasthtmlhtmlhtmlPageNo=" + lasthtmlhtmlhtmlPageNo + ", startPageNo="
 				+ startPageNo + ", endPageNo=" + endPageNo + ", totalCount=" + totalCount + "]";
 	}
 

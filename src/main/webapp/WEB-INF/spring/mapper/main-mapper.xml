@@ -3,8 +3,12 @@
 
 <mapper namespace="main">
 	<!-- 기본 테이블을 토대로 맵 첫화면에 뿌려주기 위한 데이터 전송 -->
-	<select id="all" resultType="com.hongik.project.vo.MapDataVO">
+	<!-- <select id="all" resultType="com.hongik.project.vo.MapDataVO">
 		select * from mapdata_table
+	</select> -->
+	
+	<select id="all2" resultType="com.hongik.project.vo.MapDataVO">
+		select * from mapdata_table order by category1
 	</select>
 	<!-- 조건을 통해 Map에 뿌려질 데이터  -->
 	<select id="searchdata" parameterType="String" resultType="com.hongik.project.vo.MapDataVO">

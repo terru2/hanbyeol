@@ -169,7 +169,7 @@
 	<script>
 	
  	$('.modal').on('shown.bs.modal', function () {
-		$(this).find('input:first').focus()
+		$(this).find('input:firsthtml').focus()
 		});
  	
 

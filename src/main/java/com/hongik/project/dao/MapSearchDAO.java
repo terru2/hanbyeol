@@ -22,6 +22,11 @@ public class MapSearchDAO{
 		return list;
 	}
 	
+	public ArrayList<MapDataVO> getAlldate2() {
+		ArrayList<MapDataVO> list = (ArrayList)session.selectList("main.all2");
+		return list;
+	}
+
 	public ArrayList<MapDataVO> getSearchMapData(String category1) {
 		ArrayList<MapDataVO> list = (ArrayList)session.selectList("main.searchdata", category1);
 		return list;
@@ -55,4 +60,5 @@ public class MapSearchDAO{
 	public int getcategorylistcount(String category1) {
 		return session.selectOne("main.getcategorylistcount", category1);
 	}
+
 }

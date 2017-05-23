@@ -60,10 +60,10 @@ $(document).ready(function(){
 		<div id="page" align="center">
     <c:if test="${pageVO.pageNo != 0}">
         <c:if test="${pageVO.pageNo > pageVO.pageBlock}">
-            <a href="mapsearch.do?page=${pageVO.firstPageNo}&address=${address}&category1=${category1}" style="text-decoration: none;">[처음]</a>
+            <a href="mapsearch.do?page=${pageVO.firsthtmlPageNo}&address=${address}&category1=${category1}" style="text-decoration: none;">[처음]</a>
        </c:if>
        <c:if test="${pageVO.pageNo != 1}">
-           <a href="mapsearch.do?page=${pageVO.prevPageNo}&address=${address}&category1=${category1}" style="text-decoration: none;">[이전]</a>
+           <a href="mapsearch.do?page=${pageVO.prevhtmlhtmlPageNo}&address=${address}&category1=${category1}" style="text-decoration: none;">[이전]</a>
         </c:if>
         <span>
             <c:forEach var="i" begin="${pageVO.startPageNo}" end="${pageVO.endPageNo}" step="1">
@@ -80,7 +80,7 @@ $(document).ready(function(){
             </c:forEach>
         </span>
         <c:if test="${pageVO.pageNo != pageVO.finalPageNo }">
-            <a href="mapsearch.do?page=${pageVO.nextPageNo}&address=${address}&category1=${category1}" style="text-decoration: none;">[다음]</a>
+            <a href="mapsearch.do?page=${pageVO.lasthtmlhtmlhtmlPageNo}&address=${address}&category1=${category1}" style="text-decoration: none;">[다음]</a>
         </c:if>
         <c:if test="${pageVO.endPageNo < pageVO.finalPageNo }">
             <a href="mapsearch.do?page=${pageVO.finalPageNo}&address=${address}&category1=${category1}" style="text-decoration: none;">[끝]</a>

@@ -44,11 +44,17 @@ $(document).ready(function(){
 			</div>
 		</form>
 	</div>
-	<div>
-		<span>총 ${pageVO.totalCount}개의 데이터가 검색 되었습니다. </span>
+	<%-- <div>
+		<span>총 ${maplist.length}개의 데이터가 검색 되었습니다. </span>
+	</div> --%>
+	<div id="list">
 	</div>
+	<nav align="center">
+		<ul id="page" class="pagination" >
+		</ul>
+	</nav>
 	<!-- Data 정보 보여주는 부분  -->
-	<c:forEach items="${datalist}" var="datalist">
+	<%-- <c:forEach items="${datalist}" var="datalist" varStatus="status">
 		<c:if test="${datalist.wsg84x ne 1}">
 		<div class="panel panel-default">
 			<div class="panel-heading">
@@ -57,16 +63,16 @@ $(document).ready(function(){
 				</h3>
 			</div>
 			<div class="panel-body">
-				<strong>${datalist.address}</strong><br> <%-- <span
-					class="glyphicon glyphicon-phone-alt"></span>
-				${datalist.phonenumber} --%><a data-toggle="modal" data-target="#information" style="cursor:pointer">상세정보 보기</a>
+				<strong>${datalist.address}</strong><br> 
+				<span class="glyphicon glyphicon-phone-alt"></span> ${datalist.phonenumber}<br>
+				<a style="cursor:pointer" onclick="aa('${(status.count-1) + (pageVO.pageNo-1)*20 }')">상세정보 보기 </a>
 			</div>
 		</div>
 		</c:if>
-	</c:forEach>
+	</c:forEach> --%>
 	
 	<!-- Paging 처리 하는 부분   -->
-	<div id="page" align="center">
+<%-- 	<div id="page" align="center">
     <c:if test="${pageVO.pageNo != 0}">
         <c:if test="${pageVO.pageNo > pageVO.pageBlock}">
             <a href="main.do?page=${pageVO.firstPageNo}" style="text-decoration: none;">[처음]</a>
@@ -95,7 +101,7 @@ $(document).ready(function(){
             <a href="main.do?page=${pageVO.finalPageNo}" style="text-decoration: none;">[끝]</a>
         </c:if>
     </c:if>
-    </div>
+    </div> --%>
 </div>
 <script>
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -122,13 +128,17 @@ var clusterer = new daum.maps.MarkerClusterer({
     minLevel: 3  // 클러스터 할 최소 지도 레벨 
 });
 
+var getdata;
 function getMapdata() {
 	$.ajax({
 		url : "allMapdata",
 		dataType : "json",
 		error : function(){alert("공공시설 정보 오류");},
 		success : function(data){
-			makeMarker(data);				
+ 			makeMarker(data);
+			getdata = data;
+			makeList(0);
+			page(0);
 		}
 	})
 }
@@ -137,7 +147,7 @@ function makeMarker(data){
 	var keys = Object.keys(data);
 	var vo = data[keys[0]];
 	
-	var makers = $(data.positions).map(function(i, vo){
+	var makers = $(data).map(function(i, vo){
 		var maks = new daum.maps.Marker({
 			map : map,
 			title : vo.name,
@@ -152,5 +162,101 @@ function panTo(x,y){
 	 var moveLatLon = new daum.maps.LatLng(x, y);
 	 map.setLevel(1);
 	 map.panTo(moveLatLon);
+}
+
+function info(cnt) {
+
+	$('.infoname').html(getdata[cnt].name 
+			+ ' <span class="label label-warning">9.8</span> <small class="infocategory2"> ('
+			+ getdata[cnt].category2
+			+ ')</small>')
+	$('.infoaddress').text(getdata[cnt].address)
+	$('.infophonenumber').text(getdata[cnt].phonenumber)
+	$('.infotime').text(getdata[cnt].time)
+	$('.infocloseddays').text(getdata[cnt].closeddays)
+	$('.infocomments').text(getdata[cnt].comments)
+
+	$('#information').modal('show');
+}
+
+function makeList(page){
+	
+	var allpagecnt = parseInt(getdata.length/10)
+	
+	$('#list').html('<span>총 '+getdata.length+'개의 데이터가 검색 되었습니다. </span>')
+	
+	$('#list div').remove()
+
+	for(var i = page*10; i < ((page+1)*10); i++){
+		
+		var listOrig = $('#list').html()
+
+		var panelTop = '<div class="panel panel-default"><div class="panel-heading">'
+		var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3></div>'
+		var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div></div>'
+		
+		$('#list').html(listOrig + panelTop + panelTitle + panleBot)
+		
+		if(page == allpagecnt){
+			break;
+		}
+		
+	}
+}
+
+
+function page(start){
+	
+	$('#page li').remove()
+	
+	var allpagecnt = parseInt(getdata.length/10)
+	
+	var a = start*5
+	
+	if(allpagecnt > 5){
+		
+		for(var b = a; b < a+5; b++){
+			
+			var pageOrig = $('#page').html()
+			var page = '<li><a onclick="makeList('+ b +')" style="cursor:pointer">'+ (b+1) +'</a></li>'
+			$('#page').html(pageOrig + page)
+			
+			if(b == allpagecnt){
+				break;
+			}
+			
+		}
+		
+		var nextpage = start+1
+		var prevpage = start-1
+		var lastpage = (allpagecnt-1)/5
+		var pageAfter = $('#page').html()
+		var first = '<li><a onclick="makeList(0),page(0)" style="cursor:pointer"><span aria-hidden="true">&laquo;</span></a></li>'
+		var prev = '<li><a onclick="makeList('+ (prevpage*5) +'),page('+ prevpage +')" style="cursor:pointer"><span aria-hidden="true">&lt;</span></a></li>'
+		var next = '<li><a onclick="makeList('+ (nextpage*5) +'),page('+ nextpage +')" style="cursor:pointer"><span aria-hidden="true">&gt;</span></a></li>'
+		var last = '<li><a onclick="makeList('+ allpagecnt +'),page('+ lastpage +')" style="cursor:pointer"><span aria-hidden="true">&raquo;</span></a></li>'
+		
+		if(start == 0){
+			$('#page').html(pageAfter + next + last)
+		}else if(start == lastpage){
+			$('#page').html(first + prev + pageAfter)
+		}else{
+			$('#page').html(first + prev + pageAfter + next + last)
+		}
+		
+	}
+	
+	else{
+		
+		for(var b = start; b < allpagecnt; b++){
+			
+			var aa = '<li><a href=#>'+ (b+1) +'</a></li>'
+			
+			pagenav.innerHTML = pagenav.innerHTML + aa;
+		}
+		
+	}
+	
+	
 }
 </script>

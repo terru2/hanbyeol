@@ -22,6 +22,10 @@ public class MapSearchSeviceImpl implements MapSearchSevice {
 		return dao.getAlldate();
 	}
 
+	public ArrayList<MapDataVO> getAlldate2() {
+		return dao.getAlldate2();
+	}
+
 	public void UpdateXY(ArrayList<UpdatexyVO> insertlist) {
 		dao.UpdateXY(insertlist);
 	}
@@ -49,5 +53,6 @@ public class MapSearchSeviceImpl implements MapSearchSevice {
 	public ArrayList<MapDataVO> getSearchMapData(String category1) {
 		return dao.getSearchMapData(category1);
 	}
+
 	
 }
