@@ -198,18 +198,21 @@ function makeList(page){
 	});
 	
 	for(var i = pageSize*(page-1); i < pageSize*page; i++){
-		var listOrig = $('#list').html()
-		var panelTop = '<div class="panel panel-default"><div class="panel-heading">'
-		var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3></div>'
-		var panleBot = '<div class="panel-body"><strong> 현재 위치와의 거리 = '+getdata[i].distance+'m</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div></div>'
-		$('#list').html(listOrig + panelTop + panelTitle + panleBot);
+		if(i < totalcount){
+			var listOrig = $('#list').html()
+			var panelTop = '<div class="panel panel-default"><div class="panel-heading">'
+			var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3></div>'
+			var panleBot = '<div class="panel-body"><strong> 현재 위치와의 거리 = '+getdata[i].distance+'m</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div></div>'
+			$('#list').html(listOrig + panelTop + panelTitle + panleBot);
+		}
 	}
 }	
 
-function pageBlcokCount(pageNo, pageBlockNo, pageBlock){
+function pageBlcokCount(pageNo, pageBlockNo, pageBlock, totalpageBlock){
 	var pageBlockNo = pageBlockNo;
 	var pageBlock = pageBlock;
-	for(i=1; i<=20; i++){
+	var totalpageBlock = totalpageBlock;
+	for(i=1; i<=totalpageBlock; i++){
         if(pageNo > pageBlock*i){pageBlockNo = pageBlockNo+1;}
      }	
 	return pageBlockNo;
@@ -246,8 +249,13 @@ function page(pageNo){
 			nextPageNo = pageNo+1;
 		}
 	}
-	
-	pageBlockNo = pageBlcokCount(pageNo, pageBlockNo, pageBlock);
+	var totalpageBlock;
+	if(finalPage%pageBlock != 0){
+		totalpageBlock =  parseInt(finalPage/pageBlock)+1;
+	}else{
+		totalpageBlock =  parseInt(finalPage/pageBlock);
+	}
+	pageBlockNo = pageBlcokCount(pageNo, pageBlockNo, pageBlock, totalpageBlock);
 	var startblock = parseInt((pageBlockNo -1 / pageBlock))*pageBlock+1;
 	var endblock = startblock + pageBlock-1;
 	if(endblock>finalPage){
@@ -265,10 +273,7 @@ function page(pageNo){
 		for(var i = startblock; i<=endblock; i++){
 			var pageOrig = $('#page').html()
 			var page = '<li><a onclick="page('+ i +')" style="cursor:pointer">'+i+'</a></li>'
-			$('#page').html(pageOrig + page)
-			if(i == finalPage){
-				break;
-			}
+			$('#page').html(pageOrig + page);
 		}
 	var pageAfter = $('#page').html()
 	var first = '<li><a onclick="page('+fisrtPageNo+')" style="cursor:pointer"><span aria-hidden="true">&laquo;</span></a></li>'
@@ -286,10 +291,7 @@ function page(pageNo){
 	for(var i = 1; i<=finalPage; i++){
 		var pageOrig = $('#page').html()
 		var page = '<li><a onclick="page('+ i +')" style="cursor:pointer">'+i+'</a></li>'
-		$('#page').html(pageOrig + page)
-		if(i == finalPage){
-			break;
-		}
+		$('#page').html(pageOrig + page);
 	}
 }
 makeList(pageNo);	
