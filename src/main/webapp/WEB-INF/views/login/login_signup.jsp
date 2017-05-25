@@ -6,22 +6,20 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
 				<h4 class="modal-title loginform">Log In</h4>
 			</div>
-			<form action="login" method="POST">
-				<div class="modal-body">
-					<div class="form-group">
-						<label>ID</label>
-						<input type="text" id="loginid" name="id" class="form-control" placeholder="input your ID" required>
-					</div>
-					<div class="form-group">
-						<label>Password</label>
-						<input type="password" id="loginpw" name="password" class="form-control" placeholder="input your PW" required>
-					</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label>ID</label>
+					<input type="text" id="loginid" name="id" class="form-control" placeholder="input your ID" onkeydown="if(event.keyCode==13) chkId()">
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary loginbtn" onclick="chkId()">Log in</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<div class="form-group">
+					<label>Password</label>
+					<input type="password" id="loginpw" name="password" class="form-control" placeholder="input your PW" onkeydown="if(event.keyCode==13) chkId()">
 				</div>
-			</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary loginbtn" onclick="chkId()">Log in</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -148,7 +146,7 @@
 					<label>Nickname 입력 <small class="nickerror"></small></label>
 					<p class="help-block">3자 이상, 7자 이하 </p>
 					<div class="input-group">
-						<input type="text" id="editinfonick" name="nickname" class="form-control inputnick" value="${log.nickname }" onblur="nickReset()" required>
+						<input type="text" id="editinfonick" name="nickname" class="form-control inputnick" value="${log.nickname }" onchange="nickReset()" required>
 						<div class="input-group-btn">
 							<button class="btn btn-default nickchkbtn" type="button" onclick="chkDupNick()">
 									Nickname 중복 확인 <span class="glyphicon glyphicon-edit"></span>
@@ -168,9 +166,19 @@
 
 	<script>
 	
- 	$('.modal').on('shown.bs.modal', function () {
+	$('#signup').on('shown.bs.modal', function () {
+	    $('#signupid').focus();
+	})  
+	$('#login').on('shown.bs.modal', function () {
+	    $('#loginid').focus();
+	})
+	$('#editinfo').on('shown.bs.modal', function () {
+	    $('#editinfopw').focus();
+	})
+	
+ 	/* $('.modal').on('shown.bs.modal', function () {
 		$(this).find('input:firsthtml').focus()
-		});
+		}); */
  	
 
  	var signupOrig = $('#signup').html();
@@ -199,6 +207,7 @@
 				if(chklog == "logfail"){
 					$('.loginform').html('Log In <small class="text-danger logerror"><strong>ID 또는 PassWord 를 확인해주세요</strong></small>')
 					$('#login').find('input').val('')
+					$('#loginid').focus()
 				}else{
 					location.reload()
 				}
@@ -254,12 +263,20 @@
 	var dupNickChkBtn = 1;
 	function chkDupNick(){
 		var signupnick = $('#signupnick').val(); 
-		var editinfo = $('#editinfonick').val();
+		var editinfonick = $('#editinfonick').val();
 		
 		if(signupnick != ""){
 			chkDupNick2(signupnick)
 		}else{
-			chkDupNick2(editinfo)
+			if(editinfonick == '${log.nickname }'){
+				$('.nickerror').show()
+				$('.nickerror').attr('class','text-danger nickerror')
+				$('.nickerror').text('기존 Nickname 입니다')
+				$('.nickerror').fadeOut(2000);
+				dupNickChkBtn = 1
+			}else{				
+				chkDupNick2(editinfonick)
+			}
 		}
 	}
 	
