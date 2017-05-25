@@ -3,7 +3,7 @@ package com.hongik.project.vo;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MapDataVO extends PagingVO {
+public class MapDataVO{
 	
 	private String category1;
 	private String category2;

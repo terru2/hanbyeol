@@ -15,18 +15,6 @@
 		select * from mapdata_table where category1 = #{category1}
 	</select>
 	
-	<!-- 데이터를 Paging 처리하기 위한 select -->
-	<select id="paginglist" parameterType="com.hongik.project.vo.PagingVO" resultType="com.hongik.project.vo.MapDataVO">
-		<![CDATA[
-		select * from 
-		  (select rownum r, category1, category2, name, address, phonenumber,
-		          closeddays, time, comments, wsg84x, wsg84y
-			 from (select * from MAPDATA_TABLE order by category1)
-			 )
-		where r >= #{startRowNo} and r <= #{endRowNo}
-		]]>	
-	</select>
-	
 	<!-- DB 데이터 중 경위도(X,Y)가 없는 경우 geocode를 사용 주소를 좌표로 변환후 DB 입력  -->
 	<update id="updateXY" parameterType="com.hongik.project.vo.UpdatexyVO">
 		update mapdata_table
@@ -37,28 +25,6 @@
 	<!-- Search 부분의 조건 설정을 위한 category 데이터 가져오는 부분 -->
 	<select id="getcategory1" resultType="com.hongik.project.vo.CategoryVO">
 		select DISTINCT category1 from MAPDATA_TABLE
-	</select>
-	
-	<!-- Category 선택시 가져오는 데이터 부분 -->
-	<select id="getsearchdata" parameterType="com.hongik.project.vo.PagingVO" resultType="com.hongik.project.vo.MapDataVO">
-		<![CDATA[
-		select * from 
-		  (select rownum r, category1, category2, name, address, phonenumber,
-		          closeddays, time, comments, wsg84x, wsg84y
-			 from (select * from MAPDATA_TABLE where category1 = #{category} order by category1)
-			 )
-		where r >= #{startRowNo} and r <= #{endRowNo}
-		]]>	
-	</select>
-	
-	<!-- Paging 처리를 위한 count -->
-	<select id="getallcount" resultType="Integer">
-		select count(*) as totalCount from mapdata_table
-	</select>
-	
-	<!-- Paging 처리를 위한 조건별 count -->
-	<select id="getcategorylistcount" parameterType="String" resultType="Integer">
-		select count(*) as totalCount from mapdata_table where category1 = #{category1}
 	</select>
 	
 	<!-- LoginController mapper -->

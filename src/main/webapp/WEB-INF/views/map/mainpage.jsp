@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8" import="java.util.*, com.hongik.project.vo.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
 <script>
 $(document).ready(function(){
 	getMapdata();
@@ -14,20 +13,22 @@ $(document).ready(function(){
 		<button type="button" class="btn btn-default btn-sm"
 			data-toggle="offcanvas">상세 분류</button>
 	</p>
-	<div class="custom_typecontrol ">
-		<select class="form-control" name="range">
-			<option>500m</option>
-			<option>1km</option>
-			<option>2km</option>
-		</select>
-	</div>
 </div>
 <!-- List 부분  -->
 
 <div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar" style="height: 100%;">
 	<!-- 조건절들 보여주는 부분  -->
 	<div style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px; padding-top: 15px;">
-		<form action="mapsearch.do">
+		<form action="mapsearch.do" name="form">
+			<div>
+				<span>범위 설정</span>
+				<select name="range">
+					<option value="500">500m</option>
+					<option value="1000">1km</option>
+					<option value="2000">2km</option>
+				</select>
+				<button type="button" onclick="javascript:rangesearch()">현위치로 범위 검색</button>
+			</div>
 			<select class="form-control" name="category1">
 				<c:forEach items="${category1list}" var="list">
 					<option hidden selected>시설 선택</option>
@@ -107,7 +108,7 @@ $(document).ready(function(){
 var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
 var options = { //지도를 생성할 때 필요한 기본 옵션
 	center: new daum.maps.LatLng(37.566696, 126.977942), //지도의 중심좌표.
-	level: 7//지도의 레벨(확대, 축소 정도)
+	level: 9//지도의 레벨(확대, 축소 정도)
 };
 var map = new daum.maps.Map(container, options);
 
@@ -128,6 +129,12 @@ var clusterer = new daum.maps.MarkerClusterer({
     minLevel: 3  // 클러스터 할 최소 지도 레벨 
 });
 
+function rangesearch() {
+	var theForm = document.form;
+	theForm.action = "rangesearch.do";
+	theForm.submit();
+}
+
 var getdata;
 function getMapdata() {
 	$.ajax({
@@ -137,8 +144,7 @@ function getMapdata() {
 		success : function(data){
  			makeMarker(data);
 			getdata = data;
-			makeList(0);
-			page(0);
+			page(1);
 		}
 	})
 }
@@ -160,7 +166,7 @@ function makeMarker(data){
 
 function panTo(x,y){
 	 var moveLatLon = new daum.maps.LatLng(x, y);
-	 map.setLevel(1);
+	 map.setLevel(2);
 	 map.panTo(moveLatLon);
 }
 
@@ -180,83 +186,106 @@ function info(cnt) {
 }
 
 function makeList(page){
-	
-	var allpagecnt = parseInt(getdata.length/10)
-	
+	var totalcount = getdata.length;
+	var pageSize = 10;
+	var finalPage = parseInt((totalcount + (pageSize-1)) / pageSize); 
 	$('#list').html('<span>총 '+getdata.length+'개의 데이터가 검색 되었습니다. </span>')
-	
 	$('#list div').remove()
-
-	for(var i = page*10; i < ((page+1)*10); i++){
-		
+	
+	for(var i = pageSize*(page-1); i < pageSize*page; i++){
 		var listOrig = $('#list').html()
-
 		var panelTop = '<div class="panel panel-default"><div class="panel-heading">'
 		var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3></div>'
 		var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div></div>'
-		
-		$('#list').html(listOrig + panelTop + panelTitle + panleBot)
-		
-		if(page == allpagecnt){
+		$('#list').html(listOrig + panelTop + panelTitle + panleBot);
+	}
+}
+
+function pageBlcokCount(pageNo, pageBlockNo, pageBlock){
+	var pageBlockNo = pageBlockNo;
+	var pageBlock = pageBlock;
+	for(i=1; i<=20; i++){
+        if(pageNo > pageBlock*i){pageBlockNo = pageBlockNo+1;}
+     }	
+	return pageBlockNo;
+} 
+
+function page(pageNo){
+	$('#page li').remove()
+	var totalcount = getdata.length;
+	var pageBlockNo = 1;
+	var pageBlock = 5;
+	var pageSize = 10;
+	var count = 5;
+	
+	//마지막 페이지
+	var finalPage = parseInt((totalcount + (pageSize-1)) / pageSize);
+	var fisrtPageNo = 1;
+	var isNowFirst;
+	if(pageNo == 1){isNowFirst = true;}else{isNowFirst = false;}
+	var isNowFinal;
+	if(pageNo == finalPage){isNowFinal = true;}else{isNowFinal = false;}
+	var prevPageNo
+	if(isNowFirst){prevPageNo = 1;}else{
+		if((pageNo -1)<1){
+			prevPageNo = 1
+		}else{
+			prevPageNo = pageNo-1;
+		}
+	}
+	var nextPageNo
+	if(isNowFinal){nextPageNo = finalPage;}else{
+		if((pageNo+1)>finalPage){
+			nextPageNo = finalPage;
+		}else{
+			nextPageNo = pageNo+1;
+		}
+	}
+	
+	pageBlockNo = pageBlcokCount(pageNo, pageBlockNo, pageBlock);
+	var startblock = parseInt((pageBlockNo -1 / pageBlock))*pageBlock+1;
+	var endblock = startblock + pageBlock-1;
+	if(endblock>finalPage){
+		endblock = finalPage;
+	}
+	console.log("현재 페이지 ="+pageNo);
+	console.log("finalPage = "+finalPage);
+	console.log("prevPageNo = "+prevPageNo);
+	console.log("nextPageNo = "+nextPageNo);
+	console.log("startblock = "+startblock);
+	console.log("endblock = "+endblock);
+	
+if(finalPage > 5){
+	for(var i = startblock; i<=endblock; i++){
+		var pageOrig = $('#page').html()
+		var page = '<li><a onclick="page('+ i +')" style="cursor:pointer">'+i+'</a></li>'
+		$('#page').html(pageOrig + page)
+		if(i == finalPage){
 			break;
 		}
-		
+	}
+	var pageAfter = $('#page').html()
+	var first = '<li><a onclick="page('+fisrtPageNo+')" style="cursor:pointer"><span aria-hidden="true">&laquo;</span></a></li>'
+	var prev = '<li><a onclick="page('+ prevPageNo +')" style="cursor:pointer"><span aria-hidden="true">&lt;</span></a></li>'
+	var next = '<li><a onclick="page('+ nextPageNo +')" style="cursor:pointer"><span aria-hidden="true">&gt;</span></a></li>'
+	var last = '<li><a onclick="page('+ finalPage +')" style="cursor:pointer"><span aria-hidden="true">&raquo;</span></a></li>'
+	if(pageNo == 1){
+		$('#page').html(pageAfter + next + last)
+	}else if(pageNo == finalPage){
+		$('#page').html(first + prev + pageAfter)
+	}else{
+		$('#page').html(first + prev + pageAfter + next + last)
+	}
+}else{	
+	for(var i = 1; i<=finalPage; i++){
+		var pageOrig = $('#page').html()
+		var page = '<li><a onclick="page('+ i +')" style="cursor:pointer">'+i+'</a></li>'
+		$('#page').html(pageOrig + page)
+		if(i == finalPage){
+			break;
+		}
 	}
 }
-
-
-function page(start){
-	
-	$('#page li').remove()
-	
-	var allpagecnt = parseInt(getdata.length/10)
-	
-	var a = start*5
-	
-	if(allpagecnt > 5){
-		
-		for(var b = a; b < a+5; b++){
-			
-			var pageOrig = $('#page').html()
-			var page = '<li><a onclick="makeList('+ b +')" style="cursor:pointer">'+ (b+1) +'</a></li>'
-			$('#page').html(pageOrig + page)
-			
-			if(b == allpagecnt){
-				break;
-			}
-			
-		}
-		
-		var nextpage = start+1
-		var prevpage = start-1
-		var lastpage = (allpagecnt-1)/5
-		var pageAfter = $('#page').html()
-		var first = '<li><a onclick="makeList(0),page(0)" style="cursor:pointer"><span aria-hidden="true">&laquo;</span></a></li>'
-		var prev = '<li><a onclick="makeList('+ (prevpage*5) +'),page('+ prevpage +')" style="cursor:pointer"><span aria-hidden="true">&lt;</span></a></li>'
-		var next = '<li><a onclick="makeList('+ (nextpage*5) +'),page('+ nextpage +')" style="cursor:pointer"><span aria-hidden="true">&gt;</span></a></li>'
-		var last = '<li><a onclick="makeList('+ allpagecnt +'),page('+ lastpage +')" style="cursor:pointer"><span aria-hidden="true">&raquo;</span></a></li>'
-		
-		if(start == 0){
-			$('#page').html(pageAfter + next + last)
-		}else if(start == lastpage){
-			$('#page').html(first + prev + pageAfter)
-		}else{
-			$('#page').html(first + prev + pageAfter + next + last)
-		}
-		
-	}
-	
-	else{
-		
-		for(var b = start; b < allpagecnt; b++){
-			
-			var aa = '<li><a href=#>'+ (b+1) +'</a></li>'
-			
-			pagenav.innerHTML = pagenav.innerHTML + aa;
-		}
-		
-	}
-	
-	
-}
+	makeList(pageNo);	
+} 
 </script>

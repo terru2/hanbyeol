@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="modal fade" id="information" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -11,7 +12,6 @@
             		<div class="row">
             			<div class="col-sm-4">
 							<img class="img-rounded" src="resources/images/library.jpg" width="180" height="180">
-							
             			</div>
             			<div class="col-sm-8">
 							<dl>
@@ -71,8 +71,11 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary">관리자만 보이게 할 수정버튼</button>
-				<button type="button" class="btn btn-primary">평가하기</button>
+			<c:if test="${sessionScope.log.id  eq 'admin'}">
+				<button type="button" class="btn btn-primary">수정</button>
+				<button type="button" class="btn btn-primary">삭제</button>
+			</c:if>
+				<button type="button" class="btn btn-primary">평가</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>

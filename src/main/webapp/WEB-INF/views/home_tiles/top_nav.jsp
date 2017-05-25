@@ -21,6 +21,11 @@
 		if(session.getAttribute("log") != null){
 		%>
 			<li>
+				<a href="insertplace.do">
+					<span class="glyphicon glyphicon-log-out"></span>장소 추가
+				</a>
+			</li>
+			<li>
 				<a data-toggle="modal" data-target="#member" style="cursor:pointer">
 					<span class="glyphicon glyphicon-user"></span><strong> ${log.nickname } </strong>님<small> ( ${log.id } )</small>
 				</a>	
