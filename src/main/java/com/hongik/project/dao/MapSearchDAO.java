@@ -36,4 +36,12 @@ public class MapSearchDAO{
 		ArrayList<CategoryVO> list = (ArrayList)session.selectList("main.getcategory1");
 		return list;
 	}
+
+	public void insertTempMapData(MapDataVO vo) {
+		session.insert("main.tempinsert", vo);
+	}
+
+	public ArrayList<MapDataVO> getTempMapData(String id) {
+		return (ArrayList)session.selectList("main.gettempdata", id);
+	}
 }

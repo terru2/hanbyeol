@@ -107,14 +107,14 @@ function makeMarker(data){
 	var vo = data[keys[0]];
 	
 	var makers = $(data).map(function(i, vo){
-		var maks = new daum.maps.Marker({
-			map : map,
-			title : vo.name,
-			position : new daum.maps.LatLng(vo.wsg84x, vo.wsg84y)
-		});
-		return maks;
-		});
-		clusterer.addMarkers(makers);
+	var maks = new daum.maps.Marker({
+		map : map,
+		title : vo.name,
+		position : new daum.maps.LatLng(vo.wsg84x, vo.wsg84y)
+	});
+	return maks;
+	});
+	clusterer.addMarkers(makers);
 }
 
 function panTo(x,y){

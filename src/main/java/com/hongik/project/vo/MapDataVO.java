@@ -5,10 +5,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapDataVO{
 	
+	private String id;
 	private String category1;
 	private String category2;
 	private String name;
 	private String address;
+	private String roadaddress;
 	private String phonenumber;
 	private String closeddays;
 	private String time;
@@ -17,6 +19,12 @@ public class MapDataVO{
 	private double wsg84y;
 	private double distance;
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public double getDistance() {
 		return distance;
 	}
@@ -46,6 +54,12 @@ public class MapDataVO{
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public String getRoadaddress() {
+		return roadaddress;
+	}
+	public void setRoadaddress(String roadaddress) {
+		this.roadaddress = roadaddress;
 	}
 	public String getPhonenumber() {
 		return phonenumber;
@@ -85,8 +99,9 @@ public class MapDataVO{
 	}
 	@Override
 	public String toString() {
-		return "MapDataVO [category1=" + category1 + ", category2=" + category2 + ", name=" + name + ", address="
-				+ address + ", phonenumber=" + phonenumber + ", closeddays=" + closeddays + ", time=" + time
-				+ ", comments=" + comments + ", wsg84x=" + wsg84x + ", wsg84y=" + wsg84y + "]";
+		return "MapDataVO [id=" + id + ", category1=" + category1 + ", category2=" + category2 + ", name=" + name
+				+ ", address=" + address + ", roadaddress=" + roadaddress + ", phonenumber=" + phonenumber
+				+ ", closeddays=" + closeddays + ", time=" + time + ", comments=" + comments + ", wsg84x=" + wsg84x
+				+ ", wsg84y=" + wsg84y + ", distance=" + distance + "]";
 	}
 }

@@ -12,7 +12,7 @@
 	</select>
 	<!-- 조건을 통해 Map에 뿌려질 데이터  -->
 	<select id="searchdata" parameterType="String" resultType="com.hongik.project.vo.MapDataVO">
-		select * from mapdata_table where category1 = #{category1}
+		select * from mapdata_table where category1 = #{category1} order by name
 	</select>
 	
 	<!-- DB 데이터 중 경위도(X,Y)가 없는 경우 geocode를 사용 주소를 좌표로 변환후 DB 입력  -->
@@ -24,7 +24,17 @@
 	
 	<!-- Search 부분의 조건 설정을 위한 category 데이터 가져오는 부분 -->
 	<select id="getcategory1" resultType="com.hongik.project.vo.CategoryVO">
-		select DISTINCT category1 from MAPDATA_TABLE
+		select DISTINCT category1 from MAPDATA_TABLE order by category1
+	</select>
+	
+	<insert id="tempinsert" parameterType="com.hongik.project.vo.MapDataVO">
+		insert into 
+		TEMP_MAPDATA_TABLE(id, category1, name, address, roadaddress, wsg84x, wsg84y, closeddays, time, comments)
+		values(#{id},#{category1},#{name},#{address},#{roadaddress},#{wsg84x},#{wsg84y},#{closeddays},#{time},#{comments})
+	</insert>
+	
+	<select id="gettempdata" parameterType="String" resultType="com.hongik.project.vo.MapDataVO">
+		select * from TEMP_MAPDATA_TABLE where id = #{id} order by category1
 	</select>
 	
 	<!-- LoginController mapper -->

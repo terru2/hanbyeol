@@ -32,4 +32,12 @@ public class MapSearchSeviceImpl implements MapSearchSevice {
 	public ArrayList<MapDataVO> getSearchMapData(String category1) {
 		return dao.getSearchMapData(category1);
 	}
+
+	public void insertTempMapData(MapDataVO vo) {
+		dao.insertTempMapData(vo);
+	}
+
+	public ArrayList<MapDataVO> getTempMapData(String id) {
+		return dao.getTempMapData(id);
+	}
 }

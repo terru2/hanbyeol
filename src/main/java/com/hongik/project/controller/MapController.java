@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -59,12 +60,25 @@ public class MapController {
 	
 	@RequestMapping(value="insertplace.do")
 	public String insertPlace(Model model,
-			@RequestParam(value="address", required=false, defaultValue="null")String address){
+			@RequestParam(value="focusAddress", required=false, defaultValue="null")String focusAddress){
 		ConvertAddressXML convert = new ConvertAddressXML();
-		ArrayList<Double>focusXYlist = convert.ConvertAddress(address);
-		model.addAttribute("address", address);
+		ArrayList<Double>focusXYlist = convert.ConvertAddress(focusAddress);
+		ArrayList<CategoryVO> category1list = mapSearchSeviceImpl.getCategory1();
+		
+		model.addAttribute("focusAddress", focusAddress);
 		model.addAttribute("focusXYlist", focusXYlist);
+		model.addAttribute("category1list", category1list);
 		return "map/insertplace";
+	}
+	
+	@RequestMapping(value="insertplace.do", method=RequestMethod.POST)
+	public String insertPlacePost(MapDataVO vo,
+			@RequestParam(value="lat")String wsg84x,
+			@RequestParam(value="lng")String wsg84y){
+		vo.setWsg84x(Double.parseDouble(wsg84x));
+		vo.setWsg84y(Double.parseDouble(wsg84y));
+		mapSearchSeviceImpl.insertTempMapData(vo);
+		return "redirect:insertplace.do";
 	}
 	
 	
@@ -115,4 +129,11 @@ public class MapController {
 		}
 		return data;
 	}
+	
+	@RequestMapping(value="idcheckMapdata")
+	public @ResponseBody ArrayList<MapDataVO> searchDataID(String id){
+		ArrayList<MapDataVO> data = mapSearchSeviceImpl.getTempMapData(id);
+		return data;
+	}
+	
 }
