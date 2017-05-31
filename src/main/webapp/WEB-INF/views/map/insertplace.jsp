@@ -46,6 +46,37 @@ $(document).ready(function(){
 		</ul>
 	</nav>
 </div>
+<div id="infoWindow" style="display: none">
+	<h4 align="center"><strong>나만의 장소 추가하기</strong></h4>
+	<div class="form-group" style="width: 300px;">
+		<label>장소 이름</label>
+		<input type="text" class="form-control" placeholder="추가 할 장소의 이름을 정해주세요" name="name">
+	</div>
+	<div class="form-group">
+		<label>시설 선택</label>
+		<select class="form-control" name="category1">
+			<c:forEach items="${category1list}" var="list">
+				<option>${list.category1}</option>
+			</c:forEach>			
+				<option>기타</option>	
+		</select>
+	</div>
+	<div class="form-group">
+		<label>이용 시간</label>
+		<input type="text" class="form-control" placeholder="ex) 09:00 - 22:00" name="time">
+	</div>
+	<div class="form-group">
+		<label for="exampleInputPassword1">휴무일</label>
+		<input type="text" class="form-control" placeholder="ex) 매주금요일 or 법정공휴일" name="closeddays">
+	</div>
+	<div class="form-group">
+		<label>기타 사항</label>
+		<textarea class="form-control" rows="3" name="comments"></textarea>
+	</div>
+	<div class="form-group" style="padding-bottom: 15px">
+		<button type="submit" class="btn btn-primary pull-right">장소 추가</button>
+	</div>
+</div>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 mapOption = { 
@@ -84,25 +115,18 @@ function MakeInfoWindow(latlng, roadAddress, jibunAddress){
 	var lat = latlng.getLat();
 	var lng = latlng.getLng();
 	// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-	var iwContent = '<form action="insertplace.do" method="post">'
-	+'<div align="center"><strong>나만의 장소 추가하기</strong></div>'
-	+'<div>장소명=<input type="text" name="name"/><br>'
-	+'휴무일=<input type="text" name="closeddays"><br>'
-	+'TIME=<input type="text" name="time"><br>'
-	+'<select name="category1">'
-	+'	<c:forEach items="${category1list}" var="list">'
-	+'		<option>${list.category1}</option>'
-	+'	</c:forEach>'
-	+'		<option>기타</option>'
-	+'</select>'
+	
+	var infoWindow = $('#infoWindow').html();
+	
+	var iwContent = '<form action="insertplace.do" method="post" style="padding:20px;">'
+	+ infoWindow
 	+'<input type="hidden" name="id" value='+id+'>'
 	+'<input type="hidden" name="lat" value='+lat+'>'
 	+'<input type="hidden" name="lng" value='+lng+'>'
 	+'<input type="hidden" name="address" value='+jibunAddress+'>'
 	+'<input type="hidden" name="roadaddress" value='+roadAddress+'>'
-	+'<textarea rows="5" cols="30" name="comments"></textarea><br>'
-	+'<input type="submit" value="장소 추가">'
-	+'</div></form>';
+	+'</form>';
+	
 	iwRemoveable = true;
 	// 인포윈도우를 생성합니다
 	infowindow = new daum.maps.InfoWindow({
