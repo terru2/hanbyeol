@@ -77,7 +77,9 @@ public class MapController {
 			@RequestParam(value="lng")String wsg84y){
 		vo.setWsg84x(Double.parseDouble(wsg84x));
 		vo.setWsg84y(Double.parseDouble(wsg84y));
+
 		mapSearchSeviceImpl.insertTempMapData(vo);
+	
 		return "redirect:insertplace.do";
 	}
 	

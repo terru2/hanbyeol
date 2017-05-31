@@ -27,7 +27,7 @@ $(document).ready(function(){
 					<option value="1000">1km</option>
 					<option value="2000">2km</option>
 				</select>
-				<button type="button" onclick="javascript:rangesearch()">현위치로 범위 검색</button>
+				<button type="button" onclick="javascript:rangesearch()">현재 위치로 범위 검색</button>
 			</div>
 			<select class="form-control" name="category1">
 				<c:forEach items="${category1list}" var="list">

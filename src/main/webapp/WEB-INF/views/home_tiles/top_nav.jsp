@@ -22,7 +22,7 @@
 		%>
 			<li>
 				<a href="insertplace.do">
-					<span class="glyphicon glyphicon-log-out"></span>장소 추가
+					<span class="glyphicon glyphicon-map-marker"></span> 장소 추가
 				</a>
 			</li>
 			<li>

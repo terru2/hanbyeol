@@ -7,7 +7,7 @@
 <!--// Bootstrap Style Load -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 <!-- Custom styles for this template / 모바일 화면 offcanvas css-->
-<link type="text/css" rel="stylesheet" href="resources/css/offcanvas.css?ver=1">
+<link type="text/css" rel="stylesheet" href="resources/css/offcanvas.css">
 
 <!--// jQuery Load -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
