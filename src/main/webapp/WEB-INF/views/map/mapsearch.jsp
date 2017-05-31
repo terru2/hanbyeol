@@ -16,13 +16,20 @@ $(document).ready(function(){
 	<div style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px; padding-top: 15px;">
 		<form action="mapsearch.do" name="form">
 			<div>
-				<span>범위 설정</span>
+				<span>현재 위치 범위 검색</span>
 				<select name="range">
 					<option value="500">500m</option>
 					<option value="1000">1km</option>
 					<option value="2000">2km</option>
 				</select>
-				<button type="button" onclick="javascript:rangesearch()">현위치로 범위 검색</button>
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-primary active">
+						<input type="radio" name="options" id="ON" checked> ON
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="options" id="OFF" > OFF
+					</label>
+				</div>
 			</div>
 			<select class="form-control" name=category1>
 				<c:forEach items="${category1list}" var="list">
@@ -38,7 +45,7 @@ $(document).ready(function(){
 					<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address" value="${address}">
 				</c:if>
 				<div class="input-group-btn">
-					<button class="btn btn-default" type="submit">
+					<button class="btn btn-default" onclick="javascript:rangesearchswitch()">
 						<span class="glyphicon glyphicon-search"></span>
 					</button>
 				</div>
@@ -53,6 +60,8 @@ $(document).ready(function(){
 	</nav>	
 </div>
 <script type="text/javascript">
+var switch1 = document.getElementById("ON");
+var switch2 = document.getElementById("OFF");
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 mapOption = { 
 	<c:if test="${address eq 'null' || focusXYlist[0] == 1}">
@@ -81,10 +90,12 @@ var clusterer = new daum.maps.MarkerClusterer({
     minLevel: 3  // 클러스터 할 최소 지도 레벨 
 });
 
-function rangesearch() {
-	var theForm = document.form;
-	theForm.action = "rangesearch.do";
-	theForm.submit();
+function rangesearchswitch() {
+	if($(switch1).is(":checked")){
+		var theForm = document.form;
+		theForm.action = "rangesearch.do";
+		theForm.submit();
+	}
 }
 
 var getdata;

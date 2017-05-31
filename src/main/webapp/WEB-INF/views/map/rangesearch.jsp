@@ -16,13 +16,20 @@
 		style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px; padding-top: 15px;">
 		<form action="mapsearch.do" name="form">
 			<div>
-				<span>범위 설정</span> <select name="range">
+				<span>현재 위치 범위 검색</span> 
+				<select name="range">
 					<option value="500">500m</option>
 					<option value="1000">1km</option>
 					<option value="2000">2km</option>
 				</select>
-				<button type="button" onclick="javascript:rangesearch()">현재
-					위치로 범위 검색</button>
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-primary active">
+						<input type="radio" name="options" id="ON" checked> ON
+					</label>
+					<label class="btn btn-primary">
+						<input type="radio" name="options" id="OFF" > OFF
+					</label>
+				</div>
 			</div>
 			<select class="form-control" name="category1">
 				<c:forEach items="${categorylist}" var="list">
@@ -34,7 +41,7 @@
 				<input type="text" class="form-control"
 					placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address">
 				<div class="input-group-btn">
-					<button class="btn btn-default" type="submit">
+					<button class="btn btn-default" onclick="javascript:rangesearchswitch()">
 						<span class="glyphicon glyphicon-search"></span>
 					</button>
 				</div>
@@ -52,6 +59,8 @@
 <script>
 var map;
 getLatLng();
+var switch1 = document.getElementById("ON");
+var switch2 = document.getElementById("OFF");
 /* geolocation 시작 */
 function getLatLng() {
 	if ("geolocation" in navigator) {
@@ -169,10 +178,12 @@ function panTo(x, y) {
 	map.panTo(moveLatLon);
 }
 
-function rangesearch() {
-	var theForm = document.form;
-	theForm.action = "rangesearch.do";
-	theForm.submit();
+function rangesearchswitch() {
+	if($(switch1).is(":checked")){
+		var theForm = document.form;
+		theForm.action = "rangesearch.do";
+		theForm.submit();
+	}
 }
 	
 function info(cnt) {
