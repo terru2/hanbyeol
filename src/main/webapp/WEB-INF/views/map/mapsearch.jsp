@@ -23,11 +23,11 @@ $(document).ready(function(){
 					<option value="2000">2km</option>
 				</select>
 				<div class="btn-group" data-toggle="buttons">
-					<label class="btn btn-primary active">
-						<input type="radio" name="options" id="ON" checked> ON
-					</label>
 					<label class="btn btn-primary">
-						<input type="radio" name="options" id="OFF" > OFF
+						<input type="radio" name="options" id="ON"> ON
+					</label>
+					<label class="btn btn-primary active">
+						<input type="radio" name="options" id="OFF" checked > OFF
 					</label>
 				</div>
 			</div>

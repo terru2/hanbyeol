@@ -4,7 +4,7 @@
 
 <script>
 $(document).ready(function(){
-	getMapdata();
+	getLatLng();
 });
 </script>
 <!-- Map 부분  -->
@@ -88,103 +88,115 @@ $(document).ready(function(){
 <script>
 var switch1 = document.getElementById("ON");
 var switch2 = document.getElementById("OFF");
-
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-mapOption = { 
-	<c:if test="${focusAddress eq 'null' || focusXYlist[0] == 1}">
-	 	center: new daum.maps.LatLng(37.566696, 126.977942), //지도의 중심좌표.
-	 	level: 7//지도의 레벨(확대, 축소 정도)
-	</c:if>
-	<c:if test="${focusAddress ne 'null' && focusXYlist[0] != 1}">
-	 	center: new daum.maps.LatLng('${focusXYlist[0]}', '${focusXYlist[1]}'), //지도의 중심좌표.
-	 	level: 5//지도의 레벨(확대, 축소 정도)
-	</c:if>
-};
-//지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-var map = new daum.maps.Map(mapContainer, mapOption); 
-//일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-var mapTypeControl = new daum.maps.MapTypeControl();
-// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
-// daum.maps.ControlPosition은 컨트롤이 표시될 위치를 정의합니다
-map.addControl(mapTypeControl, daum.maps.ControlPosition.LEFT);
-// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-var zoomControl = new daum.maps.ZoomControl();
-map.addControl(zoomControl, daum.maps.ControlPosition.BOTTOMRIGHT);
-var marker = new daum.maps.Marker(); 
-marker.setMap(map);
-
-function rangesearchswitch() {
-	if($(switch1).is(":checked")){
-		var theForm = document.form;
-		theForm.action = "focusinsertplace.do";
-		theForm.submit();	
-	}else{
-		var theForm = document.form;
-		theForm.action = "insertplace.do";
-		theForm.submit();	
+var map;
+var id = "${sessionScope.log.id}";
+/* geolocation 시작 */
+function getLatLng() {
+	if ("geolocation" in navigator) {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			var lat = position.coords.latitude;
+			var lng = position.coords.longitude;
+			
+			//좌표값을 통한 Map Set
+			drawMap(lat, lng);
+		});
+	} else {
+		alert("현재 웹에서는 geolocation을 사용 할 수 없습니다. <br> 관리자에게 문의 부탁드립니다.")
 	}
 }
 
-function panTo(x, y) {
-	var moveLatLon = new daum.maps.LatLng(x, y);
-	map.setLevel(2);
-	map.panTo(moveLatLon);
-}
-
-var id = "${sessionScope.log.id}";
-function MakeInfoWindow(latlng, roadAddress, jibunAddress){
-	var jibunAddress = jibunAddress.replace(/(\s*)/g,"");
-	var roadAddress = roadAddress.replace(/(\s*)/g,"");
-	var lat = latlng.getLat();
-	var lng = latlng.getLng();
-	// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+/* Map Set */
+function drawMap(lat, lng) {
+	var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+	var options = { //지도를 생성할 때 필요한 기본 옵션
+		center : new daum.maps.LatLng(lat, lng), //지도의 중심좌표.
+		level : 4
+	//지도의 레벨(확대, 축소 정도)
+	}
+	map = new daum.maps.Map(container, options);
+	//일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+	var mapTypeControl = new daum.maps.MapTypeControl();
+	// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+	// daum.maps.ControlPosition은 컨트롤이 표시될 위치를 정의합니다
+	map.addControl(mapTypeControl, daum.maps.ControlPosition.LEFT);
+	// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+	var zoomControl = new daum.maps.ZoomControl();
+	map.addControl(zoomControl, daum.maps.ControlPosition.BOTTOMRIGHT);
 	
-	var infoWindow = $('#infoWindow').html();
+	var marker = new daum.maps.Marker(); 
+	marker.setMap(map);
 	
-	var iwContent = '<form action="insertplace.do" method="post" style="padding:20px;">'
-	+ infoWindow
-	+'<input type="hidden" name="id" value='+id+'>'
-	+'<input type="hidden" name="lat" value='+lat+'>'
-	+'<input type="hidden" name="lng" value='+lng+'>'
-	+'<input type="hidden" name="address" value='+jibunAddress+'>'
-	+'<input type="hidden" name="roadaddress" value='+roadAddress+'>'
-	+'</form>';
-	
-	iwRemoveable = true;
-	// 인포윈도우를 생성합니다
-	infowindow = new daum.maps.InfoWindow({
-	    position : new daum.maps.LatLng(latlng), 
-	    content : iwContent,
-	    removable : iwRemoveable
+	var geocoder = new daum.maps.services.Geocoder();
+	daum.maps.event.addListener(map, 'click', function(mouseEvent){
+		var latlng = mouseEvent.latLng;
+		marker.setPosition(latlng);
+		searchDetailAddrFromCoords(mouseEvent.latLng, function(status, result) {
+	        if (status === daum.maps.services.Status.OK) {
+	        	console.log(result);
+	        	var roadAddress = result[0].roadAddress.name;
+	        	var jibunAddress = result[0].jibunAddress.name;
+	        	if(id != ""){
+	            	MakeInfoWindow(latlng, roadAddress, jibunAddress);
+	        	}else{
+	        		alert("Login이 정상적으로 수행되지 않았습니다.")
+	        	}
+	        }else{
+	        	alert("주소를 정상적으로 Load 하지 못했습니다.");
+	        	MakeInfoWindow(latlng);
+	        }
+		});    
 	});
-	infowindow.open(map, marker);
+	
+	function searchDetailAddrFromCoords(coords, callback) {
+	    // 좌표로 법정동 상세 주소 정보를 요청합니다
+	    geocoder.coord2detailaddr(coords, callback);
+	}
+
+	function MakeInfoWindow(latlng, roadAddress, jibunAddress){
+		var jibunAddress = jibunAddress.replace(/(\s*)/g,"");
+		var roadAddress = roadAddress.replace(/(\s*)/g,"");
+		var lat = latlng.getLat();
+		var lng = latlng.getLng();
+		// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+		
+		var infoWindow = $('#infoWindow').html();
+		
+		var iwContent = '<form action="insertplace.do" method="post" style="padding:20px;">'
+		+ infoWindow
+		+'<input type="hidden" name="id" value='+id+'>'
+		+'<input type="hidden" name="lat" value='+lat+'>'
+		+'<input type="hidden" name="lng" value='+lng+'>'
+		+'<input type="hidden" name="address" value='+jibunAddress+'>'
+		+'<input type="hidden" name="roadaddress" value='+roadAddress+'>'
+		+'</form>';
+		
+		iwRemoveable = true;
+		// 인포윈도우를 생성합니다
+		infowindow = new daum.maps.InfoWindow({
+		    position : new daum.maps.LatLng(latlng), 
+		    content : iwContent,
+		    removable : iwRemoveable
+		});
+		infowindow.open(map, marker);
+	}
+	
+	focusMarker(lat, lng);
+	getMapdata();
 }
 
-var geocoder = new daum.maps.services.Geocoder();
-daum.maps.event.addListener(map, 'click', function(mouseEvent){
-	var latlng = mouseEvent.latLng;
-	marker.setPosition(latlng);
-	searchDetailAddrFromCoords(mouseEvent.latLng, function(status, result) {
-        if (status === daum.maps.services.Status.OK) {
-        	console.log(result);
-        	var roadAddress = result[0].roadAddress.name;
-        	var jibunAddress = result[0].jibunAddress.name;
-        	if(id != ""){
-            	MakeInfoWindow(latlng, roadAddress, jibunAddress);
-        	}else{
-        		alert("Login이 정상적으로 수행되지 않았습니다.")
-        	}
-        }else{
-        	alert("주소를 정상적으로 Load 하지 못했습니다.");
-        	MakeInfoWindow(latlng);
-        }
-	});    
-});
-	
-function searchDetailAddrFromCoords(coords, callback) {
-    // 좌표로 법정동 상세 주소 정보를 요청합니다
-    geocoder.coord2detailaddr(coords, callback);
-}	
+function focusMarker(lat, lng) {
+	var imageSrc = "http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+	var imageSize = new daum.maps.Size(24, 35);
+	var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize);
+	var marker = new daum.maps.Marker({
+		map : map, // 마커를 표시할 지도
+		position : new daum.maps.LatLng(lat, lng), // 마커를 표시할 위치
+			title : '현재위치', // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+			image : markerImage
+		// 마커 이미지 
+	});
+	marker.setMap(map);
+}
 
 var getdata;
 function getMapdata() {
@@ -205,12 +217,23 @@ function getMapdata() {
 	}
 }
 
-var clusterer = new daum.maps.MarkerClusterer({
-	map : map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-	averageCenter : true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-	minLevel : 3
-// 클러스터 할 최소 지도 레벨 
-});
+function rangesearchswitch() {
+	if($(switch1).is(":checked")){
+		var theForm = document.form;
+		theForm.action = "focusinsertplace.do";
+		theForm.submit();	
+	}else{
+		var theForm = document.form;
+		theForm.action = "insertplace.do";
+		theForm.submit();	
+	}
+}
+
+function panTo(x, y) {
+	var moveLatLon = new daum.maps.LatLng(x, y);
+	map.setLevel(2);
+	map.panTo(moveLatLon);
+}
 
 function makeMarker(data) {
 	var keys = Object.keys(data);
@@ -223,7 +246,6 @@ function makeMarker(data) {
 		});
 		return maks;
 	});
-	clusterer.addMarkers(makers);
 }
 
 function info(cnt) {
@@ -263,7 +285,6 @@ function makeList(page){
 		}
 	}
 }	
-
 
 function pageBlcokCount(pageNo, pageBlockNo, pageBlock, totalpageBlock){
 	var pageBlockNo = pageBlockNo;

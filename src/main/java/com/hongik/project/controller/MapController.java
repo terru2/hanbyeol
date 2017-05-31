@@ -82,6 +82,11 @@ public class MapController {
 		return "redirect:insertplace.do";
 	}
 	
+	@RequestMapping(value="focusinsertplace.do")
+	public String FocusinsertPlace(){
+		return "map/focusinsertplace";
+	}
+	
 	@RequestMapping(value="DeleteMapData.do")
 	public String DeleteMapData(@RequestParam(value="name", required=true)String name){
 		mapSearchSeviceImpl.deleteMapData(name);
