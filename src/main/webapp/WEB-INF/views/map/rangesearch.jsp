@@ -63,13 +63,11 @@ var switch1 = document.getElementById("ON");
 var switch2 = document.getElementById("OFF");
 /* geolocation 시작 */
 function getLatLng() {
-	if ("geolocation" in navigator) {
+	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			var lat = position.coords.latitude;
 			var lng = position.coords.longitude;
-			
-			console.log("정확도 = "+position.coords.accuracy);
-			console.log("수집시간 정보 = "+position.timestamp);
+	
 			//좌표값을 통한 Map Set
 			drawMap(lat, lng);
 		});

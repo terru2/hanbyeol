@@ -92,7 +92,7 @@ var map;
 var id = "${sessionScope.log.id}";
 /* geolocation 시작 */
 function getLatLng() {
-	if ("geolocation" in navigator) {
+	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			var lat = position.coords.latitude;
 			var lng = position.coords.longitude;
