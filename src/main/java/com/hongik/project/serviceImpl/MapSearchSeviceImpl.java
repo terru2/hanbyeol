@@ -40,4 +40,8 @@ public class MapSearchSeviceImpl implements MapSearchSevice {
 	public ArrayList<MapDataVO> getTempMapData(String id) {
 		return dao.getTempMapData(id);
 	}
+
+	public void deleteMapData(String name) {
+		dao.deleteMapData(name);
+	}
 }

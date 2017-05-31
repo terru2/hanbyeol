@@ -58,5 +58,8 @@
  		update member set PASSWORD='${password}', PHONENUMBER='${phonenumber}', NICKNAME='${nickname}', EMAIL='${email}' where ID='${id}'
  	</update>
  	
+ 	<delete id="deleteMapData" parameterType="String">
+ 		DELETE FROM TEMP_MAPDATA_TABLE WHERE NAME = #{name}
+ 	</delete>
 </mapper>
 

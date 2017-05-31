@@ -79,10 +79,14 @@ public class MapController {
 		vo.setWsg84y(Double.parseDouble(wsg84y));
 
 		mapSearchSeviceImpl.insertTempMapData(vo);
-	
 		return "redirect:insertplace.do";
 	}
 	
+	@RequestMapping(value="DeleteMapData.do")
+	public String DeleteMapData(@RequestParam(value="name", required=true)String name){
+		mapSearchSeviceImpl.deleteMapData(name);
+		return "redirect:insertplace.do";
+	}
 	
 	/* Script로 Map 데이터를 ajax로 뿌려주기 위해 사용되는 메소드들  */
 	@RequestMapping(value="allMapdata")
@@ -137,5 +141,4 @@ public class MapController {
 		ArrayList<MapDataVO> data = mapSearchSeviceImpl.getTempMapData(id);
 		return data;
 	}
-	
 }

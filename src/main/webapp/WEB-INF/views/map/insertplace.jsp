@@ -233,11 +233,14 @@ function makeList(page){
 			var listOrig = $('#list').html()
 			var panelTop = '<div class="panel panel-default"><div class="panel-heading">'
 			var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3></div>'
-			var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div></div>'
+			var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>'
+			+'&nbsp&nbsp&nbsp <a href="DeleteMapData.do?name='+getdata[i].name+'">X</a>'
+			+'</div></div>'
 			$('#list').html(listOrig + panelTop + panelTitle + panleBot);
 		}
 	}
 }	
+
 
 function pageBlcokCount(pageNo, pageBlockNo, pageBlock, totalpageBlock){
 	var pageBlockNo = pageBlockNo;

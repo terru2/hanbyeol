@@ -44,4 +44,8 @@ public class MapSearchDAO{
 	public ArrayList<MapDataVO> getTempMapData(String id) {
 		return (ArrayList)session.selectList("main.gettempdata", id);
 	}
+
+	public void deleteMapData(String name) {
+		session.delete("main.deleteMapData", name);
+	}
 }
