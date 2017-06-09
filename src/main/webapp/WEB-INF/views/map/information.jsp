@@ -16,7 +16,7 @@
             			<div class="col-sm-8">
 							<dl>
 								<dt>주소</dt>
-								<dd class="text-right infoaddress"></dd>
+								<dd class="text-right infoaddress" id="address"></dd>
 								<dt>전화번호</dt>
 								<dd class="text-right infophonenumber"></dd>
 								<dt>이용시간</dt>
@@ -72,8 +72,7 @@
 			</div>
 			<div class="modal-footer">
 			<c:if test="${sessionScope.log.id  eq 'admin'}">
-				<button type="button" class="btn btn-primary">수정</button>
-				<button type="button" class="btn btn-primary">삭제</button>
+				<button type="button" class="btn btn-primary" id="update">수정</button>
 			</c:if>
 				<button type="button" class="btn btn-primary">평가</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -16,8 +16,9 @@ import com.hongik.project.commons.ConvertAddressXML;
 import com.hongik.project.commons.DistanceConvert;
 import com.hongik.project.serviceImpl.MapSearchSeviceImpl;
 import com.hongik.project.vo.CategoryVO;
+import com.hongik.project.vo.CityVO;
 import com.hongik.project.vo.MapDataVO;
-import com.hongik.project.vo.UpdatexyVO;
+import com.hongik.project.vo.UpdateVO;
 
 @Controller
 public class MapController {
@@ -27,10 +28,26 @@ public class MapController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MapController.class);
 	
-	@RequestMapping(value="main.do")
-	public String getMapData(Model model){	
-		ArrayList<CategoryVO> category1list = mapSearchSeviceImpl.getCategory1();
-		model.addAttribute("category1list", category1list);
+	@RequestMapping(value="townsearch.do")
+	public String getMapData(Model model,
+			@RequestParam(value="city", required=true)String city,
+			@RequestParam(value="township", required=false)String township,
+			@RequestParam(value="category1", required=false, defaultValue="도시공원")String category1){
+
+		ArrayList<CityVO> citylist = mapSearchSeviceImpl.getcity();
+		ArrayList<CityVO> wsg84list = mapSearchSeviceImpl.getFocusXY(township);
+		ArrayList<CategoryVO> categorylist = mapSearchSeviceImpl.getCategory1();
+		ArrayList<Double> focuslist = new ArrayList<Double>();
+		for(CityVO vo : wsg84list){
+			focuslist.add(vo.getWsg84x());
+			focuslist.add(vo.getWsg84y());
+		}
+		model.addAttribute("city", city);
+		model.addAttribute("township", township);
+		model.addAttribute("citylist", citylist);
+		model.addAttribute("category1", category1);
+		model.addAttribute("categorylist", categorylist);
+		model.addAttribute("focuslist", focuslist);
 		return "map/mainpage";
 	}
 	
@@ -42,6 +59,64 @@ public class MapController {
 		model.addAttribute("categorylist", mapSearchSeviceImpl.getCategory1());
 		return "map/rangesearch";
 	}
+	
+	/* 다중 Select Box 데이터를 가져오기 위한 메소드   */
+	@RequestMapping(value="getTownShiplist")
+	public @ResponseBody ArrayList<CityVO> TownShiplist(String city){
+		ArrayList<CityVO> townshiplist = mapSearchSeviceImpl.gettownship(city);
+		return townshiplist;
+	}
+	
+	/* Script로 Map 데이터를 ajax로 뿌려주기 위해 사용되는 메소드들  */
+	@RequestMapping(value="allMapdata")
+	public @ResponseBody ArrayList<MapDataVO> ajax(UpdateVO vo){
+			ConvertAddressXML convert = new ConvertAddressXML();
+			ArrayList<MapDataVO> incompletelist = mapSearchSeviceImpl.getAllMapdate();
+			for(MapDataVO mapvo : incompletelist){
+				if(mapvo.getWsg84x() == 1){
+					logger.info("======================= Address To coord 실행 중 =======================");
+					ArrayList<UpdateVO> updatelist = convert.UpdateXY(mapvo.getAddress());
+					mapSearchSeviceImpl.UpdateXY(updatelist);
+				}else if(mapvo.getCity() == null){
+					logger.info("======================= Coord To Address 실행 중 =======================");
+					ArrayList<UpdateVO> updatelist = convert.Updatecoord2addr(mapvo.getWsg84x(), mapvo.getWsg84y());
+					mapSearchSeviceImpl.UpdateCityTown(updatelist);
+				}
+			}
+			logger.info("======================= Data 불러오기 완료  =======================");
+			ArrayList<MapDataVO> maplist = mapSearchSeviceImpl.getAlldate(vo);
+		return maplist;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 	
 	@RequestMapping(value="mapsearch.do")
 	public String getMapSearchData(Model model,
@@ -93,21 +168,13 @@ public class MapController {
 		return "redirect:insertplace.do";
 	}
 	
-	/* Script로 Map 데이터를 ajax로 뿌려주기 위해 사용되는 메소드들  */
-	@RequestMapping(value="allMapdata")
-	public @ResponseBody ArrayList<MapDataVO> ajax(){
-			ConvertAddressXML convert = new ConvertAddressXML();
-			ArrayList<MapDataVO> incompletelist = mapSearchSeviceImpl.getAlldate2();
-			for(MapDataVO vo : incompletelist){
-				if(vo.getWsg84x() == 1){
-					logger.info("변환값 DB INSERT 실행 중 ==========================================");
-					ArrayList<UpdatexyVO> insertlist = convert.UpdateXY(vo.getAddress());
-					mapSearchSeviceImpl.UpdateXY(insertlist);
-				}
-			}
-			ArrayList<MapDataVO> maplist = mapSearchSeviceImpl.getAlldate2();
-		return maplist;
+	@RequestMapping(value="DeleteMainMapData.do")
+	public String DeleteMainMapData(@RequestParam(value="name", required=true)String name){
+		mapSearchSeviceImpl.deleteMainMapData(name);
+		return "redirect:main.do";
 	}
+	
+	
 	
 	@RequestMapping(value="searchMapdata")
 	public @ResponseBody ArrayList<MapDataVO> searchdata(String category1){
@@ -125,8 +192,8 @@ public class MapController {
 		for (MapDataVO vo : incompletelist) {
 			if (vo.getWsg84x() == 1) {
 				logger.info("변환값 DB Update 실행 중 ==========================================");
-				ArrayList<UpdatexyVO> insertlist = convert.UpdateXY(vo.getAddress());
-				mapSearchSeviceImpl.UpdateXY(insertlist);
+//				ArrayList<UpdatexyVO> insertlist = convert.UpdateXY(vo.getAddress());
+//				mapSearchSeviceImpl.UpdateXY(insertlist);
 			}
 		}
 		ArrayList<MapDataVO> list = mapSearchSeviceImpl.getSearchMapData(category1);

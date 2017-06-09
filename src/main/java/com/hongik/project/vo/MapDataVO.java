@@ -9,6 +9,8 @@ public class MapDataVO{
 	private String category1;
 	private String category2;
 	private String name;
+	private String city;
+	private String township;
 	private String address;
 	private String roadaddress;
 	private String phonenumber;
@@ -18,7 +20,7 @@ public class MapDataVO{
 	private double wsg84x;
 	private double wsg84y;
 	private double distance;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -27,6 +29,18 @@ public class MapDataVO{
 	}
 	public double getDistance() {
 		return distance;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getTownship() {
+		return township;
+	}
+	public void setTownship(String township) {
+		this.township = township;
 	}
 	public void setDistance(double distance) {
 		this.distance = distance;

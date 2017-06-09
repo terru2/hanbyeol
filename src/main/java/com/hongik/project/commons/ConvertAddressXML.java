@@ -15,6 +15,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -24,7 +26,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.hongik.project.serviceImpl.MapSearchSeviceImpl;
-import com.hongik.project.vo.UpdatexyVO;
+import com.hongik.project.vo.UpdateVO;
 
 public class ConvertAddressXML {
 	private static final Logger logger = LoggerFactory.getLogger(ConvertAddressXML.class);
@@ -32,11 +34,6 @@ public class ConvertAddressXML {
 	
 	public ArrayList<Double> ConvertAddress(String address){
 		ArrayList<Double> result = new ArrayList<Double>();
-		if(address.equals("null")){
-			result.add((double) 37.566696);
-			result.add((double) 126.977942);
-			return result;
-		}
 //		1. 한글은 URL에서 인식을 하지 못하기 때문에 한글을 UTF-8 형식으로 변환 시킴.
 		String convertaddress = null;
 		try {
@@ -90,8 +87,8 @@ public class ConvertAddressXML {
 				logger.error("----- 주소값 => 좌표값 변환 실패 ----------------------");
 				logger.error("오류가 난 주소값 => "+address+" [확인 요망] ----- ");
 				logger.error("-----------------------------------------------");
-				result.add((double) 1);
-				result.add((double) 1);
+				result.add((double) 37.566696);
+				result.add((double) 126.977942);
 			}
 		} catch (IOException | ParserConfigurationException | SAXException e) {
 			e.printStackTrace();
@@ -99,9 +96,9 @@ public class ConvertAddressXML {
         return result;
 	}
 	
-	public ArrayList<UpdatexyVO> UpdateXY(String address){
-		UpdatexyVO vo = new UpdatexyVO();
-		ArrayList<UpdatexyVO> insertlist = new ArrayList<UpdatexyVO>();
+	public ArrayList<UpdateVO> UpdateXY(String address){
+		UpdateVO vo = new UpdateVO();
+		ArrayList<UpdateVO> insertlist = new ArrayList<UpdateVO>();
 		
 //		1. 한글은 URL에서 인식을 하지 못하기 때문에 한글을 UTF-8 형식으로 변환 시킴.
 		String convertaddress = null;
@@ -172,5 +169,37 @@ public class ConvertAddressXML {
 		insertlist.add(vo);
 		
 		return insertlist;
+	}
+	
+	public ArrayList<UpdateVO> Updatecoord2addr(double lat, double lng){
+		UpdateVO vo = new UpdateVO();
+		ArrayList<UpdateVO> result = new ArrayList<UpdateVO>();
+		vo.setWsg84x(lat);
+		vo.setWsg84y(lng);
+		  //String apiURL = "https://openapi.naver.com/v1/map/geocode?query=" + addr; //json
+		   String apiURL = "https://apis.daum.net/local/geo/coord2detailaddr?"
+		     		+ "apikey=2280fd7a86793fef854e4c2d014f194f"
+		       		+ "&y="+lat
+		       		+ "&x="+lng
+		       		+ "&inputCoordSystem=WGS84"
+		       		+ "&output=json";//json 형식 
+		try {
+			URL url = new URL(apiURL);
+			InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
+			JSONObject object = (JSONObject)JSONValue.parse(isr);
+			JSONObject  old = (JSONObject) object.get("old");
+			String address = old.get("name").toString();
+			String[] array = address.split(" ");
+			String Si = array[0];
+			String GunGu = array[1];
+			vo.setAddress(address);
+			vo.setCity(Si);
+			vo.setTownship(GunGu);
+			result.add(vo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

@@ -1,15 +1,22 @@
 package com.hongik.project.vo;
 
-public class UpdatexyVO {
-	private String address;
+public class CityVO {
+	private String city;
+	private String township;
 	private double wsg84x;
 	private double wsg84y;
 	
-	public String getAddress() {
-		return address;
+	public String getCity() {
+		return city;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getTownship() {
+		return township;
+	}
+	public void setTownship(String township) {
+		this.township = township;
 	}
 	public double getWsg84x() {
 		return wsg84x;
@@ -22,10 +29,5 @@ public class UpdatexyVO {
 	}
 	public void setWsg84y(double wsg84y) {
 		this.wsg84y = wsg84y;
-	}
-	@Override
-	public String toString() {
-		return "UpdatexyVO [address=" + address + ", wsg84x=" + wsg84x + ", wsg84y=" + wsg84y
-				+ "]";
 	}
 }

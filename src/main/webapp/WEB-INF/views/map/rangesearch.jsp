@@ -14,7 +14,7 @@
 	<!-- 조건절들 보여주는 부분  -->
 	<div
 		style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px; padding-top: 15px;">
-		<form action="mapsearch.do" name="form">
+		<form action="townsearch.do" name="form">
 			<div>
 				<span>현재 위치 범위 검색</span> 
 				<select name="range">
@@ -31,22 +31,18 @@
 					</label>
 				</div>
 			</div>
-			<select class="form-control" name="category1">
-				<c:forEach items="${categorylist}" var="list">
-					<option hidden selected>시설 선택</option>
-					<option>${list.category1}</option>
-				</c:forEach>
-			</select>
 			<div class="input-group">
-				<input type="text" class="form-control"
-					placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="address">
+				<select class="form-control" name="category1">
+					<c:forEach items="${categorylist}" var="list">
+						<option>${list.category1}</option>
+					</c:forEach>
+				</select>
 				<div class="input-group-btn">
-					<button class="btn btn-default" onclick="javascript:rangesearchswitch()">
-						<span class="glyphicon glyphicon-search"></span>
-					</button>
+						<button class="btn btn-default" onclick="javascript:rangesearchswitch()">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
 				</div>
 			</div>
-			
 		</form>
 	</div>
 	<div id="list">
@@ -214,7 +210,15 @@ function makeList(page){
 			var listOrig = $('#list').html()
 			var panelTop = '<div class="panel panel-default"><div class="panel-heading">'
 			var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3></div>'
-			var panleBot = '<div class="panel-body"><strong> 현재 위치와의 거리 = '+getdata[i].distance+'m</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div></div>'
+			var panleBot;
+			<c:if test="${sessionScope.log.id  eq 'admin'}">
+				panleBot = '<div class="panel-body"><strong>'+getdata[i].distance+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>'
+				+'&nbsp&nbsp&nbsp <a href="DeleteMainMapData.do?name='+getdata[i].name+'">X</a>'
+				+'</div></div>'
+        	</c:if>
+			<c:if test="${sessionScope.log.id  ne 'admin'}">
+				panleBot = '<div class="panel-body"><strong> 현 위치와의 거리 = '+getdata[i].distance+'m</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div></div>'
+        	</c:if>
 			$('#list').html(listOrig + panelTop + panelTitle + panleBot);
 		}
 	}
