@@ -189,8 +189,45 @@ function addMarkeroutMap(bound){
     clusterer.addMarkers(clusterermarkes);
  }
 
+function info(cnt) {	
+	var basic = $('#information').html();
+	var oneData;
+	sessionStorage.setItem("name", getdata[cnt].name);
+	
+	 $.ajax({//상세정보 불러오는...
+		type : "POST",
+		url : "OneCulum",		
+		async : false,
+		data : "name="+getdata[cnt].name+"&address="+getdata[cnt].address,
+		dataType : "json",
+		error : function(){
+		alert("컬럼 정보요청 오류");			
+	},
+	success : function(data){
+		oneData = data;
+	}
+	});
+	
+	$('.infoname').html('<span id="sisulName">'+oneData.name+'</span>' 
+			+ ' <span id="rate" class="label label-warning"></span> <small id="category" class="infocategory2"> ('
+			+ oneData.category2
+			+ ')</small>')			
+	$('.infoaddress').text(oneData.address)
+	$('.infophonenumber').text(oneData.phonenumber)
+	$('.infotime').text(oneData.time)
+	$('.infocloseddays').text(oneData.closeddays)
+	$('.infocomments').text(oneData.comments)
+	
+	
+	$('#information').modal('show');
+	
+	$('#information').on('hidden.bs.modal', function(){
+		$('#information').html(basic)
+	});	
+}
+
 function makeList(bound){
-	$('#list').html('<span>총 '+getdata.length+'개의 데이터가 검색 되었습니다. </span>')
+// 	$('#list').html('<span>총 '+getdata.length+'개의 데이터가 검색 되었습니다. </span>')
 	$('#list div').remove();
 	 for(var i = 0; i < markers.length; i++){
 		 if(bound.contain(markers[i].getPosition()) == true){

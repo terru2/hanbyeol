@@ -102,5 +102,26 @@
 		where wsg84x=#{wsg84x}
 		and wsg84y=#{wsg84y}
 	</update>
+	
+	<!-- Board 게시판 -->
+	<select id="oneInfo" parameterType="map" resultType="com.hongik.project.vo.MapDataVO">
+ 		select * from mapdata_table where name = #{name} and address = #{address}
+ 	</select>
+ 	 	
+ 	<select id="checkBoard" parameterType="String" resultType="com.hongik.project.vo.BoardVO">
+ 		select * from board  where name = #{name} order by seq desc
+ 	</select>
+ 	
+ 	<select id="rate" parameterType="String" resultType="double">
+ 		select round(avg(gpa),1) from board where name = #{name}
+ 	</select>
+ 	 	
+ 	<insert id="insertBoard" parameterType="java.util.Map">
+ 		insert into board values (board_seq.nextval, #{writer}, #{comments}, #{password}, ${gpa}, #{name}, #{time})
+ 	</insert>
+ 	
+ 	<delete id="deleteBoard" parameterType="double">
+ 		delete from board where seq= #{seq}
+ 	</delete>
 </mapper>
 

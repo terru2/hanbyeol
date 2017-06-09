@@ -213,4 +213,12 @@ public class MapController {
 		ArrayList<MapDataVO> data = mapSearchSeviceImpl.getTempMapData(id);
 		return data;
 	}
+	
+	
+	@RequestMapping(value="OneCulum")
+	public @ResponseBody MapDataVO getculum(@RequestParam(value="name", required=false)String name,
+			@RequestParam(value="address", required=false)String address){
+		MapDataVO OneCulum = mapSearchSeviceImpl.getOneCulum(name,address);
+		return OneCulum;
+	}
 }

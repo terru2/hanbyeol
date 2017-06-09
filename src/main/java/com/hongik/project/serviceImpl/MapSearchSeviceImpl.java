@@ -69,5 +69,9 @@ public class MapSearchSeviceImpl implements MapSearchSevice {
 	public ArrayList<MapDataVO> getAllMapdate() {
 		return dao.getAllMapdate();
 	}
+	
+	public MapDataVO getOneCulum(String name, String address){
+		return dao.getOneCulum(name, address);
+	}
 
 }

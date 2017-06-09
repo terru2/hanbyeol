@@ -16,4 +16,6 @@ public interface MapSearchSevice {
 	public ArrayList<CategoryVO> getCategory1();
 	/* 4. 분류1 선택시 해당하는 데이터 가져오는 메소드*/
 	public ArrayList<MapDataVO> getSearchMapData(String category1);
+	
+	MapDataVO getOneCulum(String name, String address);
 }

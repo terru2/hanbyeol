@@ -1,6 +1,8 @@
 package com.hongik.project.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +81,14 @@ public class MapSearchDAO{
 
 	public ArrayList<MapDataVO> getAllMapdate() {
 		return (ArrayList)session.selectList("main.mapall");
+	}
+	
+	
+	public MapDataVO getOneCulum(String name, String address){
+		Map<String, String> para = new HashMap<String, String>();
+		para.put("name", name);
+		para.put("address", address);
+		
+		return session.selectOne("main.oneInfo", para);
 	}
 }
