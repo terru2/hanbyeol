@@ -6,10 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hongik.project.serviceImpl.MapSearchSeviceImpl;
-import com.hongik.project.vo.CityVO;
+import com.hongik.project.vo.CategoryVO;
 	
 @Controller
 public class MainController {
@@ -18,14 +17,9 @@ public class MainController {
 	MapSearchSeviceImpl mapSearchSeviceImpl;
 	
 	@RequestMapping(value="main.do")
-	public String Test(Model model,
-			@RequestParam(value="city", required=true, defaultValue="default")String city){	
-		ArrayList<CityVO> citylist = mapSearchSeviceImpl.getcity();
-		ArrayList<CityVO> townshiplist = mapSearchSeviceImpl.gettownship(city);
-
-		model.addAttribute("city", city);
-		model.addAttribute("citylist", citylist);
-		model.addAttribute("townshiplist", townshiplist);
+	public String Test(Model model){	
+		ArrayList<CategoryVO> list = mapSearchSeviceImpl.getCategory1();
+		model.addAttribute("categorylist", list);
 		return "mainpage";
 	}
 }

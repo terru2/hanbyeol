@@ -34,6 +34,10 @@ public class ConvertAddressXML {
 	
 	public ArrayList<Double> ConvertAddress(String address){
 		ArrayList<Double> result = new ArrayList<Double>();
+		if(address.equals(" ")){
+			result.add((double) 37.566696);
+			result.add((double) 126.977942);
+		}
 //		1. 한글은 URL에서 인식을 하지 못하기 때문에 한글을 UTF-8 형식으로 변환 시킴.
 		String convertaddress = null;
 		try {

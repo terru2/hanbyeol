@@ -14,7 +14,7 @@
 	<!-- 조건절들 보여주는 부분  -->
 	<div
 		style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px; padding-top: 15px;">
-		<form action="townsearch.do" name="form">
+		<form action="search.do" name="form">
 			<div>
 				<span>현재 위치 범위 검색</span> 
 				<select name="range">

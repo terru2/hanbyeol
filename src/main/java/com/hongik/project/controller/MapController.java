@@ -28,25 +28,17 @@ public class MapController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MapController.class);
 	
-	@RequestMapping(value="townsearch.do")
+	@RequestMapping(value="search.do")
 	public String getMapData(Model model,
-			@RequestParam(value="city", required=true)String city,
-			@RequestParam(value="township", required=false)String township,
+			@RequestParam(value="focusAddress", required=false, defaultValue="")String address,
 			@RequestParam(value="category1", required=false, defaultValue="도시공원")String category1){
-
-		ArrayList<CityVO> citylist = mapSearchSeviceImpl.getcity();
-		ArrayList<CityVO> wsg84list = mapSearchSeviceImpl.getFocusXY(township);
+		ConvertAddressXML convert = new ConvertAddressXML();
+		ArrayList<Double> focuslist = convert.ConvertAddress(address);
 		ArrayList<CategoryVO> categorylist = mapSearchSeviceImpl.getCategory1();
-		ArrayList<Double> focuslist = new ArrayList<Double>();
-		for(CityVO vo : wsg84list){
-			focuslist.add(vo.getWsg84x());
-			focuslist.add(vo.getWsg84y());
-		}
-		model.addAttribute("city", city);
-		model.addAttribute("township", township);
-		model.addAttribute("citylist", citylist);
+		
 		model.addAttribute("category1", category1);
 		model.addAttribute("categorylist", categorylist);
+		model.addAttribute("focusAddress", address);
 		model.addAttribute("focuslist", focuslist);
 		return "map/mainpage";
 	}
@@ -58,13 +50,6 @@ public class MapController {
 		model.addAttribute("range", range);
 		model.addAttribute("categorylist", mapSearchSeviceImpl.getCategory1());
 		return "map/rangesearch";
-	}
-	
-	/* 다중 Select Box 데이터를 가져오기 위한 메소드   */
-	@RequestMapping(value="getTownShiplist")
-	public @ResponseBody ArrayList<CityVO> TownShiplist(String city){
-		ArrayList<CityVO> townshiplist = mapSearchSeviceImpl.gettownship(city);
-		return townshiplist;
 	}
 	
 	/* Script로 Map 데이터를 ajax로 뿌려주기 위해 사용되는 메소드들  */
@@ -86,51 +71,6 @@ public class MapController {
 			logger.info("======================= Data 불러오기 완료  =======================");
 			ArrayList<MapDataVO> maplist = mapSearchSeviceImpl.getAlldate(vo);
 		return maplist;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-	@RequestMapping(value="mapsearch.do")
-	public String getMapSearchData(Model model,
-			@RequestParam(value="address", required=false, defaultValue="null")String address,
-			@RequestParam(value="category1", required=false, defaultValue="")String category1){
-		ConvertAddressXML convert = new ConvertAddressXML();
-		ArrayList<Double>focusXYlist = convert.ConvertAddress(address);
-		ArrayList<CategoryVO> category1list = mapSearchSeviceImpl.getCategory1();
-
-		model.addAttribute("address", address);
-		model.addAttribute("category1", category1);
-		model.addAttribute("focusXYlist", focusXYlist);
-		model.addAttribute("category1list", category1list);
-		return "map/mapsearch";
 	}
 	
 	@RequestMapping(value="insertplace.do")
@@ -172,14 +112,6 @@ public class MapController {
 	public String DeleteMainMapData(@RequestParam(value="name", required=true)String name){
 		mapSearchSeviceImpl.deleteMainMapData(name);
 		return "redirect:main.do";
-	}
-	
-	
-	
-	@RequestMapping(value="searchMapdata")
-	public @ResponseBody ArrayList<MapDataVO> searchdata(String category1){
-		ArrayList<MapDataVO> data = mapSearchSeviceImpl.getSearchMapData(category1);
-		return data;
 	}
 	
 	@RequestMapping(value = "rangelimitMapdata")

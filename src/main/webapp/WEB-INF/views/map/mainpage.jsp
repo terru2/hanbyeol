@@ -19,7 +19,7 @@ $(document).ready(function(){
 <div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar" style="height: 100%;">
 	<!-- 조건절들 보여주는 부분  -->
 	<div style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px; padding-top: 15px;">
-		<form action="townsearch.do" name="form">
+		<form action="search.do" name="form">
 			<div>
 				<span>현재 위치 범위 검색</span>
 				<select name="range">
@@ -37,24 +37,18 @@ $(document).ready(function(){
 				</div>
 			</div>
 			<div class="input-group">
-				<select name="city" id="city" onchange="javascirpt:getTownShip(this, 'township')" style="width: 80px; height: 30px;">
-					<option value="default">=시/도=</option>
-					<c:forEach items="${citylist}" var="list">
-						<option>${list.city}</option>
-					</c:forEach>
-				</select>
-				<select name="township" id="township" style="width: 80px; height: 30px;"> 
-					<option value="default">=군/구=</option>
-				</select>
-				<select name="category1" style="width: 90px; height: 30px;">
-					<option value="default">=시설물=</option>
+			
+				<select class="form-control" name="category1">
 					<c:forEach items="${categorylist}" var="list">
-						<option>${list.category1}</option>
+						<option <c:if test="${list.category1 eq category1}">selected</c:if> >${list.category1}</option>
 					</c:forEach>
 				</select>
-				<button class="btn btn-default" onclick="javascript:rangesearchswitch()">
-					<span class="glyphicon glyphicon-search"></span>
-				</button>
+				<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="focusAddress" value="${focusAddress}">
+				<div class="input-group-btn">
+					<button class="btn btn-default"onclick="javascript:rangesearchswitch()">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+				</div>
 			</div>
 		</form>
 	</div>
@@ -99,7 +93,7 @@ map.addControl(zoomControl, daum.maps.ControlPosition.BOTTOMRIGHT);
 var clusterer = new daum.maps.MarkerClusterer({
     map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
     averageCenter: false, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-    minLevel: 5  // 클러스터 할 최소 지도 레벨 
+    minLevel: 1  // 클러스터 할 최소 지도 레벨 
 });
 
 daum.maps.event.addListener(map, 'tilesloaded', function() {
@@ -107,44 +101,11 @@ daum.maps.event.addListener(map, 'tilesloaded', function() {
     makeList(map.getBounds());
 });
 
-// 다중 Select Box를 위한 Script
-function getTownShip(srcE, targetId){
-	var val = srcE.options[srcE.selectedIndex].value;
-	var targetE = document.getElementById(targetId);
-	removeAll(targetE);
-	$.ajax({
-		url : "getTownShiplist",
-		data : {
-				"city":val
-				},
-		dataType : "json",
-		error : function(){alert("군/구 데이터 오류 ");},
-		success : function(data){
- 			for(var i=0; i<data.length; i++){
- 				addOption(data[i].township, targetE);
- 			}
-		}
-	});
-}
-
-function addOption(value, e){
-	var o = new Option(value);
-	e.add(o);
-}
-
-function removeAll(e){
-    for(var i = 0, limit = e.options.length; i < limit - 1; ++i){
-        e.remove(1);
-    }
-}
-
 var getdata;
 function getMapdata() {
 	$.ajax({
 		url : "allMapdata",
 		data : {
-				"city":'${city}',
-				"township":'${township}',
 				"category1":'${category1}'
 				},
 		dataType : "json",
