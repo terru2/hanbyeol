@@ -34,7 +34,7 @@
 			<div class="input-group">
 				<select class="form-control" name="category1">
 					<c:forEach items="${categorylist}" var="list">
-						<option>${list.category1}</option>
+						<option <c:if test="${list.category1 eq category1}">selected</c:if>>${list.category1}</option>
 					</c:forEach>
 				</select>
 				<div class="input-group-btn">

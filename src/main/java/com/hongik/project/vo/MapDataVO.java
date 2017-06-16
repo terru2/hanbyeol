@@ -19,6 +19,7 @@ public class MapDataVO{
 	private String comments;
 	private double wsg84x;
 	private double wsg84y;
+	private String shareox;
 	private double distance;
 
 	public String getId() {
@@ -110,6 +111,12 @@ public class MapDataVO{
 	}
 	public void setWsg84y(double wsg84y) {
 		this.wsg84y = wsg84y;
+	}
+	public String getShareox() {
+		return shareox;
+	}
+	public void setShareox(String shareox) {
+		this.shareox = shareox;
 	}
 	@Override
 	public String toString() {

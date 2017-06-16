@@ -13,8 +13,6 @@
 		select * from mapdata_table where category1 = #{category1} order by name
 	</select>
 	
-	
-	
 	<!-- Search 부분의 조건 설정을 위한 category 데이터 가져오는 부분 -->
 	<select id="getcategory1" resultType="com.hongik.project.vo.CategoryVO">
 		select DISTINCT category1 from MAPDATA_TABLE order by category1
@@ -58,7 +56,7 @@
  	<delete id="deleteMainMapData" parameterType="String">
  		DELETE FROM MAPDATA_TABLE WHERE NAME = #{name}
  	</delete>
- 	<!-- ================================================ 설계 오류로 인해 처음부터 다시 하는중 =============================================  --> 	
+ 	
  	<!-- 시/도 데이터  -->
 	<select id="getcity" parameterType="String" resultType="com.hongik.project.vo.CityVO">
 		select DISTINCT CITY from HJGUYEOG
@@ -123,5 +121,23 @@
  	<delete id="deleteBoard" parameterType="double">
  		delete from board where seq= #{seq}
  	</delete>
+ 	
+ 	<select id="getShareCheckData" resultType="com.hongik.project.vo.MapDataVO">
+ 		select * from TEMP_MAPDATA_TABLE
+ 		where SHAREOX = 'O'
+ 	</select>
+ 	
+ 	<update id="updatesharedate" parameterType="String">
+		update TEMP_MAPDATA_TABLE
+		set SHAREOX = 'O'
+		where name = #{name}
+	</update>
+	
+	<update id="updatesharedatecancle" parameterType="String">
+		update TEMP_MAPDATA_TABLE
+		set SHAREOX = 'X'
+		where name = #{name}
+	</update>
+ 	
 </mapper>
 

@@ -16,7 +16,6 @@ import com.hongik.project.commons.ConvertAddressXML;
 import com.hongik.project.commons.DistanceConvert;
 import com.hongik.project.serviceImpl.MapSearchSeviceImpl;
 import com.hongik.project.vo.CategoryVO;
-import com.hongik.project.vo.CityVO;
 import com.hongik.project.vo.MapDataVO;
 import com.hongik.project.vo.UpdateVO;
 
@@ -118,16 +117,7 @@ public class MapController {
 	public @ResponseBody ArrayList<MapDataVO> searchdata(
 			@RequestParam(value = "category1") String category1, @RequestParam(value = "lat") double lat,
 			@RequestParam(value = "lng") double lng, @RequestParam(value = "range") double range) {
-		ArrayList<MapDataVO> incompletelist = mapSearchSeviceImpl.getSearchMapData(category1);
-		ConvertAddressXML convert = new ConvertAddressXML();
 		DistanceConvert dis = new DistanceConvert();
-		for (MapDataVO vo : incompletelist) {
-			if (vo.getWsg84x() == 1) {
-				logger.info("변환값 DB Update 실행 중 ==========================================");
-//				ArrayList<UpdatexyVO> insertlist = convert.UpdateXY(vo.getAddress());
-//				mapSearchSeviceImpl.UpdateXY(insertlist);
-			}
-		}
 		ArrayList<MapDataVO> list = mapSearchSeviceImpl.getSearchMapData(category1);
 		ArrayList<MapDataVO> data = new ArrayList<MapDataVO>();
 		for (MapDataVO vo : list) {

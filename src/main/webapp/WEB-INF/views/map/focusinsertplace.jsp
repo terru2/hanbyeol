@@ -268,19 +268,22 @@ function makeList(page){
 	$('#list').html('<span>'+id+'님이 등록한 장소는  '+getdata.length+'개 입니다. </span>')
 	$('#list div').remove()
 	
-	/* 거리나 가까운순으로 정렬 */
-	getdata.sort(function (a, b) { 
-		return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;  
-	});
-	
 	for(var i = pageSize*(page-1); i < pageSize*page; i++){
 		if(i < totalcount){
 			var listOrig = $('#list').html()
 			var panelTop = '<div class="panel panel-default"><div class="panel-heading">'
 			var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3></div>'
-			var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>'
-			+'&nbsp&nbsp&nbsp <a href="DeleteMapData.do?name='+getdata[i].name+'">X</a>'
-			+'</div></div>'
+			if(getdata[i].shareox == 'X'){
+				var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>'
+				+'&nbsp&nbsp&nbsp <a href="DeleteMapData.do?name='+getdata[i].name+'">X</a>'
+				+'&nbsp&nbsp&nbsp <a href="ShareMapData.do?name='+getdata[i].name+'">공유하기</a>'		
+				+'</div></div>'
+			}else{
+				var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>'
+				+'&nbsp&nbsp&nbsp <a href="DeleteMapData.do?name='+getdata[i].name+'">X</a>'
+				+'&nbsp&nbsp&nbsp <a href="ShareCancle.do?name='+getdata[i].name+'">공유취소</a>'		
+				+'</div></div>'
+			}
 			$('#list').html(listOrig + panelTop + panelTitle + panleBot);
 		}
 	}

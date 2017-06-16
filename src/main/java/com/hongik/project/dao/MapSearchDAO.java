@@ -19,36 +19,6 @@ public class MapSearchDAO{
 	@Autowired
 	SqlSession session;
 	
-
-
-	public ArrayList<MapDataVO> getSearchMapData(String category1) {
-		ArrayList<MapDataVO> list = (ArrayList)session.selectList("main.searchdata", category1);
-		return list;
-	}
-
-
-
-	public ArrayList<CategoryVO> getCategory1() {
-		ArrayList<CategoryVO> list = (ArrayList)session.selectList("main.getcategory1");
-		return list;
-	}
-
-	public void insertTempMapData(MapDataVO vo) {
-		session.insert("main.tempinsert", vo);
-	}
-
-	public ArrayList<MapDataVO> getTempMapData(String id) {
-		return (ArrayList)session.selectList("main.gettempdata", id);
-	}
-
-	public void deleteMapData(String name) {
-		session.delete("main.deleteMapData", name);
-	}
-
-	public void deleteMainMapData(String name) {
-		session.delete("main.deleteMainMapData", name);
-	}
-	/* ================================================ 설계 오류로 인해 처음부터 다시 하는중 ============================================= */
 	public ArrayList<CityVO> getcity() {
 		return (ArrayList)session.selectList("main.getcity");
 	}
@@ -77,8 +47,6 @@ public class MapSearchDAO{
 		}
 	}
 
-
-
 	public ArrayList<MapDataVO> getAllMapdate() {
 		return (ArrayList)session.selectList("main.mapall");
 	}
@@ -91,4 +59,42 @@ public class MapSearchDAO{
 		
 		return session.selectOne("main.oneInfo", para);
 	}
+	public ArrayList<MapDataVO> getSearchMapData(String category1) {
+		ArrayList<MapDataVO> list = (ArrayList)session.selectList("main.searchdata", category1);
+		return list;
+	}
+
+	public ArrayList<CategoryVO> getCategory1() {
+		ArrayList<CategoryVO> list = (ArrayList)session.selectList("main.getcategory1");
+		return list;
+	}
+
+	public void insertTempMapData(MapDataVO vo) {
+		session.insert("main.tempinsert", vo);
+	}
+
+	public ArrayList<MapDataVO> getTempMapData(String id) {
+		return (ArrayList)session.selectList("main.gettempdata", id);
+	}
+
+	public void deleteMapData(String name) {
+		session.delete("main.deleteMapData", name);
+	}
+
+	public void deleteMainMapData(String name) {
+		session.delete("main.deleteMainMapData", name);
+	}
+
+	public ArrayList<MapDataVO> getTempShareCheckData() {
+		return (ArrayList)session.selectList("main.getShareCheckData");
+	}
+
+	public void updateSharedataOK(String name) {
+		session.update("main.updatesharedate", name);
+	}
+
+	public void updateSharedataCancle(String name) {
+		session.update("main.updatesharedatecancle", name);
+	}
+	
 }

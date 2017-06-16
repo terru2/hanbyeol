@@ -18,32 +18,6 @@ public class MapSearchSeviceImpl implements MapSearchSevice {
 	@Autowired
 	MapSearchDAO dao;
 	
-	
-
-	public ArrayList<CategoryVO> getCategory1() {
-		return dao.getCategory1();
-	}
-
-	public ArrayList<MapDataVO> getSearchMapData(String category1) {
-		return dao.getSearchMapData(category1);
-	}
-
-	public void insertTempMapData(MapDataVO vo) {
-		dao.insertTempMapData(vo);
-	}
-
-	public ArrayList<MapDataVO> getTempMapData(String id) {
-		return dao.getTempMapData(id);
-	}
-
-	public void deleteMapData(String name) {
-		dao.deleteMapData(name);
-	}
-
-	public void deleteMainMapData(String name) {
-		dao.deleteMainMapData(name);
-	}
-	/* ================================================ 설계 오류로 인해 처음부터 다시 하는중 ============================================= */
 	public ArrayList<CityVO> getcity() {
 		return dao.getcity();
 	}
@@ -74,4 +48,39 @@ public class MapSearchSeviceImpl implements MapSearchSevice {
 		return dao.getOneCulum(name, address);
 	}
 
+	public ArrayList<CategoryVO> getCategory1() {
+		return dao.getCategory1();
+	}
+
+	public ArrayList<MapDataVO> getSearchMapData(String category1) {
+		return dao.getSearchMapData(category1);
+	}
+
+	public void insertTempMapData(MapDataVO vo) {
+		dao.insertTempMapData(vo);
+	}
+
+	public ArrayList<MapDataVO> getTempMapData(String id) {
+		return dao.getTempMapData(id);
+	}
+
+	public void deleteMapData(String name) {
+		dao.deleteMapData(name);
+	}
+
+	public void deleteMainMapData(String name) {
+		dao.deleteMainMapData(name);
+	}
+
+	public ArrayList<MapDataVO> getTempShareCheckData() {
+		return dao.getTempShareCheckData();
+	}
+
+	public void updateSharedataOK(String name) {
+		dao.updateSharedataOK(name);
+	}
+
+	public void updateSharedataCancle(String name) {
+		dao.updateSharedataCancle(name);
+	}
 }

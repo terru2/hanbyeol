@@ -17,36 +17,6 @@ $(document).ready(function(){
 <!-- List 부분  -->
 <div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar"
 	style="height: 100%;">
-	<!-- 조건절들 보여주는 부분  -->
-	<div
-		style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px; padding-top: 15px;">
-		<form action="insertplace.do" name="form">
-			<div>
-				<label><h4>현재 위치로 이동</h4></label>
-				<div class="btn-group" data-toggle="buttons">
-					<label class="btn btn-primary">
-						<input type="radio" name="options" id="ON"> ON
-					</label>
-					<label class="btn btn-primary active">
-						<input type="radio" name="options" id="OFF" checked > OFF
-					</label>
-				</div>
-			</div>
-			<div class="input-group">
-				<c:if test="${focusAddress eq 'null'}">
-					<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="focusAddress">
-				</c:if>
-				<c:if test="${focusAddress ne 'null'}">
-					<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="focusAddress" value="${focusAddress}">
-				</c:if>
-				<div class="input-group-btn">
-					<button class="btn btn-default"onclick="javascript:rangesearchswitch()">
-						<span class="glyphicon glyphicon-search"></span>
-					</button>
-				</div>
-			</div>
-		</form>
-	</div>
 	<div id="list">
 	</div>
 	<nav align="center">
@@ -91,14 +61,8 @@ var switch2 = document.getElementById("OFF");
 
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 mapOption = { 
-	<c:if test="${focusAddress eq 'null' || focusXYlist[0] == 1}">
-	 	center: new daum.maps.LatLng(37.566696, 126.977942), //지도의 중심좌표.
-	 	level: 7//지도의 레벨(확대, 축소 정도)
-	</c:if>
-	<c:if test="${focusAddress ne 'null' && focusXYlist[0] != 1}">
-	 	center: new daum.maps.LatLng('${focusXYlist[0]}', '${focusXYlist[1]}'), //지도의 중심좌표.
-	 	level: 5//지도의 레벨(확대, 축소 정도)
-	</c:if>
+	 center: new daum.maps.LatLng(37.566696, 126.977942), //지도의 중심좌표.
+	 level: 7//지도의 레벨(확대, 축소 정도)
 };
 //지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 var map = new daum.maps.Map(mapContainer, mapOption); 
@@ -190,8 +154,7 @@ var getdata;
 function getMapdata() {
 	if(id != ""){
 		$.ajax({
-			url : "idcheckMapdata",
-			data: {"id":'${sessionScope.log.id}'},
+			url : "getShareData",
 			dataType : "json",
 			error : function(){alert("공공시설 정보 오류");},
 			success : function(data){
@@ -243,7 +206,7 @@ function makeList(page){
 	var totalcount = getdata.length;
 	var pageSize = 10;
 	var finalPage = parseInt((totalcount + (pageSize-1)) / pageSize);
-	$('#list').html('<span>'+id+'님이 등록한 장소는  '+getdata.length+'개 입니다. </span>')
+	$('#list').html('<span> 현재 공유대기중인 데이터는 '+getdata.length+'개 입니다. </span>')
 	$('#list div').remove()
 	
 	/* 거리나 가까운순으로 정렬 */
@@ -255,18 +218,10 @@ function makeList(page){
 		if(i < totalcount){
 			var listOrig = $('#list').html()
 			var panelTop = '<div class="panel panel-default"><div class="panel-heading">'
-			var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3></div>'
-			if(getdata[i].shareox == 'X'){
-				var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>'
-				+'&nbsp&nbsp&nbsp <a href="DeleteMapData.do?name='+getdata[i].name+'">X</a>'
-				+'&nbsp&nbsp&nbsp <a href="ShareMapData.do?name='+getdata[i].name+'">공유하기</a>'		
-				+'</div></div>'
-			}else{
-				var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>'
-				+'&nbsp&nbsp&nbsp <a href="DeleteMapData.do?name='+getdata[i].name+'">X</a>'
-				+'&nbsp&nbsp&nbsp <a href="ShareCancle.do?name='+getdata[i].name+'">공유취소</a>'		
-				+'</div></div>'
-			}
+			var	panelTitle ='<h3 class="panel-title" onclick="javascript:panTo('+getdata[i].wsg84x+','+getdata[i].wsg84y+')" style="cursor:pointer"><strong>'+getdata[i].name+'/'+getdata[i].id+'</strong></h3></div>'
+			var panleBot = '<div class="panel-body"><strong>'+getdata[i].address+'</strong><br><a onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>'
+			+'&nbsp&nbsp&nbsp <a href="DeleteMapData.do?name='+getdata[i].name+'">X</a>'
+			+'</div></div>'
 			$('#list').html(listOrig + panelTop + panelTitle + panleBot);
 		}
 	}

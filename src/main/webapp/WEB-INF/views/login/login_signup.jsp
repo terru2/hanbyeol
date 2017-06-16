@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="modal fade" id="login" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -104,6 +105,9 @@
 				</div>
 			</div>
 			<div class="modal-footer">
+				<c:if test="${log.id eq 'admin'}">
+					<button type="button" class="btn btn-primary" onclick="javascript:sharecheck()">Share Data Check</button>
+				</c:if>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editinfo" data-dismiss="modal">Edit Info</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
@@ -432,5 +436,9 @@
 			alert(e)
 			return false;
 		}
+	}
+	
+	function sharecheck(){
+		location.href="sharecheck.do"
 	}
 	</script>
