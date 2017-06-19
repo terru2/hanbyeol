@@ -34,7 +34,6 @@ public class ShareCheckController {
 	
 	@RequestMapping(value="/ShareCancle.do", method=RequestMethod.POST)
 	public @ResponseBody void ShareMapdataCancle(@RequestParam(value="name")String name){
-		System.out.println(name);
 		mapSearchSeviceImpl.updateSharedataCancle(name);
 	}
 	

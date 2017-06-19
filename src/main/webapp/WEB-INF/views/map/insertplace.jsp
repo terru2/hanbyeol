@@ -71,17 +71,6 @@ map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
 var zoomControl = new daum.maps.ZoomControl();
 map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
 
-var clusterer = new daum.maps.MarkerClusterer({
-	map : map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-	averageCenter : true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-	minLevel : 3
-// 클러스터 할 최소 지도 레벨 
-});
-
-var markers = []; 
-
-var markerInfo = new daum.maps.Marker();
-
 function rangesearchswitch() {
 	if($('#onoff').is(":checked")){
 		var theForm = document.form;
@@ -94,27 +83,82 @@ function rangesearchswitch() {
 	}  
 }
 
+var getdata;
+var id = "${sessionScope.log.id}";
+function getMapdata() {
+	if(id != ""){
+		$.ajax({
+			url : "idcheckMapdata",
+			data: {"id":'${sessionScope.log.id}'},
+			dataType : "json",
+			error : function(){alert("공공시설 정보 오류");},
+			success : function(data){
+				makeMarker(data);
+				getdata = data;
+				page(1);
+			}
+		});
+	}else{
+		alert("Login인 정상적으로 진행되지 않았습니다.");	
+	}
+}
 
-var custominfowindow = new daum.maps.CustomOverlay({
-	clickable : true
+
+var clusterer = new daum.maps.MarkerClusterer({
+	map : map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
+	averageCenter : true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
+	minLevel : 3
+// 클러스터 할 최소 지도 레벨 
 });
 
+function makeMarker(data) {
+	clusterer.clear();
+	
+	var markers = []; 
+	
+	for(var i = 0; i < data.length; i++){
+		var title = data[i].name;
+		var latlng = new daum.maps.LatLng(data[i].wsg84x,data[i].wsg84y);
+		
+		var marker = new daum.maps.Marker({
+			title : title,
+			position : latlng
+			});
+		
+		markers.push(marker);		
+		markerEvent(marker, i);
+	}
+	clusterer.addMarkers(markers);
+}
+
+function markerEvent(marker, i){
+	daum.maps.event.addListener(marker, 'click', function() {
+		markerInfo.setMap(null)
+		panTo(i);
+	});
+}
+
+
 function panTo(i){
-	var moveLatLng = markers[i].getPosition();
+	var moveLatLng = new daum.maps.LatLng(getdata[i].wsg84x,getdata[i].wsg84y);
 
 	if($('.row-offcanvas').hasClass('active')){
 		$('.row-offcanvas').toggleClass('active');
 	}
 	
+	map.setLevel(3);
 	map.panTo(moveLatLng);
 	sumUpInfowindow(i, moveLatLng);	
 }
 
+var custominfowindow = new daum.maps.CustomOverlay({
+	clickable : true
+});
 function sumUpInfowindow(i, LatLng){
 	var content = '<div class="customInfo">' + 
 				'    <div class="sumupinfo">' + 
 				'        <div class="title">' + 
-				'			<strong>' + markers[i].getTitle() + '</strong>' +
+				'			<strong>' + getdata[i].name + '</strong>' +
 				'			<button type="button" class="close" onclick="custominfowindow.setMap(null)">' + 
 				'				<span>&times;</span>' + 
 				'			</button>' + 
@@ -135,7 +179,6 @@ function sumUpInfowindow(i, LatLng){
 }
 
 
-var id = "${sessionScope.log.id}";
 function MakeInfoWindow(latlng, roadAddress, jibunAddress){
 	var jibunAddress = jibunAddress.replace(/(\s*)/g,"");
 	var roadAddress = roadAddress.replace(/(\s*)/g,"");
@@ -206,6 +249,7 @@ function searchDetailAddrFromCoords(coords, callback) {
     geocoder.coord2detailaddr(coords, callback);
 }
 
+var markerInfo = new daum.maps.Marker();
 daum.maps.event.addListener(map, 'click', function(mouseEvent){
 	
 	var latlng = mouseEvent.latLng;
@@ -214,7 +258,7 @@ daum.maps.event.addListener(map, 'click', function(mouseEvent){
 	markerInfo.setPosition(latlng);
 	markerInfo.setMap(map);
 	
-	searchDetailAddrFromCoords(mouseEvent.latLng, function(status, result) {
+	searchDetailAddrFromCoords(latlng, function(status, result) {
         
 		if (status === daum.maps.services.Status.OK) {
         	console.log(result);
@@ -252,67 +296,24 @@ function MakeInfopanTo(latlng){
 	map.panTo(pointTolatlng);
 }
 	
-function makeMarker(data) {
-	for(var i = 0; i < data.length; i++){
-		var title = data[i].name;
-		var latlng = new daum.maps.LatLng(data[i].wsg84x,data[i].wsg84y);
-		
-		var marker = new daum.maps.Marker({
-			title : title,
-			position : latlng
-			});
-		
-		markers.push(marker);		
-		markerEvent(marker, i);
-	}
-	clusterer.addMarkers(markers);
-}
-
-function markerEvent(marker, i){
-	daum.maps.event.addListener(marker, 'click', function() {
-		markerInfo.setMap(null)
-		panTo(i);
-	});
-}
-
-var getdata;
-function getMapdata() {
-	if(id != ""){
-		$.ajax({
-			url : "idcheckMapdata",
-			data: {"id":'${sessionScope.log.id}'},
-			dataType : "json",
-			error : function(){alert("공공시설 정보 오류");},
-			success : function(data){
-				makeMarker(data);
-				getdata = data;
-				page(1);
-			}
-		});
-	}else{
-		alert("Login인 정상적으로 진행되지 않았습니다.");	
-	}
-}
-
-
-function info(cnt) {
+function info(i) {
 	var basic = $('#shareinfo').html();
 	
-	var shareinfobtn = '<a class="btn btn-danger" href="DeleteMapData.do?name='+getdata[cnt].name+'">장소 삭제</a>';
+	var shareinfobtn = '<button class="btn btn-danger" onclick="shareControl('+i+', 3)" data-dismiss="modal">장소 삭제</button>';
 	
-	if(getdata[cnt].shareox == 'X'){
-		shareinfobtn = '<a class="btn btn-success" href="ShareMapData.do?name='+getdata[cnt].name+'">공유 요청</a>' + shareinfobtn;
+	if(getdata[i].shareox == 'X'){
+		shareinfobtn = '<button class="btn btn-success" onclick="shareControl('+i+', 1)" data-dismiss="modal">공유 요청</button>' + shareinfobtn;
 	}else{
-		shareinfobtn = '<a class="btn btn-warning " href="ShareCancle.do?name='+getdata[cnt].name+'">공유 취소</a>' + shareinfobtn;
+		shareinfobtn = '<button class="btn btn-warning" onclick="shareControl('+i+', 2)" data-dismiss="modal">공유 취소</button>' + shareinfobtn;
 	}
 	
-	$('.infoname').html(getdata[cnt].name + '<small id="category" class="infocategory"> (' + getdata[cnt].category1 + ')</small>')
-	$('.infoid').text(getdata[cnt].id)
-	$('.infoaddress').text(getdata[cnt].address)
-	$('.infophonenumber').text(getdata[cnt].phonenumber)
-	$('.infotime').text(getdata[cnt].time)
-	$('.infocloseddays').text(getdata[cnt].closeddays)
-	$('.infocomments').text(getdata[cnt].comments)
+	$('.infoname').html(getdata[i].name + '<small id="category" class="infocategory"> (' + getdata[i].category1 + ')</small>')
+	$('.infoid').text(getdata[i].id)
+	$('.infoaddress').text(getdata[i].address)
+	$('.infophonenumber').text(getdata[i].phonenumber)
+	$('.infotime').text(getdata[i].time)
+	$('.infocloseddays').text(getdata[i].closeddays)
+	$('.infocomments').text(getdata[i].comments)
 	$('.infobtn').html(shareinfobtn)
 	
 	$('#shareinfo').modal('show');
@@ -326,8 +327,9 @@ function makeList(page){
 	var totalcount = getdata.length;
 	var pageSize = 10;
 	var finalPage = parseInt((totalcount + (pageSize-1)) / pageSize);
-	$('#list').html('<span>'+id+'님이 등록한 장소는  '+getdata.length+'개 입니다. </span>')
-	$('#list div').remove()
+	
+	$('#list').empty()
+	$('#list').html('<h3>공유 요청 자료</h3><span> 현재 공유대기중인 데이터는 '+getdata.length+'개 입니다. </span>')
 	
 	/* 거리나 가까운순으로 정렬 */
 	getdata.sort(function (a, b) { 
@@ -341,24 +343,50 @@ function makeList(page){
 			var sharebtn;
 			
 			if(getdata[i].shareox == 'X'){
-				sharebtn = '<a class="btn btn-xs btn-success pull-right" href="ShareMapData.do?name='+getdata[i].name+'" style="margin-right: 10px;">공유 요청</a>'
+				sharebtn = '<button class="btn btn-xs btn-success pull-right" onclick="shareControl('+i+', 1)" style="margin-right: 10px;">공유 요청</button>'
 			}else{
-				sharebtn = '<a class="btn btn-xs btn-warning pull-right" href="ShareCancle.do?name='+getdata[i].name+'" style="margin-right: 10px;">공유 취소</a>'
+				sharebtn = '<button class="btn btn-xs btn-warning pull-right" onclick="shareControl('+i+', 2)" style="margin-right: 10px;">공유 취소</button>'
 			}
 			
 			var panel = '<div class="panel panel-default">' + 
 						'	<div class="panel-heading">' + 
-						'		<h3 class="panel-title" onclick="panTo('+i+')" style="cursor:pointer"><strong>'+markers[i].getTitle()+'</strong></h3>' + 
+						'		<h3 class="panel-title" onclick="panTo('+i+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3>' + 
 						'	</div>' + 
 						'	<div class="panel-body"><strong>'+getdata[i].address+'</strong><br>' + 
 						'		<a class="link" onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>' +
-						'		<a class="btn btn-xs btn-danger pull-right" href="DeleteMapData.do?name='+getdata[i].name+'">장소 삭제</a>' + sharebtn
+						'		<button class="btn btn-xs btn-danger pull-right" onclick="shareControl('+i+', 3)">장소 삭제</button>' + sharebtn
 						'	</div>' + 
 						'</div>';
-			$('#list').html(listOrig + panel);
+			$('#list').append(panel);
 		}
 	}
 }	
+
+function shareControl(i, type){
+	var url;
+	
+	if(type == 1){
+		url = 'ShareMapData.do';
+	}else if(type == 2){
+		url = 'ShareCancle.do';
+	}else if(type == 3){
+		url = 'DeleteMapData.do';
+	}
+	
+	$.ajax({
+		type : 'POST',  
+		url : url,
+		data:{ "name" :  getdata[i].name},
+		success : function(){
+				if($('.row-offcanvas').hasClass('active')){
+					$('.row-offcanvas').toggleClass('active');
+				}
+				$('.sidebar').animate({ scrollTop: 0 }, 600);
+				custominfowindow.setMap(null);
+				getMapdata()
+			}
+	});
+}
 
 
 function pageBlcokCount(pageNo, pageBlockNo, pageBlock, totalpageBlock){

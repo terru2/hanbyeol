@@ -18,6 +18,7 @@ $(document).ready(function(){
       <ul id="page" class="pagination" >
       </ul>
    </nav>
+   <div id="toTop" class="btn btn-info"><span class="glyphicon glyphicon-chevron-up"></span></div>
 </div>
 <script>
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -35,78 +36,6 @@ map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
 //지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 var zoomControl = new daum.maps.ZoomControl();
 map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
-
-var clusterer = new daum.maps.MarkerClusterer({
-	map : map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
-	averageCenter : true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-	minLevel : 3
-//클러스터 할 최소 지도 레벨 
-});
-
-var markers = []; 
-//marker.setMap(map);
-var markerInfo = new daum.maps.Marker();
-
-function makeMarker(data) {
-	for(var i = 0; i < data.length; i++){
-		var title = data[i].name;
-		var latlng = new daum.maps.LatLng(data[i].wsg84x,data[i].wsg84y);
-		
-		var marker = new daum.maps.Marker({
-			title : title,
-			position : latlng
-			});
-		
-		markers.push(marker);
-		markerEvent(marker, i);
-	}
-	clusterer.addMarkers(markers);
-}
-
-function markerEvent(marker, i){
-	daum.maps.event.addListener(marker, 'click', function() {
-		panTo(i);
-	});
-}
-
-var custominfowindow = new daum.maps.CustomOverlay({
-	clickable : true
-});
-
-function panTo(i){
-	var moveLatLng = markers[i].getPosition();
-
-	if($('.row-offcanvas').hasClass('active')){
-		$('.row-offcanvas').toggleClass('active');
-	}
-	
-	map.panTo(moveLatLng);
-	sumUpInfowindow(i, moveLatLng);	
-}
-
-function sumUpInfowindow(i, LatLng){
-	var content = '<div class="customInfo">' + 
-				'    <div class="sumupinfo">' + 
-				'        <div class="title">' + 
-				'			<strong>' + markers[i].getTitle() + '</strong>' + '<small> (' + getdata[i].id + ')</small>' + 
-				'			<button type="button" class="close" onclick="custominfowindow.setMap(null)">' + 
-				'				<span>&times;</span>' + 
-				'			</button>' + 
-				'        </div>' + 
-				'        <div class="body">' + 
-				'            <div class="desc">' + 
-				'                <div class="address">'+ getdata[i].address +'</div>' + 
-				'                <div><a class="link" onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div>' + 
-				'            </div>' + 
-				'        </div>' + 
-				'    </div>' +    
-				'</div>';
-	
-	custominfowindow.setMap(null);
-	custominfowindow.setPosition(LatLng);
-	custominfowindow.setContent(content);
-	custominfowindow.setMap(map);
-}
 
 var id = "${sessionScope.log.id}";
    
@@ -128,20 +57,96 @@ function getMapdata() {
    }
 }
 
-function info(cnt) {
+var clusterer = new daum.maps.MarkerClusterer({
+	map : map,
+	averageCenter : true,
+	minLevel : 3
+});
+
+
+function makeMarker(data) {
+	clusterer.clear();
+	
+	var markers = [];
+	
+	for(var i = 0; i < data.length; i++){
+		
+		var title = data[i].name;
+		var latlng = new daum.maps.LatLng(data[i].wsg84x,data[i].wsg84y);
+		
+		var marker = new daum.maps.Marker({
+			title : title,
+			position : latlng
+			});
+		
+		markers.push(marker);
+		markerEvent(marker, i);
+	}
+
+	clusterer.addMarkers(markers);
+}
+
+function markerEvent(marker, i){
+	daum.maps.event.addListener(marker, 'click', function() {
+		panTo(i);
+	});
+}
+
+
+function panTo(i){
+	var moveLatLng = new daum.maps.LatLng(getdata[i].wsg84x,getdata[i].wsg84y);
+
+	if($('.row-offcanvas').hasClass('active')){
+		$('.row-offcanvas').toggleClass('active');
+	}
+	
+	map.setLevel(3);
+	map.panTo(moveLatLng);
+	sumUpInfowindow(i, moveLatLng);	
+}
+
+var custominfowindow = new daum.maps.CustomOverlay({
+	clickable : true
+});
+function sumUpInfowindow(i, LatLng){
+	var content = '<div class="customInfo">' + 
+				'    <div class="sumupinfo">' + 
+				'        <div class="title">' + 
+				'			<strong>' + getdata[i].name + '</strong>' + '<small> (' + getdata[i].id + ')</small>' + 
+				'			<button type="button" class="close" onclick="custominfowindow.setMap(null)">' + 
+				'				<span>&times;</span>' + 
+				'			</button>' + 
+				'        </div>' + 
+				'        <div class="body">' + 
+				'            <div class="desc">' + 
+				'                <div class="address">'+ getdata[i].address +'</div>' + 
+				'                <div><a class="link" onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a></div>' + 
+				'            </div>' + 
+				'        </div>' + 
+				'    </div>' +    
+				'</div>';
+	
+	custominfowindow.setMap(null);
+	custominfowindow.setPosition(LatLng);
+	custominfowindow.setContent(content);
+	custominfowindow.setMap(map);
+}
+
+
+function info(i) {
 	var basic = $('#shareinfo').html();
 	
 	var shareinfobtn = '<a class="btn btn-success " href="#">등록 확인하기</a>' + 
-						'<button class="btn btn-warning" onclick="shareControl('+cnt+', 1)" data-dismiss="modal">공유 취소</button>' + 
-						'<button class="btn btn-danger" onclick="shareControl('+cnt+', 2)" data-dismiss="modal">장소 삭제</button>';
+						'<button class="btn btn-warning" onclick="shareControl('+i+', 1)" data-dismiss="modal">공유 취소</button>' + 
+						'<button class="btn btn-danger" onclick="shareControl('+i+', 2)" data-dismiss="modal">장소 삭제</button>';
 	
-	$('.infoname').html(getdata[cnt].name + '<small id="category" class="infocategory"> (' + getdata[cnt].category1 + ')</small>')
-	$('.infoid').text(getdata[cnt].id)
-	$('.infoaddress').text(getdata[cnt].address)
-	$('.infophonenumber').text(getdata[cnt].phonenumber)
-	$('.infotime').text(getdata[cnt].time)
-	$('.infocloseddays').text(getdata[cnt].closeddays)
-	$('.infocomments').text(getdata[cnt].comments)
+	$('.infoname').html(getdata[i].name + '<small id="category" class="infocategory"> (' + getdata[i].category1 + ')</small>')
+	$('.infoid').text(getdata[i].id)
+	$('.infoaddress').text(getdata[i].address)
+	$('.infophonenumber').text(getdata[i].phonenumber)
+	$('.infotime').text(getdata[i].time)
+	$('.infocloseddays').text(getdata[i].closeddays)
+	$('.infocomments').text(getdata[i].comments)
 	$('.infobtn').html(shareinfobtn)
 	
 	$('#shareinfo').modal('show');
@@ -156,8 +161,8 @@ function makeList(page){
 	var pageSize = 10;
 	var finalPage = parseInt((totalcount + (pageSize-1)) / pageSize);
 	
-	$('#list').html('<h3>공유 요청 자료</h3><span> 현재 공유대기중인 데이터는 <span id="cnt">'+getdata.length+'</span>개 입니다. </span>')
-	$('#list div').remove()
+	$('#list').empty()
+	$('#list').html('<h3>공유 요청 자료</h3><span> 현재 공유대기중인 데이터는 '+getdata.length+'개 입니다. </span>')
 	
 	for(var i = pageSize*(page-1); i < pageSize*page; i++){
 		if(i < totalcount){
@@ -166,7 +171,7 @@ function makeList(page){
 			var panel = '<div class="panel panel-default" id="'+i+'">' + 
 						'	<div class="panel-heading">' + 
 						'		<h3 class="panel-title" onclick="panTo('+i+')" style="cursor:pointer">' + 
-						'			<strong>'+markers[i].getTitle()+'</strong>' + ' (' + getdata[i].id + ')' + 
+						'			<strong>'+getdata[i].name+'</strong>' + ' (' + getdata[i].id + ')' + 
 						'		</h3>' + 
 						'	</div>' + 
 						'	<div class="panel-body"><strong>'+getdata[i].address+'</strong><br>' + 
@@ -175,13 +180,12 @@ function makeList(page){
 						'		<button class="btn btn-xs btn-warning pull-right" onclick="shareControl('+i+', 1)" style="margin-right: 10px;">공유 취소</button>' + 
 						'	</div>' + 
 						'</div>';
-			$('#list').html(listOrig + panel);
+			$('#list').append(panel);
 		}
 	}
 }
 
 function shareControl(i, type){
-	var cnt = parseInt($('#cnt').text());
 	var url;
 	
 	if(type == 1){
@@ -195,16 +199,12 @@ function shareControl(i, type){
 		url : url,
 		data:{ "name" :  getdata[i].name},
 		success : function(){
-				map.panTo(markers[i].getPosition());
-				markers[i].setMap(null);
-				custominfowindow.setMap(null);
-				
 				if($('.row-offcanvas').hasClass('active')){
 					$('.row-offcanvas').toggleClass('active');
 				}
-				
-				$('#'+i).remove();
-				$('#cnt').html(--cnt);
+				$('.sidebar').animate({ scrollTop: 0 }, 600);
+				custominfowindow.setMap(null);
+				getMapdata()
 			}
 	});
 }
@@ -297,5 +297,16 @@ function page(pageNo){
    }
 }
 makeList(pageNo);   
-} 
+}
+
+$('.sidebar').scroll(function () {
+	if ($(this).scrollTop() != 0) {
+		$('#toTop').fadeIn();
+	} else {
+		$('#toTop').fadeOut();
+	}
+}); 
+$('#toTop').click(function(){
+	$('.sidebar').animate({ scrollTop: 0 }, 600);
+});
 </script>

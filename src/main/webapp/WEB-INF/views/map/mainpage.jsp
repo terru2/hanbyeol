@@ -141,7 +141,7 @@ function panTo(i){
 		$('.row-offcanvas').toggleClass('active');
 	}
 	
-// 	map.setLevel(3);	
+	map.setLevel(3);	
 	map.panTo(moveLatLng);
 	sumUpInfowindow(i, moveLatLng);	
 }
@@ -222,48 +222,49 @@ function info(cnt) {
 		dataType : "json",
 		error : function(){
 		alert("컬럼 정보요청 오류");			
-	},
-	success : function(data){
-		oneData = data;
-	}
-	});
-	sessionStorage.setItem("category1",oneData.category1);
-	$('.infoname').html('<span id="sisulName">'+oneData.name+'</span>' 
-			+ ' <span id="rate" class="label label-warning"></span> <small id="category" class="infocategory2"> ('
-			+ oneData.category2
-			+ ')</small>')			
-	$('.infoaddress').append('<div id="place">'+oneData.address+'</div>')
-	$('.infophonenumber').text(oneData.phonenumber)
-	$('.infotime').text(oneData.time)
-	$('.infocloseddays').text(oneData.closeddays)
-	$('.infocomments').text(oneData.comments)
-	
-	
-if(oneData.category1 == "어린이집"){		
-		var arrayPlace = new Array();
-		arrayPlace = oneData.comments.split(";");
+		},
+		success : function(data){
 		
-		for(var i=0;i<3;i++){			
-			if(arrayPlace.length == i) break;
-			if(arrayPlace[i].search(/단지/i) != -1 || arrayPlace[i].search(/층/i) != -1 || arrayPlace[i].search(/호/i) != -1 ||arrayPlace[i].search(/동/i) != -1){
-				$('#place').append('<br>'+arrayPlace[i]);
-				continue;
-			}
-			if(arrayPlace[i].search(/홈페이지/i) != -1){
-				var hrefAddress = arrayPlace[i].substring(8,arrayPlace[i].length);	
-				console.log(hrefAddress);
-				$('.infocomments').append('<br><a href="'+hrefAddress+'" target="_blank">홈페이지로 가기</a>');
-				continue;
-			}
-			$('.infocomments').text(arrayPlace[i]);
+			sessionStorage.setItem("category1",data.category1);
+			$('.infoname').html('<span id="sisulName">'+data.name+'</span>' 
+					+ ' <span id="rate" class="label label-warning"></span> <small id="category" class="infocategory2"> ('
+					+ data.category2
+					+ ')</small>')			
+			$('.infoaddress').append('<div id="place">'+data.address+'</div>')
+			$('.infophonenumber').text(data.phonenumber)
+			$('.infotime').text(data.time)
+			$('.infocloseddays').text(data.closeddays)
+			$('.infocomments').text(data.comments)
+			
+			
+			if(data.category1 == "어린이집"){		
+				var arrayPlace = new Array();
+				arrayPlace = data.comments.split(";");
+				
+				for(var i=0;i<3;i++){			
+					if(arrayPlace.length == i) break;
+					if(arrayPlace[i].search(/단지/i) != -1 || arrayPlace[i].search(/층/i) != -1 || arrayPlace[i].search(/호/i) != -1 ||arrayPlace[i].search(/동/i) != -1){
+						$('#place').append('<br>'+arrayPlace[i]);
+						continue;
+					}
+					if(arrayPlace[i].search(/홈페이지/i) != -1){
+						var hrefAddress = arrayPlace[i].substring(8,arrayPlace[i].length);	
+						console.log(hrefAddress);
+						$('.infocomments').append('<br><a href="'+hrefAddress+'" target="_blank">홈페이지로 가기</a>');
+						continue;
+					}
+					$('.infocomments').text(arrayPlace[i]);
+				}
+			}	
+			
+			$('#information').modal('show');
+			
+			$('#information').on('hidden.bs.modal', function(){
+				$('#information').html(basic)
+			});
+		
 		}
-}	
-	
-	$('#information').modal('show');
-	
-	$('#information').on('hidden.bs.modal', function(){
-		$('#information').html(basic)
-	});	
+	});
 }
 
 $('.sidebar').scroll(function () {

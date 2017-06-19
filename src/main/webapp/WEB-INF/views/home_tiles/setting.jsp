@@ -8,7 +8,7 @@
 <!--// Bootstrap-select Style Load -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css"/>
 <!-- Custom styles for this template / 모바일 화면 offcanvas css-->
-<link type="text/css" rel="stylesheet" href="resources/css/offcanvas.css?ver=0"/>
+<link type="text/css" rel="stylesheet" href="resources/css/offcanvas.css?ver=1"/>
 
 <!--// jQuery Load -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

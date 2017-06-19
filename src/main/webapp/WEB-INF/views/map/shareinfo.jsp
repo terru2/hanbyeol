@@ -3,7 +3,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span><b data-toggle="tooltip" title="창을 닫으시겠습니까?">&times;</b></span></button>					
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>					
 				<h4 class="modal-title">상세 정보</h4>							
 			</div>
 			<div class="modal-body">
