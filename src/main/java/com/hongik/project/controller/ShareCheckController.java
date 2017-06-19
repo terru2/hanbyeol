@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,10 +26,16 @@ public class ShareCheckController {
 		return "redirect:insertplace.do";
 	}
 	
-	@RequestMapping(value="/ShareCancle.do")
+/*	@RequestMapping(value="/ShareCancle.do")
 	public String ShareMapdataCancle(@RequestParam(value="name")String name){
 		mapSearchSeviceImpl.updateSharedataCancle(name);
 		return "redirect:insertplace.do";
+	}*/
+	
+	@RequestMapping(value="/ShareCancle.do", method=RequestMethod.POST)
+	public @ResponseBody void ShareMapdataCancle(@RequestParam(value="name")String name){
+		System.out.println(name);
+		mapSearchSeviceImpl.updateSharedataCancle(name);
 	}
 	
 	@RequestMapping(value="/sharecheck.do")

@@ -101,10 +101,15 @@ public class MapController {
 		return "map/focusinsertplace";
 	}
 	
-	@RequestMapping(value="DeleteMapData.do")
+	/*@RequestMapping(value="DeleteMapData.do")
 	public String DeleteMapData(@RequestParam(value="name", required=true)String name){
 		mapSearchSeviceImpl.deleteMapData(name);
 		return "redirect:insertplace.do";
+	}*/
+	
+	@RequestMapping(value="DeleteMapData.do", method=RequestMethod.POST)
+	public @ResponseBody void DeleteMapData(@RequestParam(value="name", required=true)String name){
+		mapSearchSeviceImpl.deleteMapData(name);
 	}
 	
 	@RequestMapping(value="DeleteMainMapData.do")

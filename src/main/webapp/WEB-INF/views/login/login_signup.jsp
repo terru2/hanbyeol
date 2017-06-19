@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="modal fade" id="login" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -10,16 +10,17 @@
 			<div class="modal-body">
 				<div class="form-group">
 					<label>ID</label>
-					<input type="text" id="loginid" name="id" class="form-control" placeholder="input your ID" onkeydown="if(event.keyCode==13) chkId()">
+					<input type="text" id="loginid" name="id" class="form-control" placeholder="input your ID" onkeydown="if(event.keyCode==13) chkLogin()">
 				</div>
 				<div class="form-group">
 					<label>Password</label>
-					<input type="password" id="loginpw" name="password" class="form-control" placeholder="input your PW" onkeydown="if(event.keyCode==13) chkId()">
+					<input type="password" id="loginpw" name="password" class="form-control" placeholder="input your PW" onkeydown="if(event.keyCode==13) chkLogin()">
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary loginbtn" onclick="chkId()">Log in</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default loginbtn" onclick="chkLogin()">Log in</button>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signup">Sign Up</button>
+<!-- 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
 			</div>
 		</div>
 	</div>
@@ -90,26 +91,30 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
-				<h4 class="modal-title">My Info</h4>
+				<h4 class="modal-title">My Page</h4>
 			</div>
 			<div class="modal-body">
 				<div>
 					<label>ID</label>
 					${log.id }<br>
-				<label>NickName</label>
-				${log.nickname }<br>
-				<label>PhoneNumber</label>
-				${log.phonenumber }<br>
-				<label>Email</label>
-				${log.email }
+					<label>NickName</label>
+					${log.nickname }<br>
+					<label>PhoneNumber</label>
+					${log.phonenumber }<br>
+					<label>Email</label>
+					${log.email }
 				</div>
 			</div>
 			<div class="modal-footer">
 				<c:if test="${log.id eq 'admin'}">
-					<button type="button" class="btn btn-primary" onclick="javascript:sharecheck()">Share Data Check</button>
+					<button type="button" class="btn btn-success" onclick="javascript:sharecheck()">공유 요청 확인</button>
 				</c:if>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editinfo" data-dismiss="modal">Edit Info</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<c:if test="${log.id ne 'admin'}">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editinfo">Edit Info</button>
+					<button type="button" class="btn btn-success" onclick="location.href='insertplace.do'">나만의 장소 추가</button>
+				</c:if>
+				<button type="button" class="btn btn-default" onclick="logout()">Log out</button>
+<!-- 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
 			</div>
 		</div>
 	</div>
@@ -196,7 +201,18 @@
     });
  	
  	
-	function chkId(){
+ 	function logout(){
+		$.ajax({
+		type : 'POST',  
+		url : 'logout',  
+		success : function(){
+			location.reload()
+			}
+		});
+ 	}
+ 	
+ 	
+	function chkLogin(){
 		var loginid = $('#loginid').val()
 		var loginpw = $('#loginpw').val()
 		
@@ -439,6 +455,6 @@
 	}
 	
 	function sharecheck(){
-		location.href="sharecheck.do"
-	}
+	      location.href="sharecheck.do"
+	   }
 	</script>
