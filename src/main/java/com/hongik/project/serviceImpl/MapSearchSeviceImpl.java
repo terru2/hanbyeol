@@ -75,12 +75,24 @@ public class MapSearchSeviceImpl implements MapSearchSevice {
 	public ArrayList<MapDataVO> getTempShareCheckData() {
 		return dao.getTempShareCheckData();
 	}
-
-	public void updateSharedataOK(String name) {
-		dao.updateSharedataOK(name);
+	
+	public ArrayList<MapDataVO> getTempSharingData() {
+		return dao.getTempSharingData();
 	}
 
-	public void updateSharedataCancle(String name) {
-		dao.updateSharedataCancle(name);
+	public void updateSharedataOK(MapDataVO vo) {
+		dao.updateSharedataOK(vo);
+	}
+
+	public void updateSharedataCancle(MapDataVO vo) {
+		dao.updateSharedataCancle(vo);
+	}
+
+	public void updateSharedataStatus(MapDataVO vo) {
+		dao.updateSharedataStatus(vo);
+	}
+
+	public void insertMapTableShareData(MapDataVO vo) {
+		dao.insertMapTableShareData(vo);
 	}
 }

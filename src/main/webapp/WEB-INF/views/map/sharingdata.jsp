@@ -43,7 +43,7 @@ var getdata;
 function getMapdata() {
    if(id != ""){
       $.ajax({
-         url : "getShareData",
+         url : "getSharingData",
          dataType : "json",
          error : function(){alert("공공시설 정보 오류");},
          success : function(data){
@@ -135,8 +135,7 @@ function sumUpInfowindow(i, LatLng){
 
 function info(i) {
 	var basic = $('#shareinfo').html();
-	var shareinfobtn = '<a class="btn btn-success " href="sharingdata.do?name='+getdata[i].name+'&id='+getdata[i].id+'">등록</a>' + 
-						'<button class="btn btn-warning" onclick="shareControl('+i+', 1)" data-dismiss="modal">취소</button>' + 
+	var shareinfobtn = 	'<button class="btn btn-warning" onclick="shareControl('+i+', 1)" data-dismiss="modal">취소</button>' + 
 						'<button class="btn btn-danger" onclick="shareControl('+i+', 2)" data-dismiss="modal">장소 삭제</button>';
 	
 	$('.infoname').html(getdata[i].name + '<small id="category" class="infocategory"> (' + getdata[i].category1 + ')</small>')
@@ -161,7 +160,7 @@ function makeList(page){
 	var finalPage = parseInt((totalcount + (pageSize-1)) / pageSize);
 	
 	$('#list').empty()
-	$('#list').html('<h3>공유 요청 자료</h3><span> 현재 공유대기중인 데이터는 '+getdata.length+'개 입니다. </span>')
+	$('#list').html('<h3>공유 중인 자료</h3><span> 현재 공유중인 데이터는 '+getdata.length+'개 입니다. </span>')
 	
 	for(var i = pageSize*(page-1); i < pageSize*page; i++){
 		if(i < totalcount){

@@ -339,18 +339,23 @@ function makeList(page){
 	for(var i = pageSize*(page-1); i < pageSize*page; i++){
 		if(i < totalcount){
 			var listOrig = $('#list').html()
-			
+			var sharstauts;
 			var sharebtn;
 			
-			if(getdata[i].shareox == 'X'){
+			if(getdata[i].shareox == '1'){
+				sharstauts = "";
 				sharebtn = '<button class="btn btn-xs btn-success pull-right" onclick="shareControl('+i+', 1)" style="margin-right: 10px;">공유 요청</button>'
-			}else{
+			}else if(getdata[i].shareox == '2'){
+				sharstauts = "/ 공유 대기중";
+				sharebtn = '<button class="btn btn-xs btn-warning pull-right" onclick="shareControl('+i+', 2)" style="margin-right: 10px;">공유 취소</button>'
+			}else if(getdata[i].shareox == '3'){
+				sharstauts = "/ 공유중";
 				sharebtn = '<button class="btn btn-xs btn-warning pull-right" onclick="shareControl('+i+', 2)" style="margin-right: 10px;">공유 취소</button>'
 			}
 			
 			var panel = '<div class="panel panel-default">' + 
 						'	<div class="panel-heading">' + 
-						'		<h3 class="panel-title" onclick="panTo('+i+')" style="cursor:pointer"><strong>'+getdata[i].name+'</strong></h3>' + 
+						'		<h3 class="panel-title" onclick="panTo('+i+')" style="cursor:pointer"><strong>'+getdata[i].name+sharstauts+'</strong></h3>' + 
 						'	</div>' + 
 						'	<div class="panel-body"><strong>'+getdata[i].address+'</strong><br>' + 
 						'		<a class="link" onclick="info(' + i + ')" style="cursor:pointer">상세정보 보기</a>' +
@@ -376,7 +381,8 @@ function shareControl(i, type){
 	$.ajax({
 		type : 'POST',  
 		url : url,
-		data:{ "name" :  getdata[i].name},
+		data:{ "name" :  getdata[i].name,
+				"id" : getdata[i].id},
 		success : function(){
 				if($('.row-offcanvas').hasClass('active')){
 					$('.row-offcanvas').toggleClass('active');

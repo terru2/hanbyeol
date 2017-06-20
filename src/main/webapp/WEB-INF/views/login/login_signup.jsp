@@ -107,6 +107,7 @@
 			</div>
 			<div class="modal-footer">
 				<c:if test="${log.id eq 'admin'}">
+					<button type="button" class="btn btn-success" onclick="javascript:sharingdata()">공유중인 데이터</button>
 					<button type="button" class="btn btn-success" onclick="javascript:sharecheck()">공유 요청 확인</button>
 				</c:if>
 				<c:if test="${log.id ne 'admin'}">
@@ -455,6 +456,10 @@
 	}
 	
 	function sharecheck(){
-	      location.href="sharecheck.do"
-	   }
+	    location.href="sharecheck.do"
+	}
+	
+	function sharingdata(){
+		location.href="showsharingdata.do"
+	}
 	</script>

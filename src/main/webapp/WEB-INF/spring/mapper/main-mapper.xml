@@ -76,14 +76,12 @@
 	<select id="mapall" resultType="com.hongik.project.vo.MapDataVO">
 		select name, city, township, address, wsg84x, wsg84y 
 		from mapdata_table
-		where id = 'admin'
 	</select> 
 	
 	<select id="all" parameterType="com.hongik.project.vo.UpdateVO" resultType="com.hongik.project.vo.MapDataVO">
 		select name, city, township, address, wsg84x, wsg84y 
 		from mapdata_table 
 		where category1 = #{category1}
-		and id = 'admin'
 	</select>
 	
 	<!-- DB 데이터 중 경위도(X,Y)가 없는 경우 geocode를 사용 주소를 좌표로 변환후 DB 입력  -->
@@ -124,20 +122,41 @@
  	
  	<select id="getShareCheckData" resultType="com.hongik.project.vo.MapDataVO">
  		select * from TEMP_MAPDATA_TABLE
- 		where SHAREOX = 'O'
+ 		where SHAREOX = '2'
  	</select>
  	
- 	<update id="updatesharedate" parameterType="String">
+ 	<select id="getShringData" resultType="com.hongik.project.vo.MapDataVO">
+ 		select * from TEMP_MAPDATA_TABLE
+ 		where SHAREOX = '3'
+ 	</select>
+ 	
+ 	<update id="updatesharedate" parameterType="com.hongik.project.vo.MapDataVO">
 		update TEMP_MAPDATA_TABLE
-		set SHAREOX = 'O'
+		set SHAREOX = '2'
 		where name = #{name}
+		and id = #{id}
 	</update>
 	
-	<update id="updatesharedatecancle" parameterType="String">
+	<update id="updatesharedatecancle" parameterType="com.hongik.project.vo.MapDataVO">
 		update TEMP_MAPDATA_TABLE
-		set SHAREOX = 'X'
+		set SHAREOX = '1'
 		where name = #{name}
+		and id = #{id}
 	</update>
  	
+ 	<update id="updatesharedatestatus" parameterType="com.hongik.project.vo.MapDataVO">
+		update TEMP_MAPDATA_TABLE
+		set SHAREOX = '3'
+		where name = #{name}
+		and id = #{id}
+	</update>
+	
+	<insert id="insertsharedate" parameterType="com.hongik.project.vo.MapDataVO">
+ 		insert into MAPDATA_TABLE(ID, CATEGORY1, NAME, WSG84X, WSG84Y, PHONENUMBER, CLOSEDDAYS, TIME, COMMENTS)
+ 		select ID, CATEGORY1, NAME, WSG84X, WSG84Y, PHONENUMBER, CLOSEDDAYS, TIME, COMMENTS 
+ 		from TEMP_MAPDATA_TABLE
+ 		where name = #{name}
+ 		and id = #{id}
+ 	</insert>
 </mapper>
 

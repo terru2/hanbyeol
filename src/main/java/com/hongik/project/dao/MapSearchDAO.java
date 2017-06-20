@@ -51,7 +51,6 @@ public class MapSearchDAO{
 		return (ArrayList)session.selectList("main.mapall");
 	}
 	
-	
 	public MapDataVO getOneCulum(String name, String address){
 		Map<String, String> para = new HashMap<String, String>();
 		para.put("name", name);
@@ -88,13 +87,24 @@ public class MapSearchDAO{
 	public ArrayList<MapDataVO> getTempShareCheckData() {
 		return (ArrayList)session.selectList("main.getShareCheckData");
 	}
-
-	public void updateSharedataOK(String name) {
-		session.update("main.updatesharedate", name);
-	}
-
-	public void updateSharedataCancle(String name) {
-		session.update("main.updatesharedatecancle", name);
-	}
 	
+	public ArrayList<MapDataVO> getTempSharingData() {
+		return (ArrayList)session.selectList("main.getShringData");
+	}
+
+	public void updateSharedataOK(MapDataVO vo) {
+		session.update("main.updatesharedate", vo);
+	}
+
+	public void updateSharedataCancle(MapDataVO vo) {
+		session.update("main.updatesharedatecancle", vo);
+	}
+
+	public void updateSharedataStatus(MapDataVO vo) {
+		session.update("main.updatesharedatestatus", vo);
+	}
+
+	public void insertMapTableShareData(MapDataVO vo) {
+		session.insert("main.insertsharedate", vo);
+	}
 }
