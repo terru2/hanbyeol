@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="java.util.*, com.hongik.project.vo.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*, com.hongik.project.vo.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <script>
@@ -210,9 +209,6 @@ function makeList(bound){
 }
 
 function info(cnt) {	
-	var basic = $('#information').html();
-	var oneData;
-	sessionStorage.setItem("name", getdata[cnt].name);
 	
 	 $.ajax({//상세정보 불러오는...
 		type : "POST",
@@ -225,47 +221,156 @@ function info(cnt) {
 		},
 		success : function(data){
 		
-			sessionStorage.setItem("category1",data.category1);
-			$('.infoname').html('<span id="sisulName">'+data.name+'</span>' 
-					+ ' <span id="rate" class="label label-warning"></span> <small id="category" class="infocategory2"> ('
-					+ data.category2
-					+ ')</small>')			
-			$('.infoaddress').append('<div id="place">'+data.address+'</div>')
-			$('.infophonenumber').text(data.phonenumber)
-			$('.infotime').text(data.time)
-			$('.infocloseddays').text(data.closeddays)
-			$('.infocomments').text(data.comments)
+			$('.infoname').html('<strong id="sisulName">' + data.name + '</strong> ' + 
+								'<span id="rate" class="label label-warning" style="padding: 0.5% 2% 0.3% 2%;"></span>' + 
+								' <small id="category" class="infocategory2"> (' + String(data.category2).replace(null , '회원추가') + ')</small>')			
+			$('.infoaddress').text(data.address)
+			$('.infophonenumber').text(String(data.phonenumber).replace(null , '정보없음'))
+			$('.infotime').text(String(data.time).replace(null , '정보없음'))
+			$('.infocloseddays').text(String(data.closeddays).replace(null , '정보없음'))
+			$('.infocomments').text(String(data.comments).replace(null , '정보없음'))
 			
+			switch(data.category1){
+				case "도서관"  : $('.img-rounded').attr('src', "resources/images/도서관.jpg"); break;
+				case "도시공원" : $('.img-rounded').attr('src', "resources/images/공원.png"); break;
+				case "주차장"  : $('.img-rounded').attr('src', "resources/images/주차장.jpg"); break;
+				case "어린이집" : $('.img-rounded').attr('src', "resources/images/어린이집.png"); break;
+				case "화장실" : $('.img-rounded').attr('src', "resources/images/화장실.jpg"); break;
+				case "병원" : $('.img-rounded').attr('src', "resources/images/병원.png"); break;
+				case "약국" : $('.img-rounded').attr('src', "resources/images/약국.jpg"); break;
+				case "박물관" : $('.img-rounded').attr('src', "resources/images/박물관.png"); break;
+				case "기타" : $('.img-rounded').attr('src', "resources/images/기타.png"); break;
+			}
 			
-			if(data.category1 == "어린이집"){		
-				var arrayPlace = new Array();
-				arrayPlace = data.comments.split(";");
-				
-				for(var i=0;i<3;i++){			
-					if(arrayPlace.length == i) break;
-					if(arrayPlace[i].search(/단지/i) != -1 || arrayPlace[i].search(/층/i) != -1 || arrayPlace[i].search(/호/i) != -1 ||arrayPlace[i].search(/동/i) != -1){
-						$('#place').append('<br>'+arrayPlace[i]);
-						continue;
-					}
-					if(arrayPlace[i].search(/홈페이지/i) != -1){
-						var hrefAddress = arrayPlace[i].substring(8,arrayPlace[i].length);	
-						console.log(hrefAddress);
-						$('.infocomments').append('<br><a href="'+hrefAddress+'" target="_blank">홈페이지로 가기</a>');
-						continue;
-					}
-					$('.infocomments').text(arrayPlace[i]);
+			$.ajax({
+				type : "GET",
+				url : "return2",
+				data : "name="+getdata[cnt].name,
+				dataType : "json",
+				error : function(){
+					alert("평점 정보요청 오류");			
+					},
+				success : function(data){		
+					$('#rate').text(data);
 				}
-			}	
+			});
+			
+			getBoard(data.name)
 			
 			$('#information').modal('show');
 			
 			$('#information').on('hidden.bs.modal', function(){
-				$('#information').html(basic)
+				$('#reviewPwInput').val("");
+				$('#gpa').selectpicker('val', '★★★★★');
+				$('#gpa').selectpicker('refresh');
+				$('#comment').val("");
+				$('#comment').attr('placeholder','${log.nickname} 회원님의 평가를 입력해주세요.')
 			});
 		
 		}
 	});
 }
+var boardData;
+function getBoard(name){
+
+	$.ajax({
+		type : "POST",
+		url : "Boardinfo",
+		data : "name="+name,
+		dataType : "json",
+		error : function(){
+			alert("게시판 정보요청 오류("+name+")");			
+		},
+		success : function(data){
+			boardData = data;
+			var pageMove = '<hr style="border: solid 1px #e5e5e5;">' + 
+							'<button type="button" id="previous" class="btn btn-default btn-sm" style="float: left;">' + 
+							'	<span class="glyphicon glyphicon-chevron-left"></span>' + 
+							'</button>' + 
+							'<button type="button" id="next" class="btn btn-default btn-sm" style="float: right;">' + 
+							'	<span class="glyphicon glyphicon-chevron-right"></span>' + 
+							'</button>';
+			$('#pageMove').html(pageMove)
+			createtable(data,0);
+		}	
+	});
+}
+
+var page = 0;
+function preBoard(){		
+	page = page - 4;
+	createtable(boardData,page);
+}
+
+function nextBoard(){	
+	page = page + 4;
+	createtable(boardData,page);
+}
+
+function createtable(data,page){
+	$('#createtable').empty()
+	
+	$('#previous').removeClass('disabled');
+	$('#previous').attr('onClick','preBoard()');
+	$('#next').removeClass('disabled');
+	$('#next').attr('onClick','nextBoard()');
+	
+	if(data.length == 0){
+		
+		$('#previous').addClass('disabled');
+		$('#previous').removeAttr('onClick');
+		$('#next').addClass('disabled');
+		$('#next').removeAttr('onClick');
+		
+		var noreview = '<hr style="border: solid 1px #e5e5e5;">' + 
+						'<p class="text-center">아직 평가글이 없습니다</p>';
+		
+		$('#createtable').html(noreview)
+		
+	}else{
+		
+		if(page < 4){
+			$('#previous').addClass('disabled');
+			$('#previous').removeAttr('onClick');
+		}
+		
+		if(page > data.length-5){
+			$('#next').addClass('disabled');
+			$('#next').removeAttr('onClick');
+		}
+		
+		for(var i = page; i < page+4; i++){
+			
+			if(i == data.length){
+				break;
+			}
+			
+			var deleteSetting = '<button type="button" class="btn btn-danger btn-sm" onclick="deleteSetting(' + i + ')" style="float: right;">삭제</button>';
+			
+			if('${sessionScope.log.id}' == 'admin'){
+				deleteSetting = '<button type="button" class="btn btn-danger btn-sm" onclick="deleteComment(' + i + ')" style="float: right;">삭제</button>';
+			}
+			
+			var review ='<div class="col-sm-12" style="padding: 0;">' + 
+						'	<hr style="border: solid 1px #e5e5e5;">' + 
+						'</div>' +
+						'<h5 class="col-sm-4" style="padding: 0; display:inline-flex;">' + 
+						'	<strong>' + data[i].writer + '</strong><span class="label label-warning">' + data[i].gpa + '</span>' + 
+						'</h5>' + 
+						'<div class="col-sm-8" id="boardComment'+i+'" style="padding: 0; display: inline">' + 
+						deleteSetting + 
+						'</div>' + 
+						'<div class="col-sm-12" style="padding: 0;">' + 
+						'	<p>' + data[i].comments + '</p>' +  
+						'</div>';
+			
+			$('#createtable').append(review)
+			
+		}
+	}
+}
+
+
 
 $('.sidebar').scroll(function () {
 	if ($(this).scrollTop() != 0) {

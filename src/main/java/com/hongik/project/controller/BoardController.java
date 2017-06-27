@@ -53,6 +53,11 @@ public class BoardController {
 		//System.out.println("//--- BoardController Start(informat) ---//\n");
 		//System.out.println("writer = "+writer+"\ncomment = "+comments+"\npassword = "+password+"\nrate = "+gpa+"\nname = " + name2+"\ntime"+time);
 		//System.out.println("********** 저장 성공 **********");
+		
+		if(writer==""){
+			writer = "비회원";
+		}
+
 		int success = Boardservice.insertBoard(writer,comments,password,gpa,name2,time);
 //		System.out.println("성공 여부 : "+success);
 		return success;

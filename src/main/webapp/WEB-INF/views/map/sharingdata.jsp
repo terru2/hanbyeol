@@ -53,7 +53,8 @@ function getMapdata() {
          }
       });
    }else{
-      alert("Login인 정상적으로 진행되지 않았습니다.");   
+      alert("Login인 정상적으로 진행되지 않았습니다.");
+      location.href="main.do"
    }
 }
 
@@ -134,24 +135,44 @@ function sumUpInfowindow(i, LatLng){
 
 
 function info(i) {
-	var basic = $('#shareinfo').html();
+	var basic = $('#information').html();
 	var shareinfobtn = 	'<button class="btn btn-warning" onclick="shareControl('+i+', 1)" data-dismiss="modal">취소</button>' + 
 						'<button class="btn btn-danger" onclick="shareControl('+i+', 2)" data-dismiss="modal">장소 삭제</button>';
 	
-	$('.infoname').html(getdata[i].name + '<small id="category" class="infocategory"> (' + getdata[i].category1 + ')</small>')
-	$('.infoid').text(getdata[i].id)
+	$('hr').remove()
+	$('#boardinput').remove()
+	$('#createtable').remove()
+	$('#pageMove').remove()
+						
+	$('.infoname').html('<strong>' + getdata[i].name + '</strong>' +  
+						' <small id="category" class="infocategory2"> (' + getdata[i].category1 + ')</small>')
 	$('.infoaddress').text(getdata[i].address)
-	$('.infophonenumber').text(getdata[i].phonenumber)
-	$('.infotime').text(getdata[i].time)
-	$('.infocloseddays').text(getdata[i].closeddays)
-	$('.infocomments').text(getdata[i].comments)
+	$('.infophonenumber').text(String(getdata[i].phonenumber).replace(null , '정보없음'))
+	$('.infotime').text(String(getdata[i].time).replace(null , '정보없음'))
+	$('.infocloseddays').text(String(getdata[i].closeddays).replace(null , '정보없음'))
+	$('.infocomments').text(String(getdata[i].comments).replace(null , '정보없음'))
+	$('#infodata').append('<dt>등록자</dt>' + 
+						'	<dd class="text-right infoid">' + getdata[i].id + '</dd>')
 	$('.infobtn').html(shareinfobtn)
 	
-	$('#shareinfo').modal('show');
+	switch(getdata[i].category1){
+		case "도서관"  : $('.img-rounded').attr('src', "resources/images/도서관.jpg"); break;
+		case "도시공원" : $('.img-rounded').attr('src', "resources/images/공원.png"); break;
+		case "주차장"  : $('.img-rounded').attr('src', "resources/images/주차장.jpg"); break;
+		case "어린이집" : $('.img-rounded').attr('src', "resources/images/어린이집.png"); break;
+		case "화장실" : $('.img-rounded').attr('src', "resources/images/화장실.jpg"); break;
+		case "병원" : $('.img-rounded').attr('src', "resources/images/병원.png"); break;
+		case "약국" : $('.img-rounded').attr('src', "resources/images/약국.jpg"); break;
+		case "박물관" : $('.img-rounded').attr('src', "resources/images/박물관.png"); break;
+		case "기타" : $('.img-rounded').attr('src', "resources/images/기타.png"); break;
+	}
 	
-	$('#shareinfo').on('hidden.bs.modal', function(){
-		$('#shareinfo').html(basic)
-	});	
+		
+	$('#information').modal('show');
+	
+	$('#information').on('hidden.bs.modal', function(){
+		$('#information').html(basic)
+	});		
 }
 
 function makeList(page){

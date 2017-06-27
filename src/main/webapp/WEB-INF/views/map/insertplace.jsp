@@ -13,18 +13,13 @@ $(document).ready(function(){
 <!-- List 부분  -->
 <div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar">
 	<!-- 조건절들 보여주는 부분  -->
-	<form action="insertplace.do" name="form">
 		<div id="gps" style="padding-top: 10px; padding-bottom: 10px;">
-			<span>현재 위치로 범위 검색 </span>
-			<div class="btn-group" data-toggle="buttons">			
-				<label class="btn btn-default btn-on-2 btn-sm">
-					<input type="radio" name="switch" id="onoff">ON
-				</label>			
-				<label class="btn btn-default btn-off-2 btn-sm active">
-					<input type="radio" name="switch" id="onoff" checked>OFF
-				</label>
-			</div>
+			<span>현재 위치 확인하기 </span>
+			<button class="btn btn-success btn-sm" onclick="rangego()">이동</button>
+			<span>검색 화면으로 이동 </span>
+			<button type="button" class="btn btn-success btn-sm" onclick="location.href='search.do'">검색 화면</button>
 		</div>
+	<form action="insertplace.do" name="form">
 		<div class="input-group" style="padding-top: 10px;">
 			<c:if test="${focusAddress eq 'null'}">
 				<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="focusAddress">
@@ -71,16 +66,37 @@ map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
 var zoomControl = new daum.maps.ZoomControl();
 map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
 
-function rangesearchswitch() {
-	if($('#onoff').is(":checked")){
-		var theForm = document.form;
-		theForm.action = "focusinsertplace.do";
-		theForm.submit();
-	}else{
-		var theForm = document.form;
-		theForm.action = "insertplace.do";
-		theForm.submit();	
-	}  
+function rangego(){
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			var lat = position.coords.latitude;
+			var lng = position.coords.longitude;
+			
+			var rangenow = new daum.maps.LatLng(lat,lng);
+			
+			var imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
+			var imageSize = new daum.maps.Size(24, 35);
+			var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize);
+			
+			var rangemarker = new daum.maps.Marker({
+				map : map,
+				position : rangenow, 
+					title : '현재위치', 
+					image : markerImage
+			});
+			
+			rangemarker.setMap(map);
+			map.setLevel(3);
+			map.panTo(rangenow);
+			
+			daum.maps.event.addListener(rangemarker, 'click', function() {
+				rangemarker.setMap(null)
+			});
+				
+		});
+	} else {
+		alert("현재 웹에서는 geolocation을 사용 할 수 없습니다. <br> 관리자에게 문의 부탁드립니다.")
+	}
 }
 
 var getdata;
@@ -99,7 +115,8 @@ function getMapdata() {
 			}
 		});
 	}else{
-		alert("Login인 정상적으로 진행되지 않았습니다.");	
+		alert("Login인 정상적으로 진행되지 않았습니다.");
+		location.href="main.do"
 	}
 }
 
@@ -107,8 +124,7 @@ function getMapdata() {
 var clusterer = new daum.maps.MarkerClusterer({
 	map : map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
 	averageCenter : true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-	minLevel : 3
-// 클러스터 할 최소 지도 레벨 
+	minLevel : 3 // 클러스터 할 최소 지도 레벨 
 });
 
 function makeMarker(data) {
@@ -200,18 +216,19 @@ function MakeInfoWindow(latlng, roadAddress, jibunAddress){
 				'			 		<strong>장소 이름</strong>' + 
 				'			 		<input type="text" class="form-control" placeholder="추가 할 장소의 이름을 정해주세요" name="name">' + 
 				'				</div>' + 
-				'				<div class="form-group">' +
-				'					<strong>시설 선택</strong>' + 
-				'					<select class="selectpicker" name="category1">' + 
-				'						<c:forEach items="${category1list}" var="list">' + 
-				'							<option>${list.category1}</option>' + 
-				'						</c:forEach>' + 
-				'							<option>기타</option>' + 
-				'					</select>' + 
-				'				</div>' + 
-				'				<div class="form-group">' +
-				'					<strong>이용 시간</strong>' + 
-				'					<input type="text" class="form-control" placeholder="ex) 09:00 - 22:00" name="time">' + 
+				'				<div class="form-group" style="display: flex;">' + 
+				'					<div style="width: 50%; display: grid;">' + 
+				'						<strong>시설 선택</strong>' + 
+				'						<select class="selectpicker" name="category1" data-width="90%">' + 
+				'							<c:forEach items="${category1list}" var="list">' + 
+				'								<option>${list.category1}</option>' + 
+				'							</c:forEach>' + 
+				'						</select>' + 
+				'					</div>' + 
+				'					<div style="width: 50%;">' + 
+				'						<strong>이용 시간</strong>' + 
+				'						<input type="text" class="form-control" placeholder="ex) 09:00 - 22:00" name="time">' + 
+				'					</div>' + 
 				'				</div>' + 
 				'				<div class="form-group">' +
 				'					<strong>휴무일</strong>' + 
@@ -219,7 +236,7 @@ function MakeInfoWindow(latlng, roadAddress, jibunAddress){
 				'				</div>' + 
 				'				<div class="form-group">' +
 				'					<strong>기타 사항</strong>' + 
-				'					<textarea class="form-control" rows="3" name="comments"></textarea>' + 
+				'					<textarea class="form-control" style="resize: none;" maxlength="100" placeholder="기타사항 100글자 까지 입력 가능합니다." name="comments"></textarea>' + 
 				'				</div>' + 
 				'				<div style="text-align:right;">' +
 				'					<button type="submit" class="btn btn-sm btn-primary">장소 추가</button>' + 
@@ -289,7 +306,7 @@ function MakeInfopanTo(latlng){
 
 	var point = mapProjection.pointFromCoords(latlng);
 
-	point.y = point.y-260
+	point.y = point.y-200
 	
 	var pointTolatlng = mapProjection.coordsFromPoint(point);
 	
@@ -297,29 +314,47 @@ function MakeInfopanTo(latlng){
 }
 	
 function info(i) {
-	var basic = $('#shareinfo').html();
+	var basic = $('#information').html();
 	
 	var shareinfobtn = '<button class="btn btn-danger" onclick="shareControl('+i+', 3)" data-dismiss="modal">장소 삭제</button>';
 	
-	if(getdata[i].shareox == 'X'){
+	if(getdata[i].shareox == '1'){
 		shareinfobtn = '<button class="btn btn-success" onclick="shareControl('+i+', 1)" data-dismiss="modal">공유 요청</button>' + shareinfobtn;
 	}else{
 		shareinfobtn = '<button class="btn btn-warning" onclick="shareControl('+i+', 2)" data-dismiss="modal">공유 취소</button>' + shareinfobtn;
 	}
 	
-	$('.infoname').html(getdata[i].name + '<small id="category" class="infocategory"> (' + getdata[i].category1 + ')</small>')
-	$('.infoid').text(getdata[i].id)
+	$('hr').remove()
+	$('#boardinput').remove()
+	$('#createtable').remove()
+	$('#pageMove').remove()
+	
+	$('.infoname').html('<strong>' + getdata[i].name + '</strong> ' + 
+						' <small id="category" class="infocategory2"> (' + getdata[i].category1 + ')</small>')
 	$('.infoaddress').text(getdata[i].address)
-	$('.infophonenumber').text(getdata[i].phonenumber)
-	$('.infotime').text(getdata[i].time)
-	$('.infocloseddays').text(getdata[i].closeddays)
-	$('.infocomments').text(getdata[i].comments)
+	$('.infophonenumber').text(String(getdata[i].phonenumber).replace(null , '정보없음'))
+	$('.infotime').text(String(getdata[i].time).replace(null , '정보없음'))
+	$('.infocloseddays').text(String(getdata[i].closeddays).replace(null , '정보없음'))
+	$('.infocomments').text(String(getdata[i].comments).replace(null , '정보없음'))
 	$('.infobtn').html(shareinfobtn)
 	
-	$('#shareinfo').modal('show');
+	switch(getdata[i].category1){
+		case "도서관"  : $('.img-rounded').attr('src', "resources/images/도서관.jpg"); break;
+		case "도시공원" : $('.img-rounded').attr('src', "resources/images/공원.png"); break;
+		case "주차장"  : $('.img-rounded').attr('src', "resources/images/주차장.jpg"); break;
+		case "어린이집" : $('.img-rounded').attr('src', "resources/images/어린이집.png"); break;
+		case "화장실" : $('.img-rounded').attr('src', "resources/images/화장실.jpg"); break;
+		case "병원" : $('.img-rounded').attr('src', "resources/images/병원.png"); break;
+		case "약국" : $('.img-rounded').attr('src', "resources/images/약국.jpg"); break;
+		case "박물관" : $('.img-rounded').attr('src', "resources/images/박물관.png"); break;
+		case "기타" : $('.img-rounded').attr('src', "resources/images/기타.png"); break;
+	}
+
+		
+	$('#information').modal('show');
 	
-	$('#shareinfo').on('hidden.bs.modal', function(){
-		$('#shareinfo').html(basic)
+	$('#information').on('hidden.bs.modal', function(){
+		$('#information').html(basic)
 	});	
 }
 
@@ -329,7 +364,7 @@ function makeList(page){
 	var finalPage = parseInt((totalcount + (pageSize-1)) / pageSize);
 	
 	$('#list').empty()
-	$('#list').html('<h3>공유 요청 자료</h3><span> 현재 공유대기중인 데이터는 '+getdata.length+'개 입니다. </span>')
+	$('#list').html('<h3>공유 요청 자료</h3><span> 현재 등록 데이터는 '+getdata.length+'개 입니다. </span>')
 	
 	/* 거리나 가까운순으로 정렬 */
 	getdata.sort(function (a, b) { 

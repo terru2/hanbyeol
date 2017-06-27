@@ -52,21 +52,41 @@ public class LoginController {
 		
 	}
 	
+//	@RequestMapping("logout")
+//	public String Logout(SessionStatus sessionStatus)
+//	{		
+//		sessionStatus.setComplete();
+//		
+//		return "redirect:main.do";
+//	}
+	
 	@RequestMapping("logout")
-	public String Logout(SessionStatus sessionStatus)
+	public String Logout(String url,SessionStatus sessionStatus)
 	{		
-		sessionStatus.setComplete();
-		
-		return "redirect:main.do";
+ 		String chkPosition1 = "insertplace.do";
+ 		String chkPosition2 = "showsharingdata.do";
+ 		String chkPosition3 = "sharecheck.do";
+ 		
+ 		String[] urlsplit = url.split("/");
+
+ 		sessionStatus.setComplete();
+
+ 		if(url.contains(chkPosition1) || url.contains(chkPosition2) || url.contains(chkPosition3)){
+ 			return "redirect:main.do";
+ 		}else{
+ 			return "redirect:"+urlsplit[2];
+ 		}		
 	}
+	
 	
 	@RequestMapping(value="signin", method = RequestMethod.POST)
 	public String Signin(
-			@ModelAttribute("signupVO") MemberVO signupVO)
+			@ModelAttribute("signupVO") MemberVO signupVO,
+			@ModelAttribute("url") String url)
 	{		
-		service.signIn(signupVO);
-
-		return "redirect:main.do";
+		String[] urlsplit = url.split("/");
+		
+		return "redirect:" + urlsplit[2];
 	}
 	
 	@RequestMapping("chkDupId")
@@ -104,11 +124,14 @@ public class LoginController {
 	@RequestMapping(value="edit", method = RequestMethod.POST)
 	public String editInfo(
 			@ModelAttribute("editVO") MemberVO editVO,
-			@ModelAttribute("log") MemberVO updatelog)
-	{		
+			@ModelAttribute("log") MemberVO updatelog,
+			@ModelAttribute("url") String url)
+	{	
 		service.editInfo(editVO);
 		
-		return "redirect:main.do";
+		String[] urlsplit = url.split("/");
+		
+		return "redirect:" + urlsplit[2];
 	}
 	
 }

@@ -22,48 +22,20 @@
 			</li>
 		</ul>
 		<ul id="login_signup" class="nav navbar-nav navbar-right navbar-collapse collapse">
-		<%
-		if(session.getAttribute("log") != null){
-		%>
-<!-- 			<li> -->
-<!-- 				<a href="insertplace.do" style="cursor:pointer"> -->
-<!-- 					<span class="glyphicon glyphicon-map-marker"></span> 장소 추가 -->
-<!-- 				</a> -->
-<!-- 			</li> -->
+		<c:if test="${!empty log}">
 			<li>
 				<a data-toggle="modal" data-target="#member" style="cursor:pointer">
 					<span class="glyphicon glyphicon-user"></span><strong> ${log.nickname } </strong>님<small> ( ${log.id } )</small>
 				</a>	
 			</li>
-<!-- 			<li> -->
-<!-- 				<a href="logout"> -->
-<!-- 					<span class="glyphicon glyphicon-log-out"></span> Logout -->
-<!-- 				</a> -->
-<!-- 			</li> -->
-		<%
-		}else{
-		%>
+		</c:if>
+		<c:if test="${empty log}">
 			<li>
 				<a data-toggle="modal" data-target="#login" style="cursor:pointer">
 					<span class="glyphicon glyphicon-log-in"></span> Login
 				</a>
 			</li>
-<!-- 			<li> -->
-<!-- 				<a data-toggle="modal" data-target="#signup" style="cursor:pointer"> -->
-<!-- 					<span class="glyphicon glyphicon-user"></span> SignUp -->
-<!-- 				</a> -->
-<!-- 			</li> -->
-		<%
-		}
-		%>
+		</c:if>		
 		</ul>
-<!-- 		<form id="search_form" class="navbar-collapse collapse navbar-form" style="margin-bottom: 0px;"> -->
-<!-- 			<div class="input-group" style="display:table;"> -->
-<!-- 				<input type="text" class="form-control" placeholder="원하시는 지역명, 시설명을 입력하세요"> -->
-<!-- 				<div class="input-group-btn" style="width:1%;"> -->
-<!-- 					<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</form> -->
 	</div>
 </nav>

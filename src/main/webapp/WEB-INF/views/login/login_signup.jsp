@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <div class="modal fade" id="login" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -18,9 +19,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default loginbtn" onclick="chkLogin()">Log in</button>
+				<button type="submit" class="btn btn-default loginbtn" onclick="chkLogin()">Log in</button>
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signup">Sign Up</button>
-<!-- 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
 			</div>
 		</div>
 	</div>
@@ -82,6 +82,7 @@
 					<button type="submit" class="btn btn-primary" >Sign Up</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
+				<input type="hidden" name="url" value='<%=request.getAttribute("javax.servlet.forward.request_uri" )%>'>
 			</form>
 		</div>
 	</div>
@@ -107,8 +108,8 @@
 			</div>
 			<div class="modal-footer">
 				<c:if test="${log.id eq 'admin'}">
-					<button type="button" class="btn btn-success" onclick="javascript:sharingdata()">공유중인 데이터</button>
-					<button type="button" class="btn btn-success" onclick="javascript:sharecheck()">공유 요청 확인</button>
+					<button type="button" class="btn btn-success" onclick="location.href='showsharingdata.do'">공유중인 데이터</button>
+					<button type="button" class="btn btn-success" onclick="location.href='sharecheck.do'">공유 요청 확인</button>
 				</c:if>
 				<c:if test="${log.id ne 'admin'}">
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editinfo">Edit Info</button>
@@ -166,9 +167,10 @@
 					</div>					
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary" >Edit</button>
+					<button type="submit" class="btn btn-primary">Edit</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
+				<input type="hidden" name="url" value='<%=request.getAttribute("javax.servlet.forward.request_uri" )%>'>
 			</form>
 		</div>
 	</div>
@@ -203,13 +205,8 @@
  	
  	
  	function logout(){
-		$.ajax({
-		type : 'POST',  
-		url : 'logout',  
-		success : function(){
-			location.reload()
-			}
-		});
+		var url = location.pathname
+		location.href="logout?url="+url
  	}
  	
  	
@@ -428,7 +425,7 @@
 		
 	}
 	
-	function checkSubmit(){
+	function checkSubmit(action){
 		try{
 		
 		if(dupIdChkBtn != 1 || dupNickChkBtn != 1){
@@ -455,11 +452,11 @@
 		}
 	}
 	
-	function sharecheck(){
-	    location.href="sharecheck.do"
-	}
+// 	function sharecheck(){
+// 	    location.href="sharecheck.do"
+// 	}
 	
-	function sharingdata(){
-		location.href="showsharingdata.do"
-	}
+// 	function sharingdata(){
+// 		location.href="showsharingdata.do"
+// 	}
 	</script>

@@ -15,10 +15,12 @@
 	}
 	
 	.btn-default.btn-on-2.active{
-		background-color: #5BB75B;color: white;
+		background-color: #5BB75B;
+		color: white;
 	}
 	.btn-default.btn-off-2.active{
-		background-color: #A7A7A7;color: white;
+		background-color: #A7A7A7;
+		color: white;
 	}
 	
 	#toTop{
@@ -29,6 +31,22 @@
  		display: none;
 	}
 	
+	#reviewPwInput{
+		width: 21%;
+	}
+
+	@media (max-width: 765px){
+		#reviewStarLabel{
+			display: none;
+		}
+		#reviewPwLabel{
+			display: none;
+		}
+		#reviewPwInput{
+			width: 35%;
+		} 
+	}
+	
 	.link {
     	color: #5085BB;
     }
@@ -37,7 +55,7 @@
 		position: absolute; 
 		bottom: 40px; 
 		width: 300px;
-		height: 483px;
+		height: 394px;
 		margin-left: -149px;
 		overflow: hidden;
 	}
@@ -99,7 +117,6 @@
 <body>
 	<tiles:insertAttribute name="login_signup"/>
 	<tiles:insertAttribute name="information"/>
-	<tiles:insertAttribute name="shareinfo"/>
 	<tiles:insertAttribute name="top_nav"/>
 	<div class="container-fluid" style="height: 100%">
 		<div class="row row-offcanvas row-offcanvas-right" style="height: 100%;">
