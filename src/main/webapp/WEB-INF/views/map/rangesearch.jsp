@@ -137,6 +137,11 @@ function getMapdata(lat, lng) {
 			alert("공공시설 정보 오류");
 		},
 		success : function(data) {
+			/* 데이터 거리순 정렬 */
+			data.sort(function (a, b) { 
+				return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;  
+			});
+			
 			getdata = data;
 			makeMarker(data);
 			makeList(data);
@@ -146,8 +151,6 @@ function getMapdata(lat, lng) {
 
 function makeMarker(data) {
 	
-	var markers = []; 
-	
 	for(var i = 0; i < data.length; i++){
 		var title = data[i].name;
 		var latlng = new daum.maps.LatLng(data[i].wsg84x,data[i].wsg84y);
@@ -156,6 +159,7 @@ function makeMarker(data) {
 			title : title,
 			position : latlng
 			});
+		console.log(data[i].name)
 		
 		marker.setMap(map)	
 		markerEvent(marker, i);
@@ -373,11 +377,6 @@ function createtable(data,page){
 function makeList(data){
 	$('#list').html('<span>총 '+getdata.length+'개의 데이터가 검색 되었습니다. </span>')
 	$('#list div').remove()
-	
-	/* 거리나 가까운순으로 정렬 */
-	getdata.sort(function (a, b) { 
-		return a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0;  
-	});
 	
 	 for(var i = 0; i < data.length; i++){
 		var listOrig = $('#list').html()
