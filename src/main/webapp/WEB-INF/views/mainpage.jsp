@@ -41,7 +41,7 @@ select::-ms-expand { /* for IE 11 */
         </div>
         <div class="address">
 	        <form action="search.do">
-	        	<input type="text" name="address">
+	        	<input type="text" name="focusAddress">
 				<select name="category1">
 					<option value="default">====시설물====</option>
 					<c:forEach items="${categorylist}" var="vo">
