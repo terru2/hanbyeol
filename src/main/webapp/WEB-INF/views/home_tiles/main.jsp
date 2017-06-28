@@ -111,7 +111,9 @@
     	height: 12px;
     	background: url('http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
     }
-	
+	.row.row-offcanvas.row-offcanvas-right{
+		opacity:0.3;
+	}
 	</style>
 </head>
 <body>
@@ -123,5 +125,6 @@
 			<tiles:insertAttribute name="map"/>
 		</div>
 	</div>
+	<img src="resources/images/loading.gif" class="loading" style="position: fixed; top:40%; left:50%; z-index: 100; margin-left:-75px; display:none;">
 </body>
 </html>

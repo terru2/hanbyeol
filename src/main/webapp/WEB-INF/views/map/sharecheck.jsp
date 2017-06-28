@@ -5,6 +5,7 @@
 <script>
 $(document).ready(function(){
    getMapdata();
+   $('.loading').css('display','inline');
 });
 </script>
 <!-- Map 부분  -->
@@ -47,8 +48,10 @@ function getMapdata() {
          dataType : "json",
          error : function(){alert("공공시설 정보 오류");},
          success : function(data){
-            makeMarker(data);
             getdata = data;
+            $('.loading').css('display','none');
+			$('.row.row-offcanvas.row-offcanvas-right').css('opacity','1');
+            makeMarker(data);
             page(1);
          }
       });
@@ -182,7 +185,14 @@ function makeList(page){
 	var finalPage = parseInt((totalcount + (pageSize-1)) / pageSize);
 	
 	$('#list').empty()
-	$('#list').html('<h3>공유 요청 자료</h3><span> 현재 공유대기중인 데이터는 '+getdata.length+'개 입니다. </span>')
+	$('#list').html('<h3>공유 요청 자료 ' + 
+					'<button type="button" class="btn btn-default btn-sm pull-right" id="loc_btn">' + 
+					'<span class="glyphicon glyphicon-arrow-left"></span>' + 
+					'</button>' +
+					'</h3><span> 현재 공유 대기중인 데이터는 '+getdata.length+'개 입니다. </span>');
+	$('#loc_btn').on('click',function(){
+		location.href="search.do";
+	});
 	
 	for(var i = pageSize*(page-1); i < pageSize*page; i++){
 		if(i < totalcount){

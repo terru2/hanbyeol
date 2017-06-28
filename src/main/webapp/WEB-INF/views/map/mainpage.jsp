@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*, com.hongik.project.vo.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <script>
 $(document).ready(function(){
 	getMapdata();
 	$('.range').selectpicker('hide')
+	$('.loading').css('display','inline');
 });
 </script>
 <!-- Map 부분  -->
@@ -105,8 +105,11 @@ function getMapdata() {
 		success : function(data){
 			putMarkerinMap(data);
 			getdata = data;
+			$('.loading').css('display','none');
+			$('.row.row-offcanvas.row-offcanvas-right').css('opacity','1');
 			addMarkeroutMap(map.getBounds());
 		    makeList(map.getBounds());
+			
 		}
 	})
 }

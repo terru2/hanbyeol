@@ -48,6 +48,7 @@
 $(function(){
 	var map;
 	getLatLng();
+	$('.loading').css('display','inline');
 })
 
 function rangesearchswitch() {
@@ -143,6 +144,8 @@ function getMapdata(lat, lng) {
 			});
 			
 			getdata = data;
+			$('.loading').css('display','none');
+			$('.row.row-offcanvas.row-offcanvas-right').css('opacity','1');
 			makeMarker(data);
 			makeList(data);
 		}

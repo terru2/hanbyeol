@@ -5,6 +5,7 @@
 <script>
 $(document).ready(function(){
 	getMapdata();
+	$('.loading').css('display','inline');
 });
 </script>
 <!-- Map 부분  -->
@@ -111,8 +112,10 @@ function getMapdata() {
 			dataType : "json",
 			error : function(){alert("공공시설 정보 오류");},
 			success : function(data){
-				makeMarker(data);
 				getdata = data;
+				$('.loading').css('display','none');
+				$('.row.row-offcanvas.row-offcanvas-right').css('opacity','1');
+				makeMarker(data);
 				page(1);
 			}
 		});
