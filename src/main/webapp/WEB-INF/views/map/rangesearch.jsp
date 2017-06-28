@@ -245,19 +245,7 @@ function info(cnt) {
 				case "기타" : $('.img-rounded').attr('src', "resources/images/기타.png"); break;
 			}
 			
-			$.ajax({
-				type : "GET",
-				url : "return2",
-				data : "name="+getdata[cnt].name,
-				dataType : "json",
-				error : function(){
-					alert("평점 정보요청 오류");			
-					},
-				success : function(data){		
-					$('#rate').text(data);
-				}
-			});
-			
+			rate(data.name)
 			getBoard(data.name)
 			
 			$('#information').modal('show');
@@ -270,6 +258,21 @@ function info(cnt) {
 				$('#comment').attr('placeholder','${log.nickname} 회원님의 평가를 입력해주세요.')
 			});
 		
+		}
+	});
+}
+
+function rate(name){
+	$.ajax({
+		type : "GET",
+		url : "return2",
+		data : "name="+name,
+		dataType : "json",
+		error : function(){
+			alert("평점 정보요청 오류");			
+			},
+		success : function(data){		
+			$('#rate').text(data);
 		}
 	});
 }

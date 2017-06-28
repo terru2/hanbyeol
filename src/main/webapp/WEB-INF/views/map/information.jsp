@@ -98,6 +98,7 @@ function saveatDB(){
 		success : function(success){
 			if(success > 0){
 				getBoard(sisulName);
+				rate(sisulName)
 				$('#reviewPwInput').val("");
 				$('#gpa').selectpicker('val', '★★★★★');
 				$('#gpa').selectpicker('refresh');
@@ -134,7 +135,8 @@ function deleteComment(i){
 			},
 		success : function(success){				
 				if(success > 0){
-					getBoard(sisulName);	
+					getBoard(sisulName);
+					rate(sisulName)
 				}								
 			}
 		});

@@ -14,13 +14,15 @@ $(document).ready(function(){
 <div class="col-sm-6 col-md-3 sidebar-offcanvas sidebar">
 	<!-- 조건절들 보여주는 부분  -->
 		<div id="gps" style="padding-top: 10px; padding-bottom: 10px;">
-			<span>현재 위치 확인하기 </span>
-			<button class="btn btn-success btn-sm" onclick="rangego()">이동</button>
-			<span>검색 화면으로 이동 </span>
-			<button type="button" class="btn btn-success btn-sm" onclick="location.href='search.do'">검색 화면</button>
+			<button class="btn btn-success btn-sm" onclick="rangego()">
+				<span class="glyphicon glyphicon-map-marker"></span> 현재 위치
+			</button>
+			<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="tooltip" data-placement="top" title="시설검색" onclick="location.href='search.do'">
+				<span class="glyphicon glyphicon-arrow-left"></span>
+			</button>
 		</div>
 	<form action="insertplace.do" name="form">
-		<div class="input-group" style="padding-top: 10px;">
+		<div class="input-group">
 			<c:if test="${focusAddress eq 'null'}">
 				<input type="text" class="form-control"  placeholder="원하시는 지역명을 입력하세요(기준: 서울시청)" name="focusAddress">
 			</c:if>
@@ -34,7 +36,7 @@ $(document).ready(function(){
 			</div>
 		</div>
 	</form>
-	<div id="list" style="padding-top: 10px;">
+	<div id="list" >
 	</div>
 	<nav align="center">
 		<ul id="page" class="pagination" >
