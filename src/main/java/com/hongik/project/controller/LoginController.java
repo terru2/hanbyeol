@@ -85,6 +85,7 @@ public class LoginController {
 			@ModelAttribute("url") String url)
 	{		
 		String[] urlsplit = url.split("/");
+		service.signIn(signupVO);
 		
 		return "redirect:" + urlsplit[2];
 	}

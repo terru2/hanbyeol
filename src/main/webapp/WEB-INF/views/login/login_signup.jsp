@@ -429,20 +429,20 @@
 		try{
 		
 		if(dupIdChkBtn != 1 || dupNickChkBtn != 1){
-			alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
+// 			alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
 			return false;	
 		}
 		if(pwChkBtn != 1){
-			alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
+// 			alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
 			return false;
 		}
 		
 		if(phoneChkBtn != 1){
-			alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
+// 			alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
 			return false;
 		}
 		
-		alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
+// 		alert(dupIdChkBtn+":"+dupNickChkBtn+":"+pwChkBtn+":"+phoneChkBtn)
 		$('.inputid').removeAttr('disabled')
 		return true;
 		

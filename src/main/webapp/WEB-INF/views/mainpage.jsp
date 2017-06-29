@@ -134,7 +134,7 @@
 					</div>
 					<div id="mainEx">
 						<h1 id="mainTitle" style="color: white;"><strong><span class="glyphicon glyphicon-search"></span> 시설 위치 검색 ?</strong></h1>
-						<p class="lead" style="color: white; margin-top: 30px;"><strong>여러분 누구나 경험 했을 것이라고 생각했습니다.</strong></p>
+						<p class="lead" style="color: white; margin-top: 30px;"><strong>원하는 시설의 위치를 한눈에 볼 수 있습니다.</strong></p>
 						<p style="color: white;">
 							원하는 위치를 검색창에 입력하고 시설을 선택하세요<br><br>
 							검색된 위치의 시설들이 한눈에 보여집니다<br><br>
@@ -153,7 +153,7 @@
 					</div>
 					<div id="mainEx">
 						<h1 id="mainTitle" style="color: white;"><strong><span class="glyphicon glyphicon-list-alt"></span> 상세 정보 확인 ?</strong></h1>
-						<p class="lead" style="color: white; margin-top: 30px;"><strong>여러분 누구나 경험 했을 것이라고 생각했습니다.</strong></p>
+						<p class="lead" style="color: white; margin-top: 30px;"><strong>선택 된 시설의 정보를 확인 할 수 있습니다.</strong></p>
 						<p style="color: white;">
 							리스트 또는 마커를 선택해 위치와 정보창을 확인합니다<br><br>
 							상세보기를 선택하세요<br><br>
@@ -172,7 +172,7 @@
 					</div>
 					<div id="mainEx">
 						<h1 id="mainTitle" style="color: white;"><strong><span class="glyphicon glyphicon-map-marker"></span> 나만의 위치 추가 ?</strong></h1>
-						<p class="lead" style="color: white; margin-top: 30px;"><strong>여러분 누구나 경험 했을 것이라고 생각했습니다.</strong></p>
+						<p class="lead" style="color: white; margin-top: 30px;"><strong>본인만이 알고 있거나 기억 할 장소를 추가 할 수 있습니다.</strong></p>
 						<p style="color: white;">
 							회원이 되어 나만의 위치 추가 기능을 활용하세요<br><br>
 							위치를 선택해 정보를 입력하면 회원만의 위치를 추가 할 수 있습니다<br><br>
