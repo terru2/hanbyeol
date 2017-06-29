@@ -230,11 +230,11 @@ function info(cnt) {
 			$('.infoname').html('<strong id="sisulName">' + data.name + '</strong> ' + 
 								'<span id="rate" class="label label-warning" style="padding: 0.5% 2% 0.3% 2%;"></span>' + 
 								' <small id="category" class="infocategory2"> (' + String(data.category2).replace(null , '회원추가') + ')</small>')			
-			$('.infoaddress').text(data.address)
+			$('.infoaddress').append('<div id="place">'+data.address+'<br></div>')
 			$('.infophonenumber').text(String(data.phonenumber).replace(null , '정보없음'))
 			$('.infotime').text(String(data.time).replace(null , '정보없음'))
 			$('.infocloseddays').text(String(data.closeddays).replace(null , '정보없음'))
-			$('.infocomments').text(String(data.comments).replace(null , '정보없음'))
+			$('.infocomments').append('<div id="other"></div>')
 			
 			switch(data.category1){
 				case "도서관"  : $('.img-rounded').attr('src', "resources/images/도서관.jpg"); break;
@@ -251,9 +251,42 @@ function info(cnt) {
 			rate(data.name)
 			getBoard(data.name)
 			
+			var oneComments = ""+data.comments;
+			console.log(oneComments.search(/;/i));
+			if(oneComments == "null"){
+				$('#other').text(String(data.comments).replace(null , '정보없음'))
+			}
+			else{
+				if(oneComments.search(/;/i) != -1){
+					var arrayPlace = new Array();
+					arrayPlace = data.comments.split(";");	
+						for(var i=0;i<arrayPlace.length;i++){
+							console.log(arrayPlace[i]);
+							
+							if(arrayPlace[i].search(/홈페이지/i) != -1){
+								var addressSRC = arrayPlace[i].substring(8,arrayPlace[i].length);
+								$('#other').append('<a href="'+addressSRC+'" target="_blank">홈페이지 바로가기</a><br>');
+								continue;
+							}
+							
+							if(arrayPlace[i].search(/단지/i) != -1 || arrayPlace[i].search(/층/i) != -1 || arrayPlace[i].search(/호/i) != -1 ||arrayPlace[i].search(/동/i) != -1){
+								console.log("층단지 ");
+								$('#place').append(arrayPlace[i]+'<br>');
+								continue;
+							}
+							$('#other').append(arrayPlace[i]+'<br>');
+						}
+				}
+				else{
+					$('#other').text(data.comments);
+				}	
+			}
+			
 			$('#information').modal('show');
 			
 			$('#information').on('hidden.bs.modal', function(){
+				$('#place').remove();
+				$('#other').remove();
 				$('#reviewPwInput').val("");
 				$('#gpa').selectpicker('val', '★★★★★');
 				$('#gpa').selectpicker('refresh');
